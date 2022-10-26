@@ -6,7 +6,7 @@ import { Quiz } from "./quiz-types";
 export const circleOfFifth = ["C", "F", "Bb", "Eb", "Ab", "Db", "Gb", "F#", "B", "E", "A", "D", "G"];
 
 export function getRandom(arr: string[]) {
-    const randomIndex = Math.floor(Math.random() * arr.length);
+    const randomIndex = getRandomNumber(arr);
     return arr[randomIndex];
 }
 
