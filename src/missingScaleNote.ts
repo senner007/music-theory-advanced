@@ -29,8 +29,12 @@ class MissingScaleNote implements IQuiz {
         ]
     }
 
-    get question() {
+    get questionOptions() {
         return this.randomNoteVariants;
+    }
+
+    get question() {
+        return 'Which note is missing?';
     }
 
     get answer() {

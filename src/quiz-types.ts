@@ -1,6 +1,7 @@
 export interface IQuiz {
     quizHead: string[];
-    question: string[];
+    questionOptions: string[];
+    question: string;
     answer: string;
 }
   

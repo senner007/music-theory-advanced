@@ -31,23 +31,21 @@ export function loopQuiz(QuizClass: Quiz) {
             console.log(head)
         }
 
-        index = rs.keyInSelect(quiz.question, 'Which note is missing?');
-
-        const continueMessage = "Hit Enter key to continue";
+        index = rs.keyInSelect(quiz.questionOptions, quiz.question);
 
         if (index === -1) {
             console.log("Bye for now");
             break;
         }
 
-        if (quiz.question[index] === quiz.answer) {
+        if (quiz.questionOptions[index] === quiz.answer) {
             console.log(chalk.green(`Right!`))
-            rs.question(continueMessage, { hideEchoBack: true, mask: '' });
+            
 
         } else if (index != -1) {
             console.log(chalk.red(`Wrong!`))
             console.log(chalk.white(`Correct : ${quiz.answer}`))
-            rs.question(continueMessage, { hideEchoBack: true, mask: '' });
         }
+        rs.question("Hit Enter key to continue", { hideEchoBack: true, mask: '' });
     }
 }
