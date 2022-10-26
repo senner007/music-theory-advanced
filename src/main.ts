@@ -1,6 +1,7 @@
-import { MissingScaleNoteQuiz } from "./missingScaleNote";
+// import { MissingScaleNoteQuiz } from "./missingScaleNote";
+import { NameScaleDegreeQuiz } from "./nameScaleDegree";
 import { loopQuiz } from "./utils";
 
 const options = ["major", "minor"]
 
-loopQuiz(MissingScaleNoteQuiz, options);
+loopQuiz(NameScaleDegreeQuiz, options);
