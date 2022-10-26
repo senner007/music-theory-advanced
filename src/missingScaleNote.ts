@@ -1,7 +1,7 @@
 
 import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandom, getNoteVariants, circleOfFifth } from "./utilis"
+import { getRandom, getNoteVariants, circleOfFifth } from "./utils"
 import { IQuiz, Quiz } from "./quiz-types";
 
 class MissingScaleNote implements IQuiz {

@@ -1,4 +1,4 @@
 import { MissingScaleNoteQuiz } from "./missingScaleNote";
-import { loopQuiz } from "./utilis";
+import { loopQuiz } from "./utils";
 
 loopQuiz(MissingScaleNoteQuiz);
