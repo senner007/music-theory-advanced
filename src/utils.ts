@@ -13,9 +13,12 @@ export function getRandom(arr: string[]) {
 export function getNoteVariants(note: string) {
     const noteBase = note.substring(0, 1);
     return [
+        Note.transpose(noteBase, "1dd"),
         Note.transpose(noteBase, "1d"),
         noteBase,
-        Note.transpose(noteBase, "1A")
+        Note.transpose(noteBase, "1A"),
+        Note.transpose(noteBase, "1AA")
+
     ]
 }
 
