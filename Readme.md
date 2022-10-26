@@ -9,3 +9,10 @@ npx tsc
 
 ### Run
 node dist/main.js
+
+### Todos:
+### Sing pitch patterns:
+- https://github.com/sorensen/ascii-table
+- tone.js
+- tone.js/midi
+- musescore
