@@ -1,5 +1,5 @@
 
-import { Scale as ScaleClass } from "@tonaljs/tonal";
+import { Scale as ScaleClass} from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
 import { getRandom, getNoteVariants, circleOfFifth } from "./utils"
 import { IQuiz, Quiz } from "./quiz-types";
@@ -10,8 +10,8 @@ class MissingScaleNote implements IQuiz {
     scaleString : string;
     randomNote : string;
     randomNoteVariants : string[]
-    constructor() {
-        this.scale = ScaleClass.get(getRandom(circleOfFifth) + " major");
+    constructor(scaleTypes : string[]) {
+        this.scale = ScaleClass.get(getRandom(circleOfFifth) + " " + getRandom(scaleTypes));
         this.randomNote = getRandom(this.scale.notes);
 
         this.scaleString = this.scale.notes

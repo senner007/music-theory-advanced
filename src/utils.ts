@@ -19,13 +19,13 @@ export function getNoteVariants(note: string) {
     ]
 }
 
-export function loopQuiz(QuizClass: Quiz) {
+export function loopQuiz(QuizClass: Quiz, options: string[]) {
 
     let index = 0;
 
     while (index != -1) {
         console.clear();
-        const quiz = new QuizClass();
+        const quiz = new QuizClass(options);
 
         for (const head of quiz.quizHead) {
             console.log(head)

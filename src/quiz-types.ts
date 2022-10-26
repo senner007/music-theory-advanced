@@ -6,5 +6,5 @@ export interface IQuiz {
 }
   
 export interface Quiz {
-      new(): IQuiz
+      new(options: string[]): IQuiz
 }

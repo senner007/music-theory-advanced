@@ -1,4 +1,6 @@
 import { MissingScaleNoteQuiz } from "./missingScaleNote";
 import { loopQuiz } from "./utils";
 
-loopQuiz(MissingScaleNoteQuiz);
+const options = ["major", "minor"]
+
+loopQuiz(MissingScaleNoteQuiz, options);
