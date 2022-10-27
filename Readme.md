@@ -11,6 +11,7 @@ npx tsc
 node dist/main.js
 
 ### Todos:
+just use plain functions in place of classes
 ### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
 - tone.js

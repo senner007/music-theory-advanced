@@ -24,8 +24,7 @@ class NameScaleDegree implements IQuiz {
 
     get quizHead() {
         return [
-            this.scale.name,
-            this.degree
+            this.scale.name
         ]
     }
 
@@ -34,7 +33,7 @@ class NameScaleDegree implements IQuiz {
     }
 
     get question() {
-        return 'Which note is missing?';
+        return `Which is the ${this.degree} degree?`;
     }
 
     get answer() {
