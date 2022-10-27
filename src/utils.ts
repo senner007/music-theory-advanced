@@ -76,7 +76,7 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
 
 
         } else if (index != -1) {
-            console.log(chalk.red(`Wrong!`))
+            console.log(chalk.red(`Wrong! Don't guess`))
             console.log(chalk.white(`Correct : ${quiz.answer}`))
         }
         rs.question("Hit Enter key to continue", { hideEchoBack: true, mask: '' });
