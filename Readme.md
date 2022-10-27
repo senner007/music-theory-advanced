@@ -13,10 +13,16 @@ npx tsc
 ### Run
 node dist/main.js
 
-### Todos:
+## Todos:
 just use plain functions in place of classes
-### Sing pitch patterns:
+
+#### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
 - tone.js
-- tone.js/midi
-- musescore
+- from scales
+- options: rhythm sequence, random order, max interval
+
+#### Discern/sing notes played together
+- sing note in range C4 - C5
+- sing bottom, top, middle of two notes, three notes
+
