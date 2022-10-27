@@ -3,7 +3,13 @@ import chalk from "chalk";
 import rs from "readline-sync"
 import { Quiz } from "./quiz-types";
 
-export const circleOfFifth = ["C", "F", "Bb", "Eb", "Ab", "Db", "Gb", "F#", "B", "E", "A", "D", "G"];
+const baseNotes = ["C", "D", "E", "F", "G", "A", "B"];
+
+export function getRandomNote() {
+    const baseNote = getRandomItem(baseNotes);
+    const notesSingleAccidental = getNotesSingleAccidentals(baseNote)
+    return getRandomItem(notesSingleAccidental);
+}
 
 export function getRandomItem(arr: string[]) {
     const randomIndex = getRandomIndex(arr);
@@ -12,6 +18,15 @@ export function getRandomItem(arr: string[]) {
 
 export function getRandomIndex(arr: string[]) {
     return Math.floor(Math.random() * arr.length);
+}
+
+function getNotesSingleAccidentals(note: string) {
+    const noteVariants = getNoteVariants(note);
+    return [
+        noteVariants[1],
+        noteVariants[2],
+        noteVariants[3]
+    ]
 }
 
 export function getNoteVariants(note: string) {

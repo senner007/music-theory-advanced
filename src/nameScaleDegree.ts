@@ -1,7 +1,7 @@
 
 import { Scale as ScaleClass} from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getNoteVariants, circleOfFifth, numberToDegree, getRandomIndex } from "./utils"
+import { getRandomItem, getNoteVariants, numberToDegree, getRandomIndex, getRandomNote } from "./utils"
 import { IQuiz, Quiz } from "./quiz-types";
 
 class NameScaleDegree implements IQuiz {
@@ -11,7 +11,7 @@ class NameScaleDegree implements IQuiz {
     randomNote : string;
     randomNoteVariants : string[]
     constructor(scaleTypes : string[]) {
-        this.scale = ScaleClass.get(getRandomItem(circleOfFifth) + " " + getRandomItem(scaleTypes));
+        this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
         const randomIndex = getRandomIndex(this.scale.notes)
         this.randomNote = this.scale.notes[randomIndex];
         this.randomDegree = numberToDegree(randomIndex)
