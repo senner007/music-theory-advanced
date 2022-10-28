@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --no-stdin",
-    "build": "tsc"
+    "dev": "nodemon --no-stdin",
+    "build": "tsc",
+    "prod" : "npm run build && node dist/main.js"
   },
   "keywords": [],
   "author": "",

@@ -1,20 +1,21 @@
 #### Fix point to local typescript lib (wsl ubuntu) :
 [Stack overflow typescript version](https://stackoverflow.com/questions/39668731/what-typescript-version-is-visual-studio-code-using-how-to-update-it)
 
-### Develop
-install node.js
-in folder run : npm install
-npm start
+### Install
+- install node.js
+- in folder run : npm install
 
 ### Compile
-install tsc globally or :
-npx tsc
+- npm run build
 
-### Run
-node dist/main.js
+### Develop
+- npm run dev
+
+### Compile and run
+- npm run prod
 
 ## Todos:
-just use plain functions in place of classes
+- just use plain functions in place of classes
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
