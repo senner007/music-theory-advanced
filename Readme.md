@@ -26,3 +26,4 @@ just use plain functions in place of classes
 - sing note in range C4 - C5
 - sing bottom, top, middle of two notes, three notes
 
+#### Determine which trid is major in root, 1st or 2nd inversion
