@@ -1,8 +1,8 @@
 import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getNoteVariants, numberToDegree, getRandomIndex, getRandomNote, allScaleTypes } from "./utils";
-import { IQuiz, Quiz } from "./quiz-types";
-import { QuizBase } from "./quizBase";
+import { IQuiz, Quiz } from "../quiz-types";
+import { QuizBase } from "../quizBase";
+import { allScaleTypes, getRandomNote, getRandomItem, getRandomIndex, numberToDegree, getNoteVariants } from "../utils";
 
 class NameScaleDegree extends QuizBase implements IQuiz {
   verifyOptions(options: string[]): boolean {
@@ -22,7 +22,7 @@ class NameScaleDegree extends QuizBase implements IQuiz {
     this.randomNoteVariants = getNoteVariants(this.randomNote);
   }
   get quizHead() {
-    const degreeName = `${this.randomDegree} degree`
+    const degreeName = `${this.randomDegree} degree`;
     return [this.scale.name, degreeName];
   }
   get questionOptions() {

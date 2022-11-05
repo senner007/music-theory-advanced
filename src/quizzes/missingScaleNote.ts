@@ -1,8 +1,8 @@
 import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getNoteVariants, getRandomNote, allScaleTypes } from "./utils";
-import { IQuiz, Quiz } from "./quiz-types";
-import { QuizBase } from "./quizBase";
+import { getRandomItem, getNoteVariants, getRandomNote, allScaleTypes } from "../utils";
+import { IQuiz, Quiz } from "../quiz-types";
+import { QuizBase } from "../quizBase";
 
 class MissingScaleNote extends QuizBase implements IQuiz {
   verifyOptions(options: string[]): boolean {

@@ -1,8 +1,8 @@
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Chord } from "@tonaljs/chord";
-import { getRandomItem, getRandomNote, allChordTypes, shuffleStringArray } from "./utils";
-import { IQuiz, Quiz } from "./quiz-types";
-import { QuizBase } from "./quizBase";
+import { getRandomItem, getRandomNote, allChordTypes, shuffleStringArray } from "../utils";
+import { IQuiz, Quiz } from "../quiz-types";
+import { QuizBase } from "../quizBase";
 
 class WhichIsTheChord extends QuizBase implements IQuiz {
   verifyOptions(options: string[]): boolean {
