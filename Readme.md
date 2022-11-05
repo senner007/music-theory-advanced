@@ -16,6 +16,7 @@
 
 ## Todos:
 - maybe replace readline sync with inquirer https://github.com/SBoudrias/Inquirer.js#documentation
+- choose between quizzes on start
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
