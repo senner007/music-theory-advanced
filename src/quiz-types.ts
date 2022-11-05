@@ -1,10 +1,10 @@
 export interface IQuiz {
-    quizHead: string[];
-    questionOptions: string[];
-    question: string;
-    answer: string;
+  quizHead: string[];
+  questionOptions: string[];
+  question: string;
+  answer: string;
 }
-  
+
 export interface Quiz {
-      new(options: string[]): IQuiz
+  new (options: string[]): IQuiz;
 }

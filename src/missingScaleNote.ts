@@ -1,42 +1,44 @@
-
-import { Scale as ScaleClass} from "@tonaljs/tonal";
+import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getNoteVariants, getRandomNote } from "./utils"
+import { getRandomItem, getNoteVariants, getRandomNote, allScaleTypes } from "./utils";
 import { IQuiz, Quiz } from "./quiz-types";
+import { QuizBase } from "./quizBase";
 
-class MissingScaleNote implements IQuiz {
+class MissingScaleNote extends QuizBase implements IQuiz {
+  verifyOptions(options: string[]): boolean {
+    return options.every((scaleType) => allScaleTypes.includes(scaleType));
+  }
 
-    scale : Scale;
-    scaleString : string;
-    randomNote : string;
-    randomNoteVariants : string[]
-    constructor(scaleTypes : string[]) {
-        this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
-        this.randomNote = getRandomItem(this.scale.notes);
+  scale: Scale;
+  scaleString: string;
+  randomNote: string;
+  randomNoteVariants: string[];
+  constructor(options: string[]) {
+    super(options);
 
-        this.scaleString = this.scale.notes
-            .map(n => n === this.randomNote ? "- MISSING -" : n)
-            .reduce((acc, cur) => acc + cur + " ", "")
-            .toString();
+    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(options));
+    this.randomNote = getRandomItem(this.scale.notes);
 
-        this.randomNoteVariants = getNoteVariants(this.randomNote)
-    }
+    this.scaleString = this.scale.notes
+      .map((n) => (n === this.randomNote ? "- MISSING -" : n))
+      .reduce((acc, cur) => acc + cur + " ", "")
+      .toString();
 
-    get quizHead() {
-        return [
-            this.scale.name,
-            this.scaleString
-        ]
-    }
-    get questionOptions() {
-        return this.randomNoteVariants;
-    }
-    get question() {
-        return 'Which note is missing?';
-    }
-    get answer() {
-        return this.randomNote
-    }
+    this.randomNoteVariants = getNoteVariants(this.randomNote);
+  }
+
+  get quizHead() {
+    return [this.scale.name, this.scaleString];
+  }
+  get questionOptions() {
+    return this.randomNoteVariants;
+  }
+  get question() {
+    return "Which note is missing?";
+  }
+  get answer() {
+    return this.randomNote;
+  }
 }
 
 export const MissingScaleNoteQuiz: Quiz = MissingScaleNote;

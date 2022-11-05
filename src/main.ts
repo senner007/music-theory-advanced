@@ -1,7 +1,23 @@
-import { MissingScaleNoteQuiz } from "./missingScaleNote";
-// import { NameScaleDegreeQuiz } from "./nameScaleDegree";
-import { loopQuiz } from "./utils";
+import { isDev, writeToFile } from "./dev-utils";
+// import { MissingScaleNoteQuiz } from "./missingScaleNote";
+import { NameScaleDegreeQuiz } from "./nameScaleDegree";
+import { allScaleTypes, loopQuiz } from "./utils";
 
-const options = ["major", "minor"]
+if (isDev()) {
+  writeToFile("scaleTypes.txt", allScaleTypes.join("\n"));
+}
 
-loopQuiz(MissingScaleNoteQuiz, options);
+const options = [
+  "major",
+  "aeolian",
+  "major pentatonic",
+  "dorian",
+  "phrygian",
+  "lydian",
+  "mixolydian",
+  "locrian",
+  "harmonic minor",
+  "melodic minor",
+];
+
+loopQuiz(NameScaleDegreeQuiz, options);

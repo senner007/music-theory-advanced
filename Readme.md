@@ -16,6 +16,8 @@
 
 ## Todos:
 - just use plain functions in place of classes
+- maybe replace readline sync with inquirer https://github.com/SBoudrias/Inquirer.js#documentation
+- global logging function
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
