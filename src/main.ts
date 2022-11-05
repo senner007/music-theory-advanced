@@ -5,7 +5,7 @@ import { allChordTypes, loopQuiz } from "./utils";
 import { WhichIsTheChordQuiz } from "./whichIsTheChord";
 
 if (isDev()) {
-  writeToFile("chordTypes.txt", allChordTypes.join("\n"));
+  writeToFile("./txt/chordTypes.txt", allChordTypes.join("\n"));
 }
 
 const options = [
