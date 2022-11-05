@@ -22,13 +22,14 @@ class NameScaleDegree extends QuizBase implements IQuiz {
     this.randomNoteVariants = getNoteVariants(this.randomNote);
   }
   get quizHead() {
-    return [this.scale.name];
+    const degreeName = `${this.randomDegree} degree`
+    return [this.scale.name, degreeName];
   }
   get questionOptions() {
     return this.randomNoteVariants;
   }
   get question() {
-    return `Which is the ${this.randomDegree} degree?`;
+    return `Which is the degree?`;
   }
   get answer() {
     return this.randomNote;

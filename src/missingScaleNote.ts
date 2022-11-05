@@ -10,7 +10,7 @@ class MissingScaleNote extends QuizBase implements IQuiz {
   }
 
   scale: Scale;
-  scaleString: string;
+  scaleMissingNote: string;
   randomNote: string;
   randomNoteVariants: string[];
   constructor(options: string[]) {
@@ -19,16 +19,15 @@ class MissingScaleNote extends QuizBase implements IQuiz {
     this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(options));
     this.randomNote = getRandomItem(this.scale.notes);
 
-    this.scaleString = this.scale.notes
+    this.scaleMissingNote = this.scale.notes
       .map((n) => (n === this.randomNote ? "- MISSING -" : n))
       .reduce((acc, cur) => acc + cur + " ", "")
-      .toString();
 
     this.randomNoteVariants = getNoteVariants(this.randomNote);
   }
 
   get quizHead() {
-    return [this.scale.name, this.scaleString];
+    return [this.scale.name, this.scaleMissingNote];
   }
   get questionOptions() {
     return this.randomNoteVariants;

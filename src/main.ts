@@ -1,6 +1,6 @@
 import { isDev, writeToFile } from "./dev-utils";
-// import { MissingScaleNoteQuiz } from "./missingScaleNote";
-import { NameScaleDegreeQuiz } from "./nameScaleDegree";
+import { MissingScaleNoteQuiz } from "./missingScaleNote";
+// import { NameScaleDegreeQuiz } from "./nameScaleDegree";
 import { allScaleTypes, loopQuiz } from "./utils";
 
 if (isDev()) {
@@ -20,4 +20,4 @@ const options = [
   "melodic minor",
 ];
 
-loopQuiz(NameScaleDegreeQuiz, options);
+loopQuiz(MissingScaleNoteQuiz, options);
