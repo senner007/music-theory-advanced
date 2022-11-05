@@ -1,8 +1,8 @@
 export interface IQuiz {
   quizHead: string[];
-  questionOptions: string[];
+  questionOptions: string[] | string[][];
   question: string;
-  answer: string;
+  answer: string | string[];
 }
 
 export interface Quiz {

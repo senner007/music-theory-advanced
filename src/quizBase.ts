@@ -8,7 +8,7 @@ export abstract class QuizBase {
     private errorHandleOptions(options: string[]): void {
         const optionsAreValid =   this.verifyOptions(options);
         const className = this.constructor.name;
-        if (!optionsAreValid) LogError("options invalid in class" + className)
+        if (!optionsAreValid) LogError("options invalid in class: " + className)
     }
     
     abstract verifyOptions(options: string[]): boolean;

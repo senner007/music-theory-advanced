@@ -1,23 +1,16 @@
 import { isDev, writeToFile } from "./dev-utils";
-import { MissingScaleNoteQuiz } from "./missingScaleNote";
+// import { MissingScaleNoteQuiz } from "./missingScaleNote";
 // import { NameScaleDegreeQuiz } from "./nameScaleDegree";
-import { allScaleTypes, loopQuiz } from "./utils";
+import { allChordTypes, loopQuiz } from "./utils";
+import { WhichIsTheChordQuiz } from "./whichIsTheChord";
 
 if (isDev()) {
-  writeToFile("scaleTypes.txt", allScaleTypes.join("\n"));
+  writeToFile("chordTypes.txt", allChordTypes.join("\n"));
 }
 
 const options = [
   "major",
-  "aeolian",
-  "major pentatonic",
-  "dorian",
-  "phrygian",
-  "lydian",
-  "mixolydian",
-  "locrian",
-  "harmonic minor",
-  "melodic minor",
+  "minor"
 ];
 
-loopQuiz(MissingScaleNoteQuiz, options);
+loopQuiz(WhichIsTheChordQuiz, options);
