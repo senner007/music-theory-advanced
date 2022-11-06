@@ -35,21 +35,24 @@ export const NameScaleDegree: Quiz = class extends QuizBase implements IQuiz {
     return this.randomNote;
   }
 
-  static getAllOptions() {
-    return [
-      "major",
-      "aeolian",
-      "major pentatonic",
-      "dorian",
-      "phrygian",
-      "lydian",
-      "mixolydian",
-      "locrian",
-      "harmonic minor",
-      "melodic minor",
-    ];
+  static get meta() {
+    return {
+      get getAllOptions() {
+        return [
+          "major",
+          "aeolian",
+          "major pentatonic",
+          "dorian",
+          "phrygian",
+          "lydian",
+          "mixolydian",
+          "locrian",
+          "harmonic minor",
+          "melodic minor",
+        ];
+      },
+      name: "Name the scale degree",
+      description: "Choose the correct note name for the scale degree in question",
+    };
   }
-
-  static quizName = "Name the scale degree";
-  static description =  "Choose the correct note name for the scale degree in question";
 };

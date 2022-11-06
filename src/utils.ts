@@ -115,7 +115,7 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
 
   while (true) {
     Log.clear();
-    Log.write(QuizClass.description)
+    Log.write(QuizClass.meta.description)
     const quiz = new QuizClass(options);
 
     for (const head of quiz.quizHead) {

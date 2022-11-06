@@ -15,10 +15,10 @@ const quizzes: Quiz[] = [
   WhichIsTheChord
 ]
 
-const quizIndex = Log.keyInSelect(quizzes.map(quiz => quiz.quizName), "Choose a quiz");
+const quizIndex = Log.keyInSelect(quizzes.map(quiz => quiz.meta.name), "Choose a quiz");
 
 if (quizIndex !== -1) {
-  loopQuiz(quizzes[quizIndex], quizzes[quizIndex].getAllOptions());
+  loopQuiz(quizzes[quizIndex], quizzes[quizIndex].meta.getAllOptions);
 }
 
 Log.write("Bye for now");

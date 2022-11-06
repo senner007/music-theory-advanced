@@ -50,9 +50,13 @@ export const WhichIsTheChord: Quiz = class extends QuizBase implements IQuiz {
     return this.randomChordTypeShuffledChordTones;
   }
 
-  static getAllOptions() {
-    return ["major", "minor", "augmented", "diminished"];
+  static get meta() {
+    return {
+      get getAllOptions() {
+        return ["major", "minor", "augmented", "diminished"];
+      },
+      name: "Which is the chord",
+      description: "Choose the chord tones that make up the chord type in question",
+    };
   }
-  static quizName = "Which is the chord";
-  static description = "Choose the chord tones that make up the chord type in question";
 };

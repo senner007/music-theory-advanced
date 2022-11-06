@@ -36,24 +36,27 @@ export const MissingScaleNote: Quiz = class extends QuizBase implements IQuiz {
     return "Which note is missing?";
   }
   get answer() {
-    return this.randomNote;2
+    return this.randomNote;
   }
 
-  static getAllOptions() {
-    return [
-      "major",
-      "aeolian",
-      "major pentatonic",
-      "dorian",
-      "phrygian",
-      "lydian",
-      "mixolydian",
-      "locrian",
-      "harmonic minor",
-      "melodic minor",
-    ];
+  static get meta() {
+    return {
+      get getAllOptions() {
+        return [
+          "major",
+          "aeolian",
+          "major pentatonic",
+          "dorian",
+          "phrygian",
+          "lydian",
+          "mixolydian",
+          "locrian",
+          "harmonic minor",
+          "melodic minor",
+        ];
+      },
+      name: "Missing scale note",
+      description: "Choose the correct scale note name missing from the scale in question",
+    };
   }
-
-  static quizName = "Missing scale note";
-  static description = "Choose the correct scale note name missing from the scale in question";
-};3
+};
