@@ -22,6 +22,10 @@ export class Log {
     return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.join(", ") : option), question);
   }
 
+  static continue(message : string) {
+    return rs.question(message, { hideEchoBack: true, mask: "" });
+  }
+
   static formatToString(content : string | string[]) {
     return  Array.isArray(content) ? content.join(", ") : content;
   }
@@ -108,7 +112,6 @@ export function numberToDegree(n: number) {
 }
 
 export function loopQuiz(QuizClass: Quiz, options: string[]) {
-  let index = 0;
 
   while (true) {
     Log.clear();
@@ -119,7 +122,7 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
       Log.write(head);
     }
     
-    index = Log.keyInSelect(quiz.questionOptions, quiz.question);
+    const index = Log.keyInSelect(quiz.questionOptions, quiz.question);
 
     if (index === -1) {
       break;
@@ -134,6 +137,7 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
       Log.write(chalk.red(`Wrong! Don't guess`));
       Log.write(chalk.white(`Correct : ${answer}`));
     }
-    rs.question("Hit Enter key to continue", { hideEchoBack: true, mask: "" });
+    
+    Log.continue("Hit Enter key to continue");
   }
 }
