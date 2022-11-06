@@ -122,7 +122,6 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
     index = Log.keyInSelect(quiz.questionOptions, quiz.question);
 
     if (index === -1) {
-      Log.write("Bye for now");
       break;
     }
 
