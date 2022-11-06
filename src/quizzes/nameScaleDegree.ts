@@ -4,7 +4,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 import { allScaleTypes, getRandomNote, getRandomItem, getRandomIndex, numberToDegree, getNoteVariants } from "../utils";
 
-export const NameScaleDegreeQuiz: Quiz = class extends QuizBase implements IQuiz {
+export const NameScaleDegree: Quiz = class extends QuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
