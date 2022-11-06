@@ -1,5 +1,4 @@
 import { Chord as ChordClass } from "@tonaljs/tonal";
-import { Chord } from "@tonaljs/chord";
 import { getRandomItem, getRandomNote, allChordTypes, shuffleArray } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
@@ -9,24 +8,33 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     return options.every((chordType) => allChordTypes.includes(chordType));
   }
 
-  chord: Chord;
-  chosenChordType: string;
-  shuffledChordTones: string[];
+  chosenChordType: string = "";
+  chosenChordTypeShuffledChordTones: string[] = [];
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
-  questionOptionsArray: string[][];
+  questionOptionsArray: string[][] = [];
   constructor(options: string[]) {
     super(options);
+    this.createChordTonesShuffled(options)
+    this.createRemainingOptions();
+  }
+
+  private createChordTonesShuffled(options: string[]) {
     this.chosenChordType = getRandomItem(options);
-    this.chord = ChordClass.get(getRandomNote() + " " + this.chosenChordType);
-    this.shuffledChordTones = shuffleArray(this.chord.notes);
-    const remainingChordPossibilities = this.chordPossibilities.filter(
+    const chord = ChordClass.get(getRandomNote() + " " + this.chosenChordType);
+    this.chosenChordTypeShuffledChordTones = shuffleArray(chord.notes);
+  }
+  
+  private createRemainingOptions() {
+    const remainingChordTypePossibilities = this.chordPossibilities.filter(
       (chordType) => chordType !== this.chosenChordType
     );
-    const chordTonesOptions = remainingChordPossibilities
+    const remainingChordTypeTonesShuffled = remainingChordTypePossibilities
       .map((chordTypes) => ChordClass.get(getRandomNote() + " " + chordTypes))
       .map((chord) => shuffleArray(chord.notes));
-    this.questionOptionsArray = shuffleArray([this.shuffledChordTones, ...chordTonesOptions]);
+      
+    this.questionOptionsArray = shuffleArray([this.chosenChordTypeShuffledChordTones, ...remainingChordTypeTonesShuffled]);
   }
+
   get quizHead() {
     return [`Choose the ${this.chosenChordType.toUpperCase()} chord in any inversion`];
   }
@@ -37,7 +45,7 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     return `Which is correct?`;
   }
   get answer() {
-    return this.shuffledChordTones;
+    return this.chosenChordTypeShuffledChordTones;
   }
 }
 
