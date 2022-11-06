@@ -19,7 +19,7 @@ export class Log {
   }
 
   static keyInSelect(questionOptions : string[] | string[][], question : string) {
-    return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.join(", ") : option), question);
+    return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.join(", ") : option), question, {cancel: 'Quit'});
   }
 
   static continue(message : string) {
