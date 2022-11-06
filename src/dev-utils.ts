@@ -1,9 +1,12 @@
-import chalk from "chalk";
+
 import fs from "fs";
 import { Log } from "./utils";
 
 export function LogError(error: string) {
-  Log.error(chalk.red(error));
+  Log.error('#########################################');
+  Log.error(error);
+  Log.error('#########################################');
+  Log.write("Stack Trace : ");
   throw new Error(error);
 }
 

@@ -36,7 +36,7 @@ export const MissingScaleNote: Quiz = class extends QuizBase implements IQuiz {
     return "Which note is missing?";
   }
   get answer() {
-    return this.randomNote;
+    return this.randomNote;2
   }
 
   static getAllOptions() {
@@ -56,4 +56,4 @@ export const MissingScaleNote: Quiz = class extends QuizBase implements IQuiz {
 
   static quizName = "Missing scale note";
   static description = "Choose the correct scale note name missing from the scale in question";
-};
+};3
