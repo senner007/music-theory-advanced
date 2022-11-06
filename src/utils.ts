@@ -38,7 +38,7 @@ export const allScaleTypes = ScaleType.all()
 
 const baseNotes = ["C", "D", "E", "F", "G", "A", "B"];
 
-export const shuffleStringArray = <T>(array: T[]) => {
+export const shuffleArray = <T>(array: T[]) => {
   const arrayClone = [...array];
   for (let i = arrayClone.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
