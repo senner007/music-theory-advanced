@@ -8,22 +8,22 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     return options.every((chordType) => allChordTypes.includes(chordType));
   }
 
-  chosenChordType: string = "";
-  chosenChordTypeShuffledChordTones: string[] = [];
+  chosenChordType: string;
+  chosenChordTypeShuffledChordTones: string[];
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
-  questionOptionsArray: string[][] = [];
+  questionOptionsArray: string[][];
   constructor(options: string[]) {
     super(options);
-    this.createChordTonesShuffled(options)
-    this.createRemainingOptions();
+    this.chosenChordType = getRandomItem(options);
+    this.chosenChordTypeShuffledChordTones = this.createChordTonesShuffled();
+    this.questionOptionsArray = this.createRemainingOptions();
   }
 
-  private createChordTonesShuffled(options: string[]) {
-    this.chosenChordType = getRandomItem(options);
+  private createChordTonesShuffled() {
     const chord = ChordClass.get(getRandomNote() + " " + this.chosenChordType);
-    this.chosenChordTypeShuffledChordTones = shuffleArray(chord.notes);
+    return shuffleArray(chord.notes);
   }
-  
+
   private createRemainingOptions() {
     const remainingChordTypePossibilities = this.chordPossibilities.filter(
       (chordType) => chordType !== this.chosenChordType
@@ -31,8 +31,11 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     const remainingChordTypeTonesShuffled = remainingChordTypePossibilities
       .map((chordTypes) => ChordClass.get(getRandomNote() + " " + chordTypes))
       .map((chord) => shuffleArray(chord.notes));
-      
-    this.questionOptionsArray = shuffleArray([this.chosenChordTypeShuffledChordTones, ...remainingChordTypeTonesShuffled]);
+
+    return shuffleArray([
+      this.chosenChordTypeShuffledChordTones,
+      ...remainingChordTypeTonesShuffled,
+    ]);
   }
 
   get quizHead() {
