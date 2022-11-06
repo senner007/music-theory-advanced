@@ -110,7 +110,7 @@ export function numberToDegree(n: number) {
 export function loopQuiz(QuizClass: Quiz, options: string[]) {
   let index = 0;
 
-  while (index != -1) {
+  while (true) {
     Log.clear();
     Log.write(QuizClass.description)
     const quiz = new QuizClass(options);
@@ -130,7 +130,7 @@ export function loopQuiz(QuizClass: Quiz, options: string[]) {
 
     if (choice === answer) {
       Log.write(chalk.green(`Right!`));
-    } else if (index != -1) {
+    } else {
       Log.write(chalk.red(`Wrong! Don't guess`));
       Log.write(chalk.white(`Correct : ${answer}`));
     }
