@@ -3,7 +3,7 @@ import { getRandomItem, getRandomNote, allChordTypes, shuffleArray } from "../ut
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
-class WhichIsTheChord extends QuizBase implements IQuiz {
+export const WhichIsTheChord: Quiz = class extends QuizBase implements IQuiz {
   verifyOptions(chordTypes: string[]): boolean {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
@@ -49,6 +49,10 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
   get answer() {
     return this.randomChordTypeShuffledChordTones;
   }
-}
 
-export const WhichIsTheChordQuiz: Quiz = WhichIsTheChord;
+  static getAllOptions() {
+    return ["major", "minor", "augmented", "diminished"];
+  }
+  static quizName = "Which is the chord";
+  static description = "Choose the chord tones that make up the chord type in question";
+};

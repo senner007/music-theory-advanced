@@ -7,4 +7,7 @@ export interface IQuiz {
 
 export interface Quiz {
   new (options: string[]): IQuiz;
+  getAllOptions(): string[];
+  quizName: string;
+  description: string;
 }

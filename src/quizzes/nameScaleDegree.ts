@@ -4,7 +4,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 import { allScaleTypes, getRandomNote, getRandomItem, getRandomIndex, numberToDegree, getNoteVariants } from "../utils";
 
-class NameScaleDegree extends QuizBase implements IQuiz {
+export const NameScaleDegreeQuiz: Quiz = class extends QuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -34,6 +34,22 @@ class NameScaleDegree extends QuizBase implements IQuiz {
   get answer() {
     return this.randomNote;
   }
-}
 
-export const NameScaleDegreeQuiz: Quiz = NameScaleDegree;
+  static getAllOptions() {
+    return [
+      "major",
+      "aeolian",
+      "major pentatonic",
+      "dorian",
+      "phrygian",
+      "lydian",
+      "mixolydian",
+      "locrian",
+      "harmonic minor",
+      "melodic minor",
+    ];
+  }
+
+  static quizName = "Name the scale degree";
+  static description =  "Choose the correct note name for the scale degree in question";
+};

@@ -4,7 +4,7 @@ import { getRandomItem, getNoteVariants, getRandomNote, allScaleTypes } from "..
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
-class MissingScaleNote extends QuizBase implements IQuiz {
+export const MissingScaleNote: Quiz = class extends QuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -21,7 +21,7 @@ class MissingScaleNote extends QuizBase implements IQuiz {
 
     this.scaleMissingNote = this.scale.notes
       .map((n) => (n === this.randomNote ? "- MISSING -" : n))
-      .reduce((acc, cur) => acc + cur + " ", "")
+      .reduce((acc, cur) => acc + cur + " ", "");
 
     this.randomNoteVariants = getNoteVariants(this.randomNote);
   }
@@ -38,6 +38,22 @@ class MissingScaleNote extends QuizBase implements IQuiz {
   get answer() {
     return this.randomNote;
   }
-}
 
-export const MissingScaleNoteQuiz: Quiz = MissingScaleNote;
+  static getAllOptions() {
+    return [
+      "major",
+      "aeolian",
+      "major pentatonic",
+      "dorian",
+      "phrygian",
+      "lydian",
+      "mixolydian",
+      "locrian",
+      "harmonic minor",
+      "melodic minor",
+    ];
+  }
+
+  static quizName = "Missing scale note";
+  static description = "Choose the correct scale note name missing from the scale in question";
+};
