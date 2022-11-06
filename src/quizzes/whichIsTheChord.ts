@@ -16,7 +16,11 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     super(chordTypes);
     this.chosenChordType = getRandomItem(chordTypes);
     this.chosenChordTypeShuffledChordTones = this.createChordTonesShuffled();
-    this.questionOptionsArray = this.createRemainingOptions();
+    const remainingChordTypeTonesShuffled = this.createRemainingOptions();
+    this.questionOptionsArray = shuffleArray([
+      this.chosenChordTypeShuffledChordTones,
+      ...remainingChordTypeTonesShuffled,
+    ]);
   }
 
   private createChordTonesShuffled() {
@@ -28,14 +32,9 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     const remainingChordTypePossibilities = this.chordPossibilities.filter(
       (chordType) => chordType !== this.chosenChordType
     );
-    const remainingChordTypeTonesShuffled = remainingChordTypePossibilities
+    return remainingChordTypePossibilities
       .map((chordTypes) => ChordClass.get(getRandomNote() + " " + chordTypes))
       .map((chord) => shuffleArray(chord.notes));
-
-    return shuffleArray([
-      this.chosenChordTypeShuffledChordTones,
-      ...remainingChordTypeTonesShuffled,
-    ]);
   }
 
   get quizHead() {
