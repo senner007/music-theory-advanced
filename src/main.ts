@@ -10,7 +10,9 @@ if (isDev()) {
 
 const options = [
   "major",
-  "minor"
+  "minor",
+  "augmented",
+  "diminished"
 ];
 
 loopQuiz(WhichIsTheChordQuiz, options);
