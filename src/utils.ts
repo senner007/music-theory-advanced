@@ -111,11 +111,12 @@ export function numberToDegree(n: number) {
   return degree;
 }
 
-export function loopQuiz(QuizClass: Quiz, options: string[]) {
+export function loopQuiz(QuizClass: Quiz) {
 
   while (true) {
     Log.clear();
     Log.write(QuizClass.meta.description)
+    const options = QuizClass.meta.getAllOptions
     const quiz = new QuizClass(options);
 
     for (const head of quiz.quizHead) {

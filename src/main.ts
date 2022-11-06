@@ -18,7 +18,7 @@ const quizzes: Quiz[] = [
 const quizIndex = Log.keyInSelect(quizzes.map(quiz => quiz.meta.name), "Choose a quiz");
 
 if (quizIndex !== -1) {
-  loopQuiz(quizzes[quizIndex], quizzes[quizIndex].meta.getAllOptions);
+  loopQuiz(quizzes[quizIndex]);
 }
 
 Log.write("Bye for now");
