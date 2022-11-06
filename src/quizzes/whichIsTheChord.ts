@@ -8,29 +8,29 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
 
-  chosenChordType: string;
-  chosenChordTypeShuffledChordTones: string[];
+  randomChordType: string;
+  randomChordTypeShuffledChordTones: string[];
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
   questionOptionsArray: string[][];
   constructor(chordTypes: string[]) {
     super(chordTypes);
-    this.chosenChordType = getRandomItem(chordTypes);
-    this.chosenChordTypeShuffledChordTones = this.createChordTonesShuffled();
-    const remainingChordTypeTonesShuffled = this.createRemainingOptions();
+    this.randomChordType = getRandomItem(chordTypes);
+    this.randomChordTypeShuffledChordTones = this.createChordTonesShuffled();
+    const remainingRandomChordTypeTonesShuffled = this.createRemainingOptions();
     this.questionOptionsArray = shuffleArray([
-      this.chosenChordTypeShuffledChordTones,
-      ...remainingChordTypeTonesShuffled,
+      this.randomChordTypeShuffledChordTones,
+      ...remainingRandomChordTypeTonesShuffled,
     ]);
   }
 
   private createChordTonesShuffled() {
-    const chord = ChordClass.get(getRandomNote() + " " + this.chosenChordType);
+    const chord = ChordClass.get(getRandomNote() + " " + this.randomChordType);
     return shuffleArray(chord.notes);
   }
 
   private createRemainingOptions() {
     const remainingChordTypePossibilities = this.chordPossibilities.filter(
-      (chordType) => chordType !== this.chosenChordType
+      (chordType) => chordType !== this.randomChordType
     );
     return remainingChordTypePossibilities
       .map((chordTypes) => ChordClass.get(getRandomNote() + " " + chordTypes))
@@ -38,7 +38,7 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
   }
 
   get quizHead() {
-    return [`Choose the ${this.chosenChordType.toUpperCase()} chord in any inversion`];
+    return [`Choose the ${this.randomChordType.toUpperCase()} chord in any inversion`];
   }
   get questionOptions() {
     return this.questionOptionsArray;
@@ -47,7 +47,7 @@ class WhichIsTheChord extends QuizBase implements IQuiz {
     return `Which is correct?`;
   }
   get answer() {
-    return this.chosenChordTypeShuffledChordTones;
+    return this.randomChordTypeShuffledChordTones;
   }
 }
 
