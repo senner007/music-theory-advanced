@@ -5,17 +5,17 @@ import { QuizBase } from "../quizBase";
 import { allScaleTypes, getRandomNote, getRandomItem, getRandomIndex, numberToDegree, getNoteVariants } from "../utils";
 
 class NameScaleDegree extends QuizBase implements IQuiz {
-  verifyOptions(options: string[]): boolean {
-    return options.every((scaleType) => allScaleTypes.includes(scaleType));
+  verifyOptions(scaleTypes: string[]): boolean {
+    return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
 
   scale: Scale;
   randomDegree: string;
   randomNote: string;
   randomNoteVariants: string[];
-  constructor(options: string[]) {
-    super(options);
-    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(options));
+  constructor(scaleTypes: string[]) {
+    super(scaleTypes);
+    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
     const randomIndex = getRandomIndex(this.scale.notes);
     this.randomNote = this.scale.notes[randomIndex];
     this.randomDegree = numberToDegree(randomIndex);

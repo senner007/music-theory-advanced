@@ -5,18 +5,18 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
 class MissingScaleNote extends QuizBase implements IQuiz {
-  verifyOptions(options: string[]): boolean {
-    return options.every((scaleType) => allScaleTypes.includes(scaleType));
+  verifyOptions(scaleTypes: string[]): boolean {
+    return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
 
   scale: Scale;
   scaleMissingNote: string;
   randomNote: string;
   randomNoteVariants: string[];
-  constructor(options: string[]) {
-    super(options);
+  constructor(scaleTypes: string[]) {
+    super(scaleTypes);
 
-    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(options));
+    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
     this.randomNote = getRandomItem(this.scale.notes);
 
     this.scaleMissingNote = this.scale.notes

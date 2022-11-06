@@ -4,17 +4,17 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
 class WhichIsTheChord extends QuizBase implements IQuiz {
-  verifyOptions(options: string[]): boolean {
-    return options.every((chordType) => allChordTypes.includes(chordType));
+  verifyOptions(chordTypes: string[]): boolean {
+    return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
 
   chosenChordType: string;
   chosenChordTypeShuffledChordTones: string[];
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
   questionOptionsArray: string[][];
-  constructor(options: string[]) {
-    super(options);
-    this.chosenChordType = getRandomItem(options);
+  constructor(chordTypes: string[]) {
+    super(chordTypes);
+    this.chosenChordType = getRandomItem(chordTypes);
     this.chosenChordTypeShuffledChordTones = this.createChordTonesShuffled();
     this.questionOptionsArray = this.createRemainingOptions();
   }
