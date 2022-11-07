@@ -2,7 +2,7 @@
 import fs from "fs";
 import { Log } from "./utils";
 
-export function LogError(error: string) {
+export function LogError(error: string): never {
   Log.error('#########################################');
   Log.error(error);
   Log.error('#########################################');

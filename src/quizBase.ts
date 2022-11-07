@@ -6,7 +6,7 @@ export abstract class QuizBase {
     this.errorHandleOptions(options);
   }
 
-  private errorHandleOptions(options: string[]): void {
+  private errorHandleOptions(options: string[]): void | never {
     const optionsAreValid = this.verifyOptions(options);
     const quizConstructor: Quiz = this.constructor as Quiz;
     if (!optionsAreValid) LogError("options invalid in class: " +  "'" + quizConstructor.meta.name + "'");
