@@ -1,11 +1,10 @@
-
 import fs from "fs";
 import { Log } from "./utils";
 
 export function LogError(error: string): never {
-  Log.error('#########################################');
+  Log.error("#########################################");
   Log.error(error);
-  Log.error('#########################################');
+  Log.error("#########################################");
   Log.write("Stack Trace : ");
   throw new Error(error);
 }

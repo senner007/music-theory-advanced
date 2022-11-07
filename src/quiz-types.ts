@@ -4,14 +4,12 @@ export interface IQuiz {
   question: string;
   answer(guess: string): [boolean, string];
 }
-export interface QuizMeta {
-  getAllOptions: string[];
-  name: string;
-  description: string;
-}
 
 export interface Quiz {
   new (options: string[]): IQuiz;
-  meta : QuizMeta;
+  meta: {
+    getAllOptions: string[];
+    name: string;
+    description: string;
+  };
 }
-

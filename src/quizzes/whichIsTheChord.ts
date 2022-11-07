@@ -1,6 +1,6 @@
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Chord } from "@tonaljs/chord";
-import { getRandomItem, getRandomNote, allChordTypes} from "../utils";
+import { getRandomItem, getRandomNote, allChordTypes } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -17,11 +17,12 @@ export const WhichIsTheChord: Quiz = class extends QuizBase implements IQuiz {
     const chordOptions = this.chordPossibilities.map((chordTypes) =>
       ChordClass.get(getRandomNote() + " " + chordTypes)
     );
-    this.chordTypesAndNotes = 
-      chordOptions.map((chord) => {
+    this.chordTypesAndNotes = chordOptions
+      .map((chord) => {
         return { chord: chord, notes: chord.notes.shuffleArray().commaSequence() };
-      }).shuffleArray();
-    
+      })
+      .shuffleArray();
+
     this.randomChord = getRandomItem(this.chordTypesAndNotes);
   }
 

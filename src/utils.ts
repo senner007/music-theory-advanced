@@ -18,22 +18,26 @@ export class Log {
     this.write(chalk.red(content));
   }
 
-  static keyInSelect(questionOptions : string[], question : string) {
-    return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.commaSequence() : option), question, {cancel: 'Quit'});
+  static keyInSelect(questionOptions: string[], question: string) {
+    return rs.keyInSelect(
+      questionOptions.map((option) => (Array.isArray(option) ? option.commaSequence() : option)),
+      question,
+      { cancel: "Quit" }
+    );
   }
 
-  static continue(message : string) {
+  static continue(message: string) {
     return rs.question(message, { hideEchoBack: true, mask: "" });
   }
 
-  static formatToString(content : string) {
-    return  Array.isArray(content) ? content.join(", ") : content;
+  static formatToString(content: string) {
+    return Array.isArray(content) ? content.join(", ") : content;
   }
 }
 
 export const allChordTypes = ChordType.all()
   .map((c) => c.name)
-  .filter(name => name !== "") // some of the chords don't have names ???
+  .filter((name) => name !== "") // some of the chords don't have names ???
   .sort();
 
 export const allScaleTypes = ScaleType.all()
@@ -127,17 +131,16 @@ export function numberToDegree(n: number) {
 }
 
 export function loopQuiz(QuizClass: Quiz) {
-
   while (true) {
     Log.clear();
-    Log.write(QuizClass.meta.description)
-    const options = QuizClass.meta.getAllOptions
+    Log.write(QuizClass.meta.description);
+    const options = QuizClass.meta.getAllOptions;
     const quiz = new QuizClass(options);
 
     for (const head of quiz.quizHead) {
       Log.write(head);
     }
-    
+
     const index = Log.keyInSelect(quiz.questionOptions, quiz.question);
 
     if (index === -1) {
@@ -145,7 +148,7 @@ export function loopQuiz(QuizClass: Quiz) {
     }
 
     const choice = Log.formatToString(quiz.questionOptions[index]);
-    const [isCorrect, answer]  = quiz.answer(choice); 
+    const [isCorrect, answer] = quiz.answer(choice);
 
     if (isCorrect) {
       Log.write(chalk.green(`Right!`));
@@ -153,7 +156,7 @@ export function loopQuiz(QuizClass: Quiz) {
       Log.write(chalk.red(`Wrong! Don't guess`));
       Log.write(chalk.white(`Correct : ${answer}`));
     }
-    
+
     Log.continue("Hit Enter key to continue");
   }
 }
