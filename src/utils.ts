@@ -2,7 +2,6 @@ import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
 import chalk from "chalk";
 import rs from "readline-sync";
 import { isDev } from "./dev-utils";
-import { Quiz } from "./quiz-types";
 
 export class Log {
   static clear() {
@@ -28,10 +27,6 @@ export class Log {
 
   static continue(message: string) {
     return rs.question(message, { hideEchoBack: true, mask: "" });
-  }
-
-  static formatToString(content: string) {
-    return Array.isArray(content) ? content.join(", ") : content;
   }
 }
 
@@ -61,7 +56,7 @@ Array.prototype.shuffleArray = function intersperse() {
   return shuffleArray(this);
 };
 
-export const shuffleArray = <T>(array: T[]) => {
+const shuffleArray = <T>(array: T[]) => {
   const arrayClone = [...array];
   for (let i = arrayClone.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -128,35 +123,4 @@ export function numberToDegree(n: number) {
       degree = "7th";
   }
   return degree;
-}
-
-export function loopQuiz(QuizClass: Quiz) {
-  while (true) {
-    Log.clear();
-    Log.write(QuizClass.meta.description);
-    const options = QuizClass.meta.getAllOptions;
-    const quiz = new QuizClass(options);
-
-    for (const head of quiz.quizHead) {
-      Log.write(head);
-    }
-
-    const index = Log.keyInSelect(quiz.questionOptions, quiz.question);
-
-    if (index === -1) {
-      break;
-    }
-
-    const choice = Log.formatToString(quiz.questionOptions[index]);
-    const [isCorrect, answer] = quiz.answer(choice);
-
-    if (isCorrect) {
-      Log.write(chalk.green(`Right!`));
-    } else {
-      Log.write(chalk.red(`Wrong! Don't guess`));
-      Log.write(chalk.white(`Correct : ${answer}`));
-    }
-
-    Log.continue("Hit Enter key to continue");
-  }
 }
