@@ -18,15 +18,15 @@ export class Log {
     this.write(chalk.red(content));
   }
 
-  static keyInSelect(questionOptions : string[] | string[][], question : string) {
-    return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.join(", ") : option), question, {cancel: 'Quit'});
+  static keyInSelect(questionOptions : string[], question : string) {
+    return rs.keyInSelect(questionOptions.map(option => Array.isArray(option) ? option.commaSequence() : option), question, {cancel: 'Quit'});
   }
 
   static continue(message : string) {
     return rs.question(message, { hideEchoBack: true, mask: "" });
   }
 
-  static formatToString(content : string | string[]) {
+  static formatToString(content : string) {
     return  Array.isArray(content) ? content.join(", ") : content;
   }
 }
@@ -41,6 +41,21 @@ export const allScaleTypes = ScaleType.all()
   .sort();
 
 const baseNotes = ["C", "D", "E", "F", "G", "A", "B"];
+
+declare global {
+  interface Array<T> {
+    commaSequence(): T;
+    shuffleArray(): Array<T>;
+  }
+}
+
+Array.prototype.commaSequence = function intersperse() {
+  return this.join(", ");
+};
+
+Array.prototype.shuffleArray = function intersperse() {
+  return shuffleArray(this);
+};
 
 export const shuffleArray = <T>(array: T[]) => {
   const arrayClone = [...array];
@@ -59,12 +74,12 @@ export function getRandomNote() {
   return getRandomItem(notesSingleAccidental);
 }
 
-export function getRandomItem(arr: string[]) {
+export function getRandomItem<T>(arr: T[]) {
   const randomIndex = getRandomIndex(arr);
   return arr[randomIndex];
 }
 
-export function getRandomIndex(arr: string[]) {
+export function getRandomIndex<T>(arr: T[]) {
   return Math.floor(Math.random() * arr.length);
 }
 
@@ -130,9 +145,9 @@ export function loopQuiz(QuizClass: Quiz) {
     }
 
     const choice = Log.formatToString(quiz.questionOptions[index]);
-    const answer = Log.formatToString(quiz.answer); 
+    const [isCorrect, answer]  = quiz.answer(choice); 
 
-    if (choice === answer) {
+    if (isCorrect) {
       Log.write(chalk.green(`Right!`));
     } else {
       Log.write(chalk.red(`Wrong! Don't guess`));

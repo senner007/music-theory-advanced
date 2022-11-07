@@ -1,5 +1,6 @@
 import { Chord as ChordClass } from "@tonaljs/tonal";
-import { getRandomItem, getRandomNote, allChordTypes, shuffleArray } from "../utils";
+import { Chord } from "@tonaljs/chord";
+import { getRandomItem, getRandomNote, allChordTypes} from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -8,46 +9,33 @@ export const WhichIsTheChord: Quiz = class extends QuizBase implements IQuiz {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
 
-  randomChordType: string;
-  randomChordTypeShuffledChordTones: string[];
+  randomChord: { chord: Chord; notes: string };
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
-  questionOptionsArray: string[][];
+  chordTypesAndNotes: { chord: Chord; notes: string }[];
   constructor(chordTypes: string[]) {
     super(chordTypes);
-    this.randomChordType = getRandomItem(chordTypes);
-    this.randomChordTypeShuffledChordTones = this.createChordTonesShuffled();
-    const remainingRandomChordTypeTonesShuffled = this.createRemainingOptions();
-    this.questionOptionsArray = shuffleArray([
-      this.randomChordTypeShuffledChordTones,
-      ...remainingRandomChordTypeTonesShuffled,
-    ]);
-  }
-
-  private createChordTonesShuffled() {
-    const chord = ChordClass.get(getRandomNote() + " " + this.randomChordType);
-    return shuffleArray(chord.notes);
-  }
-
-  private createRemainingOptions() {
-    const remainingChordTypePossibilities = this.chordPossibilities.filter(
-      (chordType) => chordType !== this.randomChordType
+    const chordOptions = this.chordPossibilities.map((chordTypes) =>
+      ChordClass.get(getRandomNote() + " " + chordTypes)
     );
-    return remainingChordTypePossibilities
-      .map((chordTypes) => ChordClass.get(getRandomNote() + " " + chordTypes))
-      .map((chord) => shuffleArray(chord.notes));
+    this.chordTypesAndNotes = 
+      chordOptions.map((chord) => {
+        return { chord: chord, notes: chord.notes.shuffleArray().commaSequence() };
+      }).shuffleArray();
+    
+    this.randomChord = getRandomItem(this.chordTypesAndNotes);
   }
 
   get quizHead() {
-    return [`Choose the ${this.randomChordType.toUpperCase()} chord in any inversion`];
+    return [`Choose the ${this.randomChord.chord.type.toUpperCase()} chord in any inversion`];
   }
   get questionOptions() {
-    return this.questionOptionsArray;
+    return this.chordTypesAndNotes.map((chordTypesAndNotes) => chordTypesAndNotes.notes);
   }
   get question() {
     return `Which is correct?`;
   }
-  get answer() {
-    return this.randomChordTypeShuffledChordTones;
+  answer(guess: string): [boolean, string] {
+    return [this.randomChord.notes === guess, this.randomChord.notes];
   }
 
   static get meta() {

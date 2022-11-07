@@ -31,8 +31,8 @@ export const NameScaleDegree: Quiz = class extends QuizBase implements IQuiz {
   get question() {
     return `Which is the degree?`;
   }
-  get answer() {
-    return this.randomNote;
+  answer(guess: string): [boolean, string] {
+    return [this.randomNote === guess, this.randomNote];
   }
 
   static get meta() {
