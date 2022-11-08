@@ -19,7 +19,7 @@ export class Log {
 
   static keyInSelect(questionOptions: string[], question: string) {
     return rs.keyInSelect(
-      questionOptions.map((option) => (Array.isArray(option) ? option.commaSequence() : option)),
+      questionOptions,
       question,
       { cancel: "Quit" }
     );
