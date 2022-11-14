@@ -13,6 +13,10 @@ export class Log {
     console.log(content);
   }
 
+  static success(content: string) {
+    this.write(chalk.green(content));
+  }
+
   static error(content: string) {
     this.write(chalk.red(content));
   }

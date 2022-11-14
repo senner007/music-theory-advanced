@@ -1,9 +1,12 @@
-// @ts-nocheck
 import easymidi, { Note as INote} from 'easymidi';
 import { Note } from "@tonaljs/tonal";
 import { INotePlay } from './quiz-types';
-console.log('MIDI outputs:');
-console.log(easymidi.getOutputs());
+import { Log } from "./utils";
+
+Log.write('Found MIDI outputs:');
+for (const mididevice of easymidi.getOutputs()) {
+    Log.success(mididevice);
+}
 
 var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 
@@ -35,13 +38,12 @@ interface INotePlayNumber {
     noteName: number,
     duration?: number
 }
-// @ts-ignore
+
 export async function playMidi(notes: INotePlay[], { signal }: any, duration?: number ) {
     
     let abort: boolean = false;
     const ac = new AbortController();
-    // @ts-ignore
-    const onAbort = (e: any) => {
+    const onAbort = () => {
         abort = true;
         ac.abort();
         abortNotes();
@@ -66,5 +68,4 @@ export async function playMidi(notes: INotePlay[], { signal }: any, duration?: n
         await timer(duration! || note.duration!, ac);
         notePlay(note.noteName, "noteoff") 
     }
-
 }
