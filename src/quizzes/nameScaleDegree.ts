@@ -41,7 +41,6 @@ export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQ
         return [
           "major",
           "aeolian",
-          "major pentatonic",
           "dorian",
           "phrygian",
           "lydian",
