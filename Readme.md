@@ -17,6 +17,8 @@
 ## Todos:
 - maybe replace readline sync with inquirer https://github.com/SBoudrias/Inquirer.js#documentation
 - choose between quiz options on start
+- play mp3 harmonic dictations with node ffplay
+- fix rising note sequence in terachords quiz 
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table

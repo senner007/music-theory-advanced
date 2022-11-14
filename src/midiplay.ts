@@ -13,8 +13,7 @@ var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 const timer = async (time: number, { signal } : any) => {
     return new Promise((res) => {
         let timer: any;
-        // @ts-ignore
-        const onAbort = (e: any) => {
+        const onAbort = () => {
             clearTimeout(timer);
             res(0);
         };
@@ -50,7 +49,6 @@ export async function playMidi(notes: INotePlay[], { signal }: any, duration?: n
     };
     signal.addEventListener('abort', onAbort, { once: true });
   
-
     if (!duration && !notes.every(note => note.duration)) {
         throw new Error("Either set the global duration as the second parameter to 'playMidi' or indicate duration on each and every note")
     }
