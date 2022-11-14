@@ -5,11 +5,7 @@ import { IQuizAudio } from "../quiz-types";
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 InterruptedPrompt.fromAll(inquirer);
 import chalk from "chalk";
-
-interface IChoices {
-    value: string
-    original?  : string
-}
+import { IChoices } from "../utils/logAsync";
 
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {

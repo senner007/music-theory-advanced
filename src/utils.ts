@@ -55,38 +55,6 @@ export function exitHandler(chunk, key) {
 // process.stdin.on('keypress', cb);
 // process.stdin.off('keypress', cb);
 
-
-export class LogAsync {
-  static async questionInList(questionOptions: string[], question: string): Promise<{ question: string } | never> {
-    const options = questionOptions.map(o => { return { value: o } });
-
-    const quitValue = "(Esc) Quit";
-    const choices: ({ value: string } | inquirer.Separator)[] =
-      [
-        ...options,
-        new inquirer.Separator(),
-        { value: "(Esc) Quit" }
-      ];
-    let answer;
-    try {
-      answer = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'question',
-          message: question,
-          choices: choices,
-          interruptedKeyName: "escape",
-        }]);
-    } catch (err) {
-      throw (err);
-    }
-    if (answer.question === quitValue) {
-      throw(InterruptedPrompt.EVENT_INTERRUPTED)
-    }
-    return answer;
-  }
-}
-
 export function isInterrupt(err: unknown) {
   return err === InterruptedPrompt.EVENT_INTERRUPTED
 }
