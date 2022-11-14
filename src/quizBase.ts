@@ -1,5 +1,5 @@
 import { LogError } from "./dev-utils";
-import { Quiz } from "./quiz-types";
+import { IQuiz, Quiz } from "./quiz-types";
 
 export abstract class QuizBase {
   constructor(options: string[]) {
@@ -8,7 +8,7 @@ export abstract class QuizBase {
 
   private errorHandleOptions(options: string[]): void | never {
     const optionsAreValid = this.verifyOptions(options);
-    const quizConstructor: Quiz = this.constructor as Quiz;
+    const quizConstructor: Quiz<IQuiz> = this.constructor as Quiz<IQuiz>;
     if (!optionsAreValid) LogError("options invalid in class: " + "'" + quizConstructor.meta.name + "'");
   }
 

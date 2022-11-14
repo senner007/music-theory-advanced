@@ -4,7 +4,7 @@ import { getRandomItem, getRandomNote, allChordTypes } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
-export const WhichIsTheChord: Quiz = class extends QuizBase implements IQuiz {
+export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
   verifyOptions(chordTypes: string[]): boolean {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }

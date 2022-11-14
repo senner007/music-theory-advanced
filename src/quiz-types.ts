@@ -5,8 +5,17 @@ export interface IQuiz {
   answer(guess: string): [boolean, string];
 }
 
-export interface Quiz {
-  new (options: string[]): IQuiz;
+export interface INotePlay {
+  noteName: string,
+  duration?: number
+}
+
+export interface IQuizAudio extends IQuiz {
+  getAudio(): INotePlay[];
+}
+
+export interface Quiz<T extends IQuiz> {
+  new (options: string[]): T;
   meta: {
     getAllOptions: string[];
     name: string;

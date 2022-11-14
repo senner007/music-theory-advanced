@@ -1,0 +1,21 @@
+{
+  "levels": [
+    {
+      "levelName": 1,
+      "harmonicProgressions": [
+        {
+          "key": "C",
+          "scale": "Major",
+          "progression": ["I", "II6", "V", "I"],
+          "mp3": "2-HAR_01_01-C.mp3"
+        },
+        {
+          "key": "B",
+          "scale": "Minor",
+          "progression": ["I", "IV", "V", "I"],
+          "mp3": "2-HAR_01_02-Bm.mp3"
+        }
+      ]
+    }
+  ]
+}
