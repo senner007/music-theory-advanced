@@ -16,7 +16,7 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
     const ac = new AbortController();
     playMidi(quiz.getAudio(), ac);
 
-    const replayAudio = chalk.bold("(space) Play audio"); // change me! ... and color me!
+    const playAudioChalk = chalk.bold("(space) Play audio"); // change me! ... and color me!
 
     const choicesQuestions: IChoices[] = quiz.questionOptions
         .map((q: string, index: number) => { return { original  : q, value: '(' + index + ') ' + q } });
@@ -25,7 +25,7 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
         [
             ...choicesQuestions,
             new inquirer.Separator(),
-            { value: replayAudio }
+            { value: playAudioChalk }
         ];
     
 
@@ -48,7 +48,7 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
     }
 
     ac.abort();
-    if (answer?.question === replayAudio) {
+    if (answer?.question === playAudioChalk) {
         return null;
     };
     return choicesQuestions.filter(c => c.value === answer?.question)[0].original!;

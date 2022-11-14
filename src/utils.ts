@@ -2,6 +2,10 @@ import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
 import chalk from "chalk";
 import rs from "readline-sync";
 import { isDev } from "./dev-utils";
+import inquirer from "inquirer";
+// @ts-ignore
+import InterruptedPrompt from "inquirer-interrupted-prompt";
+InterruptedPrompt.fromAll(inquirer);
 
 export class Log {
   static clear() {
@@ -32,6 +36,59 @@ export class Log {
   static continue(message: string) {
     return rs.question(message, { hideEchoBack: true, mask: "" });
   }
+}
+
+export function exit () {
+  Log.write("\nBye for now");
+  process.exit();
+}
+
+// @ts-ignore
+export function exitHandler(chunk, key) {
+  // process.stdout.write('Get Chunk: ' + chunk + '\n');
+  if (key && (key.ctrl && key.name == 'c') || key.name === "space") {
+   exit();
+  }
+}
+
+
+// process.stdin.on('keypress', cb);
+// process.stdin.off('keypress', cb);
+
+
+export class LogAsync {
+  static async questionInList(questionOptions: string[], question: string): Promise<{ question: string } | never> {
+    const options = questionOptions.map(o => { return { value: o } });
+
+    const quitValue = "(Esc) Quit";
+    const choices: ({ value: string } | inquirer.Separator)[] =
+      [
+        ...options,
+        new inquirer.Separator(),
+        { value: "(Esc) Quit" }
+      ];
+    let answer;
+    try {
+      answer = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'question',
+          message: question,
+          choices: choices,
+          interruptedKeyName: "escape",
+        }]);
+    } catch (err) {
+      throw (err);
+    }
+    if (answer.question === quitValue) {
+      throw(InterruptedPrompt.EVENT_INTERRUPTED)
+    }
+    return answer;
+  }
+}
+
+export function isInterrupt(err: unknown) {
+  return err === InterruptedPrompt.EVENT_INTERRUPTED
 }
 
 export const allChordTypes = ChordType.all()
