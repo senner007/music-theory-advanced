@@ -27,7 +27,7 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
             {
                 type: 'list',
                 name: 'question',
-                message: 'Which is correct?',
+                message: quiz.question,
                 choices: choices,
                 interruptedKeyName: "space",
             }]);

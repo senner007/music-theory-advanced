@@ -25,7 +25,7 @@ export class Log {
     return rs.keyInSelect(
       questionOptions,
       question,
-      { cancel: "Quit" }
+      { cancel: false }
     );
   }
 
