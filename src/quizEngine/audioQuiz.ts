@@ -4,21 +4,30 @@ import { IQuizAudio } from "../quiz-types";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 InterruptedPrompt.fromAll(inquirer);
+import chalk from "chalk";
 
 interface IChoices {
-    key: string | number;
     value: string
+    original?  : string
 }
+
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
     const ac = new AbortController();
     playMidi(quiz.getAudio(), ac);
 
-    const replayAudio = "REPLAY AUDIO < space >"; // change me! ... and color me!
+    const replayAudio = chalk.bold("(space) Play audio"); // change me! ... and color me!
 
-    const choices: IChoices[] = quiz.questionOptions
-        .map((q: string, index: number) => { return { key: index, value: q } as IChoices })
-        .concat([{ key: "p", value: replayAudio }])
+    const choicesQuestions: IChoices[] = quiz.questionOptions
+        .map((q: string, index: number) => { return { original  : q, value: '(' + index + ') ' + q } });
+
+    const choices: (IChoices | inquirer.Separator)[] =
+        [
+            ...choicesQuestions,
+            new inquirer.Separator(),
+            { value: replayAudio }
+        ];
+    
 
     let answer: { question: string } | null = null;
 
@@ -38,10 +47,9 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<null | string> {
         }
     }
 
-    const choice = answer?.question;
     ac.abort();
-    if (choice === replayAudio) {
+    if (answer?.question === replayAudio) {
         return null;
     };
-    return choice!;
+    return choicesQuestions.filter(c => c.value === answer?.question)[0].original!;
 }
