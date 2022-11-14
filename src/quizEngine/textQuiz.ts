@@ -1,12 +1,20 @@
 import { IQuiz } from "../quiz-types";
-import { Log } from "../utils";
+import { exit, isInterrupt} from "../utils";
+import { LogAsync } from "../utils/logAsync";
 
-export async function textQuiz(quiz: IQuiz): Promise<null | string> {
-    const index = Log.keyInSelect(quiz.questionOptions, quiz.question);
+export async function textQuiz(quiz: IQuiz): Promise<string | never> {
+    try {
+        const choice = await LogAsync.questionInListIndexed(
+            quiz.questionOptions,
+            quiz.question,
+            "escape"
+        );
+        return choice;
 
-    if (index === -1) {
-        return null;
+    } catch (err) {
+        if (isInterrupt(err)) {
+            exit();
+        }
+        throw (err);
     }
-
-    return quiz.questionOptions[index];
 }
