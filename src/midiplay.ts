@@ -1,10 +1,14 @@
-import easymidi, { Note as INote} from 'easymidi';
+import easymidi, { Note as INote } from 'easymidi';
 import { Note } from "@tonaljs/tonal";
-import { INotePlay } from './quiz-types';
+
+export interface INotePlay {
+    noteName: string,
+    duration: number;
+}
 
 var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 
-const timer = async (time: number, { signal } : any) => {
+const timer = async (time: number, { signal }: any) => {
     return new Promise((res) => {
         let timer: any;
         const onAbort = () => {
@@ -24,16 +28,11 @@ const channelObj: INote = {
 
 function notePlay(note: number, activator: "noteon" | "noteoff") {
     // @ts-ignore
-    output.send(activator, {...channelObj, note});
+    output.send(activator, { ...channelObj, note });
 }
 
-interface INotePlayNumber {
-    noteName: number,
-    duration?: number
-}
+export async function playMidi(notes: INotePlay[], { signal }: any): Promise<void> {
 
-export async function playMidi(notes: INotePlay[], { signal }: any, duration?: number ) {
-    
     let abort: boolean = false;
     const ac = new AbortController();
     const onAbort = () => {
@@ -42,22 +41,19 @@ export async function playMidi(notes: INotePlay[], { signal }: any, duration?: n
         abortNotes();
     };
     signal.addEventListener('abort', onAbort, { once: true });
-  
-    if (!duration && !notes.every(note => note.duration)) {
-        throw new Error("Either set the global duration as the second parameter to 'playMidi' or indicate duration on each and every note")
-    }
-    const notesNames: INotePlayNumber[] = notes.map(note => { return {...note, noteName: Note.midi(note.noteName) as number } })
 
-    function abortNotes () {
+    const notesNames = notes.map(note => { return { ...note, noteNumber: Note.midi(note.noteName) as number } })
+
+    function abortNotes() {
         for (const note of notesNames) {
-            notePlay(note.noteName, "noteoff") 
+            notePlay(note.noteNumber, "noteoff")
         }
     }
 
     for (const note of notesNames) {
         if (abort) break;
-        notePlay(note.noteName, "noteon")
-        await timer(duration! || note.duration!, ac);
-        notePlay(note.noteName, "noteoff") 
+        notePlay(note.noteNumber, "noteon")
+        await timer(note.duration, ac);
+        notePlay(note.noteNumber, "noteoff")
     }
 }

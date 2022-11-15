@@ -13,7 +13,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   randomScale;
   randomTetraChord;
   scaleTetraChords;
-  audio: { noteName: string; duration: number; }[]; 
+  audio: { noteName: string; duration: number }[]; 
 
   private prepareAudio() {
     function transposeToAscending(n: string, index: number, arr: string[]) {
