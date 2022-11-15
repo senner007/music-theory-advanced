@@ -13,6 +13,22 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   randomScale: Scale;
   randomTetraChord : string[]
   scaleTetraChords : string[];
+  audio: { noteName: string; duration: number; }[]; 
+
+  private prepareAudio() {
+    function transposeToAscending(n: string, index: number, arr: string[]) {
+      if (index === 0) return n;
+      const getInterval = Interval.distance(arr[0], n);
+      const intervalData = Interval.get(getInterval);
+      return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
+    }
+
+    return this.randomTetraChord
+    .map(n => n + "4")
+    .map(transposeToAscending)
+    .shuffleArray()
+    .map(note => { return { noteName: note, duration: 500 } })
+  }
 
   constructor(scaleTypes: string[]) {
     super(scaleTypes);
@@ -25,6 +41,8 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
     this.randomScale = getRandomItem(scales);
     this.randomTetraChord = this.randomScale.notes.slice(0,4);
     this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence())  
+
+    this.audio = this.prepareAudio();
   }
 
   get quizHead() {
@@ -45,17 +63,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   }
 
   getAudio() {
-    function transposeToAscending(n: string, index: number, arr: string[]) {
-      if (index === 0) return n;
-      const getInterval = Interval.distance(arr[0], n);
-      const intervalData = Interval.get(getInterval);
-      return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
-    }
-
-    return this.randomTetraChord
-    .map(n => n + "4")
-    .map(transposeToAscending)
-    .map(note => { return { noteName: note, duration: 500 } })
+    return this.audio;
   }
 
   static get meta() {
