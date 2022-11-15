@@ -1,13 +1,10 @@
+import { INotePlay } from "./midiplay";
+
 export interface IQuiz {
   quizHead: string[];
   questionOptions: string[];
   question: string;
   answer(guess: string): [boolean, string];
-}
-
-export interface INotePlay {
-  noteName: string,
-  duration?: number
 }
 
 export interface IQuizAudio extends IQuiz {

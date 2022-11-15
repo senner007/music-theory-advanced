@@ -1,4 +1,5 @@
 import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
+import { Scale } from "@tonaljs/scale";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 import { Scale as ScaleClass } from "@tonaljs/tonal";
@@ -23,8 +24,12 @@ export const allChordTypes = ChordType.all()
 export const allScaleTypes = ScaleType.all()
   .map((s) => s.name)
   .sort();
+ 
+export type baseNote = "C" | "D" | "E" | "F" | "G" | "A" | "B";
+export type baseNoteLimitSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`
+export type noteVariant = `${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`
 
-const baseNotes = ["C", "D", "E", "F", "G", "A", "B"];
+const baseNotes : baseNote[] = ["C", "D", "E", "F", "G", "A", "B"];
 
 declare global {
   interface Array<T> {
@@ -54,17 +59,17 @@ Array.prototype.randomItem = function () {
   return this[randomIndex];
 };
 
-export function getScale(scaleTonic: string, scaleType: string) {
+export function getScale(scaleTonic: baseNoteLimitSingleAccidental, scaleType: string) {
   return ScaleClass.get(scaleTonic + " " + scaleType);
 }
 
-export function getChord(chordTonic: string, chordType: string) {
+export function getChord(chordTonic: baseNoteLimitSingleAccidental, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-export function getRandomNote() {
+export function getRandomNoteLimitSingleAccidental(): baseNoteLimitSingleAccidental {
   const baseNote = baseNotes.randomItem();
-  const notesSingleAccidental = getNotesSingleAccidentals(baseNote);
+  const notesSingleAccidental = getNotesLimitSingleAccidentals(baseNote);
   return notesSingleAccidental.randomItem();
 }
 
@@ -72,19 +77,31 @@ export function getRandomIndex<T>(arr: T[]) {
   return Math.floor(Math.random() * arr.length);
 }
 
-function getNotesSingleAccidentals(note: string) {
+function getNotesLimitSingleAccidentals(note: baseNote): [`${baseNote}b`, baseNote, `${baseNote}#`] {
   const noteVariants = getNoteVariants(note);
-  return [noteVariants[1], noteVariants[2], noteVariants[3]];
+  const [_, second, third, fourth] = noteVariants
+  return [second, third, fourth]
 }
 
-export function getNoteVariants(note: string) {
-  const noteBase = note.substring(0, 1);
+export function getScaleNotes(scale: Scale) {
+  return scale.notes as noteVariant[];
+}
+
+export function variantToBase(note:  noteVariant): baseNote {
+  return note.substring(0, 1) as baseNote;
+}
+
+export function getScaleNoteAtIndex(scale: Scale, index: number): noteVariant {
+  return scale.notes[index] as noteVariant;
+}
+
+export function getNoteVariants(baseNote: baseNote): [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`] {
   return [
-    Note.transpose(noteBase, "1dd"),
-    Note.transpose(noteBase, "1d"),
-    noteBase,
-    Note.transpose(noteBase, "1A"),
-    Note.transpose(noteBase, "1AA"),
+    Note.transpose(baseNote, "1dd") as `${baseNote}bb`,
+    Note.transpose(baseNote, "1d") as `${baseNote}b`,
+    baseNote as baseNote,
+    Note.transpose(baseNote, "1A") as  `${baseNote}#`,
+    Note.transpose(baseNote, "1AA") as `${baseNote}##`
   ];
 }
 

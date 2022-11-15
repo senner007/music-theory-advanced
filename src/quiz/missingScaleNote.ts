@@ -1,5 +1,4 @@
-import { Scale } from "@tonaljs/scale";
-import { getNoteVariants, getRandomNote, allScaleTypes, getScale } from "../utils";
+import { getNoteVariants, getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, variantToBase, getScaleNotes } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -8,25 +7,25 @@ export const MissingScaleNote: Quiz<IQuiz> = class extends QuizBase implements I
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
 
-  scale: Scale;
-  scaleMissingNote: string;
-  randomNote: string;
-  randomNoteVariants: string[];
+  scale;
+  scaleStringMissingNote;
+  randomNote;
+  randomNoteVariants;
   constructor(scaleTypes: string[]) {
     super(scaleTypes);
 
-    this.scale = getScale(getRandomNote(), scaleTypes.randomItem());
-    this.randomNote = this.scale.notes.randomItem();
+    this.scale = getScale(getRandomNoteLimitSingleAccidental(), scaleTypes.randomItem());
+    this.randomNote = getScaleNotes(this.scale).randomItem();
 
-    this.scaleMissingNote = this.scale.notes
+    this.scaleStringMissingNote = this.scale.notes
       .map((n) => (n === this.randomNote ? "- MISSING -" : n))
       .reduce((acc, cur) => acc + cur + " ", "");
 
-    this.randomNoteVariants = getNoteVariants(this.randomNote);
+    this.randomNoteVariants = getNoteVariants(variantToBase(this.randomNote));
   }
 
   get quizHead() {
-    return [this.scale.name, this.scaleMissingNote];
+    return [this.scale.name, this.scaleStringMissingNote];
   }
   get questionOptions() {
     return this.randomNoteVariants;

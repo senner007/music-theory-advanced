@@ -1,6 +1,6 @@
-import { Scale as ScaleClass, Interval, Note  } from "@tonaljs/tonal";
+import { Interval, Note  } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomNote, allScaleTypes } from "../utils";
+import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes } from "../utils";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -9,11 +9,11 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
 
-  randomNote : string;
-  randomScale: Scale;
-  randomTetraChord : string[]
-  scaleTetraChords : string[];
-  audio: { noteName: string; duration: number; }[]; 
+  randomNote;
+  randomScale;
+  randomTetraChord;
+  scaleTetraChords;
+  audio: { noteName: string; duration: number }[]; 
 
   private prepareAudio() {
     function transposeToAscending(n: string, index: number, arr: string[]) {
@@ -32,15 +32,15 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
 
   constructor(scaleTypes: string[]) {
     super(scaleTypes);
-    this.randomNote = getRandomNote();
+    this.randomNote = getRandomNoteLimitSingleAccidental();
 
     const scales: Scale[] = scaleTypes.map(scaleType => 
-      ScaleClass.get(this.randomNote + " " + scaleType)
+      getScale(this.randomNote, scaleType)
     );
 
     this.randomScale = scales.randomItem();
-    this.randomTetraChord = this.randomScale.notes.slice(0,4);
-    this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence()).shuffleArray();  
+    this.randomTetraChord = getScaleNotes(this.randomScale).slice(0,4);
+    this.scaleTetraChords = scales.map(scale => getScaleNotes(scale).slice(0,4)).shuffleArray();  
 
     this.audio = this.prepareAudio();
   }
@@ -50,7 +50,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   }
 
   get questionOptions() {
-    return this.scaleTetraChords;
+    return this.scaleTetraChords.map(st => st.commaSequence());
   }
 
   get question() {
