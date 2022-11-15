@@ -4,6 +4,7 @@
 ### Install
 - install node.js
 - in folder run : npm install
+- npm install -g ts-node
 
 ### Compile
 - npm run build
