@@ -1,6 +1,4 @@
-
-import { Chord } from "@tonaljs/chord";
-import { getRandomNote, allChordTypes, getChord } from "../utils";
+import { getRandomNoteLimitSingleAccidental, allChordTypes, getChord } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 import chalk from "chalk";
@@ -10,12 +8,12 @@ export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQ
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
 
-  randomChord: { chord: Chord; notes: string };
+  randomChord;
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
-  chordTypesAndNotes: { chord: Chord; notes: string }[];
+  chordTypesAndNotes;
   constructor(chordTypes: string[]) {
     super(chordTypes);
-    const chordOptions = this.chordPossibilities.map((chordType) => getChord(getRandomNote(), chordType));
+    const chordOptions = this.chordPossibilities.map((chordType) => getChord(getRandomNoteLimitSingleAccidental(), chordType));
     this.chordTypesAndNotes = chordOptions
       .map((chord) => {
         return { chord: chord, notes: chord.notes.shuffleArray().commaSequence() };
