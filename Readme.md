@@ -19,7 +19,6 @@
 - npm run prod
 
 ## Todos:
-- maybe replace readline sync with inquirer https://github.com/SBoudrias/Inquirer.js#documentation
 - choose between quiz options on start
 - play mp3 harmonic dictations with node ffplay
 - fix rising note sequence in terachords quiz 
@@ -38,5 +37,3 @@
 
 #### Spell complete scales
 - choose between number of scale spellings
-
-#### Determine which trid is major in root, 1st or 2nd inversion
