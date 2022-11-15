@@ -1,5 +1,5 @@
 import { isDev, writeToFile } from "./dev-utils";
-import { allChordTypes, exit, isInterrupt} from "./utils";
+import { allChordTypes, allScaleTypes, exit, isInterrupt} from "./utils";
 import { IQuiz, Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quizzes/missingScaleNote";
 import { WhichIsTheChord } from "./quizzes/whichIsTheChord";
@@ -10,6 +10,7 @@ import { LogAsync } from "./utils/logAsync";
 
 if (isDev()) {
   writeToFile("./txt/chordTypes.txt", allChordTypes.join("\n"));
+  writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
 }
 
 const quizzes: Quiz<IQuiz>[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord];

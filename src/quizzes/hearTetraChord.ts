@@ -1,4 +1,4 @@
-import { Scale as ScaleClass } from "@tonaljs/tonal";
+import { Scale as ScaleClass, Interval, Note  } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
 import { getRandomItem, getRandomNote, allScaleTypes } from "../utils";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
@@ -23,8 +23,8 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
     );
 
     this.randomScale = getRandomItem(scales);
-    this.randomTetraChord = this.randomScale.notes.slice(0,5);
-    this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,5).commaSequence())  
+    this.randomTetraChord = this.randomScale.notes.slice(0,4);
+    this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence())  
   }
 
   get quizHead() {
@@ -45,7 +45,17 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   }
 
   getAudio() {
-    return this.randomTetraChord.map(note => { return { noteName: note + "4", duration: 500 } })
+    function transposeToAscending(n: string, index: number, arr: string[]) {
+      if (index === 0) return n;
+      const getInterval = Interval.distance(arr[0], n);
+      const intervalData = Interval.get(getInterval);
+      return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
+    }
+
+    return this.randomTetraChord
+    .map(n => n + "4")
+    .map(transposeToAscending)
+    .map(note => { return { noteName: note, duration: 500 } })
   }
 
   static get meta() {
@@ -56,11 +66,11 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
           "aeolian",
           "phrygian",
           "lydian",
-          "locrian",
+          "altered",
         ];
       },
       name: "Hear tetrachord",
-      description: "Choose the correct spelling after listening to the tetrachord in question",
+      description: "Choose the correct spelling after listening to the tetrachord",
     };
   }
 };
