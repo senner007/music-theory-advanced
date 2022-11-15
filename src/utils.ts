@@ -5,8 +5,7 @@ import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
 
-
-export function customExit () {
+export function customExit() {
   Log.clear();
   Log.write("Bye for now");
   process.exit();
@@ -40,11 +39,19 @@ Array.prototype.commaSequence = function (): string {
 };
 
 Array.prototype.shuffleArray = function () {
-  return shuffleArray(this);
+  const arrayClone = [...this];
+  for (let i = arrayClone.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = arrayClone[i];
+    arrayClone[i] = arrayClone[j];
+    arrayClone[j] = temp;
+  }
+  return arrayClone;
 };
 
-Array.prototype.randomItem = function ()  {
-  return getRandomItem(this);
+Array.prototype.randomItem = function () {
+  const randomIndex = getRandomIndex(this);
+  return this[randomIndex];
 };
 
 export function getScale(scaleTonic: string, scaleType: string) {
@@ -55,26 +62,10 @@ export function getChord(chordTonic: string, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-const shuffleArray = <T>(array: T[]) => {
-  const arrayClone = [...array];
-  for (let i = arrayClone.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = arrayClone[i];
-    arrayClone[i] = arrayClone[j];
-    arrayClone[j] = temp;
-  }
-  return arrayClone;
-};
-
 export function getRandomNote() {
-  const baseNote = getRandomItem(baseNotes);
+  const baseNote = baseNotes.randomItem();
   const notesSingleAccidental = getNotesSingleAccidentals(baseNote);
-  return getRandomItem(notesSingleAccidental);
-}
-
-function getRandomItem<T>(arr: T[]) {
-  const randomIndex = getRandomIndex(arr);
-  return arr[randomIndex];
+  return notesSingleAccidental.randomItem();
 }
 
 export function getRandomIndex<T>(arr: T[]) {
