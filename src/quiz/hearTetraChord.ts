@@ -40,7 +40,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
 
     this.randomScale = getRandomItem(scales);
     this.randomTetraChord = this.randomScale.notes.slice(0,4);
-    this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence())  
+    this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence()).shuffleArray();  
 
     this.audio = this.prepareAudio();
   }
