@@ -1,11 +1,11 @@
 import { isDev, writeToFile } from "./dev-utils";
 import { allChordTypes, allScaleTypes, exit, isInterrupt} from "./utils";
 import { IQuiz, Quiz } from "./quiz-types";
-import { MissingScaleNote } from "./quizzes/missingScaleNote";
-import { WhichIsTheChord } from "./quizzes/whichIsTheChord";
-import { NameScaleDegree } from "./quizzes/nameScaleDegree";
+import { MissingScaleNote } from "./quiz/missingScaleNote";
+import { WhichIsTheChord } from "./quiz/whichIsTheChord";
+import { NameScaleDegree } from "./quiz/nameScaleDegree";
 import { loopQuiz } from "./quizEngine/loopQuiz";
-import { HearTetraChord } from "./quizzes/hearTetraChord";
+import { HearTetraChord } from "./quiz/hearTetraChord";
 import { LogAsync } from "./utils/logAsync";
 
 if (isDev()) {
