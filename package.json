@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=dev nodemon --no-stdin",
+    "dev": "SET NODE_ENV=dev&&nodemon --no-stdin",
     "build": "tsc",
     "prod": "npm run build && node dist/main.js"
   },

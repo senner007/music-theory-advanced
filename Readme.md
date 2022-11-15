@@ -1,6 +1,9 @@
 #### Fix point to local typescript lib (wsl ubuntu) :
 [Stack overflow typescript version](https://stackoverflow.com/questions/39668731/what-typescript-version-is-visual-studio-code-using-how-to-update-it)
 
+### Supported platforms:
+- Windows
+
 ### Install
 - install node.js
 - in folder run : npm install
