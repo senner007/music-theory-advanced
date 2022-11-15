@@ -5,7 +5,6 @@ import { IQuizAudio } from "../quiz-types";
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 InterruptedPrompt.fromAll(inquirer);
 import { LogAsync } from "../utils/logAsync";
-import { customExit, isInterrupt } from "../utils";
 
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
@@ -31,15 +30,11 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
         const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
             quiz.questionOptions,
           "Choose the correct answer",
-          "escape",
+          "q",
           { value : "play audio", key: eventHandlerKey }
         );
         return choice;
-
-      } catch(err) {
-        if (isInterrupt(err)) {
-          customExit();
-        }
+      } catch(err) { 
         throw(err);
       } finally {
         ac.abort();

@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
-import { customExit, Log } from "../utils";
+import { Log } from "../utils";
 import inquirer from 'inquirer';
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
@@ -15,8 +15,8 @@ async function getQuiz(quiz: IQuiz | IQuizAudio) {
   return textQuiz(quiz)
 }
 
-export function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
-  ; (async () => {
+export async function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
+
 
     const options = QuizClass.meta.getAllOptions;
     let quiz = new QuizClass(options);
@@ -30,7 +30,12 @@ export function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
         Log.write(head);
       }
 
-      const choice = await getQuiz(quiz);
+      let choice;
+      try {
+        choice = await getQuiz(quiz);
+      } catch (err) {
+        break;
+      }
 
       const [isCorrect, correctAnswer] = quiz.answer(choice as string);
 
@@ -45,15 +50,15 @@ export function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
         await inquirer.prompt([
           {
             name: 'continueorquit',
-            message: 'Press to continue or Esc to quit'
+            message: 'Press to continue or q to quit',
+            interruptedKeyName: "q"
           }]);
       } catch (err) {
-        if (err === InterruptedPrompt.EVENT_INTERRUPTED) {
-          customExit();
-        }
+        break;
       }
       quiz = new QuizClass(options);
     }
 
-  })();
 }
+
+

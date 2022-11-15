@@ -1,5 +1,4 @@
 import { IQuiz } from "../quiz-types";
-import { customExit, isInterrupt} from "../utils";
 import { LogAsync } from "../utils/logAsync";
 
 export async function textQuiz(quiz: IQuiz): Promise<string | never> {
@@ -7,14 +6,11 @@ export async function textQuiz(quiz: IQuiz): Promise<string | never> {
         const choice = await LogAsync.questionInListIndexed(
             quiz.questionOptions,
             quiz.question,
-            "escape"
+            "q"
         );
         return choice;
 
     } catch (err) {
-        if (isInterrupt(err)) {
-            customExit();
-        }
         throw (err);
     }
 }
