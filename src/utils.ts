@@ -2,10 +2,9 @@ import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
 import chalk from "chalk";
 import rs from "readline-sync";
 import { isDev } from "./dev-utils";
-import inquirer from "inquirer";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
-InterruptedPrompt.fromAll(inquirer);
+
 
 export class Log {
   static clear() {

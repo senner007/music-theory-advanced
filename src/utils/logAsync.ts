@@ -2,7 +2,6 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
-
 InterruptedPrompt.fromAll(inquirer);
 
 export interface IOptions {

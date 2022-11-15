@@ -1,12 +1,6 @@
 import easymidi, { Note as INote} from 'easymidi';
 import { Note } from "@tonaljs/tonal";
 import { INotePlay } from './quiz-types';
-import { Log } from "./utils";
-
-Log.write('Found MIDI outputs:');
-for (const mididevice of easymidi.getOutputs()) {
-    Log.success(mididevice);
-}
 
 var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 

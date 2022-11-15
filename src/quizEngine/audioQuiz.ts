@@ -1,11 +1,6 @@
-import inquirer from "inquirer";
 import { playMidi } from "../midiplay";
 import { IQuizAudio } from "../quiz-types";
-// @ts-ignore
-import InterruptedPrompt from "inquirer-interrupted-prompt";
-InterruptedPrompt.fromAll(inquirer);
 import { LogAsync } from "../utils/logAsync";
-
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
     

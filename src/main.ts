@@ -7,8 +7,14 @@ import { NameScaleDegree } from "./quiz/nameScaleDegree";
 import { loopQuiz } from "./quizEngine/loopQuiz";
 import { HearTetraChord } from "./quiz/hearTetraChord";
 import { LogAsync } from "./utils/logAsync";
+import easymidi from 'easymidi';
 
 Log.clear();
+
+Log.write('Found MIDI outputs:');
+for (const mididevice of easymidi.getOutputs()) {
+    Log.success(mididevice);
+}
 if (isDev()) {
   writeToFile("./txt/chordTypes.txt", allChordTypes.join("\n"));
   writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
