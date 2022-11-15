@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
-import { Log } from "../utils";
 import inquirer from 'inquirer';
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 import { textQuiz } from "./textQuiz";
 import { audioQuiz } from "./audioQuiz";
+import { Log } from "../logger/logSync";
 
 
 async function getQuiz(quiz: IQuiz | IQuizAudio) {

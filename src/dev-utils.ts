@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Log } from "./utils";
+import { Log } from "./logger/logSync";
 
 export function LogError(error: string): never {
   Log.error("#########################################");

@@ -1,13 +1,14 @@
 import { isDev, writeToFile } from "./dev-utils";
-import { allChordTypes, allScaleTypes, customExit, isInterrupt, Log} from "./utils";
+import { allChordTypes, allScaleTypes, customExit, isInterrupt} from "./utils";
 import { IQuiz, Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
 import { WhichIsTheChord } from "./quiz/whichIsTheChord";
 import { NameScaleDegree } from "./quiz/nameScaleDegree";
 import { loopQuiz } from "./quizEngine/loopQuiz";
 import { HearTetraChord } from "./quiz/hearTetraChord";
-import { LogAsync } from "./utils/logAsync";
+import { LogAsync } from "./logger/logAsync";
 import easymidi from 'easymidi';
+import { Log } from "./logger/logSync";
 
 Log.clear();
 

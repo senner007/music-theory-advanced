@@ -1,41 +1,10 @@
 import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
-import chalk from "chalk";
-import rs from "readline-sync";
-import { isDev } from "./dev-utils";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
+import { Scale as ScaleClass } from "@tonaljs/tonal";
+import { Chord as ChordClass } from "@tonaljs/tonal";
+import { Log } from "./logger/logSync";
 
-
-export class Log {
-  static clear() {
-    if (!isDev()) {
-      console.clear();
-    }
-  }
-  static write(content: string) {
-    console.log(content);
-  }
-
-  static success(content: string) {
-    this.write(chalk.green(content));
-  }
-
-  static error(content: string) {
-    this.write(chalk.red(content));
-  }
-
-  static keyInSelect(questionOptions: string[], question: string) {
-    return rs.keyInSelect(
-      questionOptions,
-      question,
-      { cancel: false }
-    );
-  }
-
-  static continue(message: string) {
-    return rs.question(message, { hideEchoBack: true, mask: "" });
-  }
-}
 
 export function customExit () {
   Log.clear();
@@ -60,18 +29,31 @@ const baseNotes = ["C", "D", "E", "F", "G", "A", "B"];
 
 declare global {
   interface Array<T> {
-    commaSequence(): T;
+    commaSequence(): string;
     shuffleArray(): Array<T>;
+    randomItem(): T;
   }
 }
 
-Array.prototype.commaSequence = function intersperse() {
+Array.prototype.commaSequence = function (): string {
   return this.join(", ");
 };
 
-Array.prototype.shuffleArray = function intersperse() {
+Array.prototype.shuffleArray = function () {
   return shuffleArray(this);
 };
+
+Array.prototype.randomItem = function ()  {
+  return getRandomItem(this);
+};
+
+export function getScale(scaleTonic: string, scaleType: string) {
+  return ScaleClass.get(scaleTonic + " " + scaleType);
+}
+
+export function getChord(chordTonic: string, chordType: string) {
+  return ChordClass.get(chordTonic + " " + chordType);
+}
 
 const shuffleArray = <T>(array: T[]) => {
   const arrayClone = [...array];
@@ -90,7 +72,7 @@ export function getRandomNote() {
   return getRandomItem(notesSingleAccidental);
 }
 
-export function getRandomItem<T>(arr: T[]) {
+function getRandomItem<T>(arr: T[]) {
   const randomIndex = getRandomIndex(arr);
   return arr[randomIndex];
 }

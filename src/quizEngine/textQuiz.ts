@@ -1,5 +1,5 @@
 import { IQuiz } from "../quiz-types";
-import { LogAsync } from "../utils/logAsync";
+import { LogAsync } from "../logger/logAsync";
 
 export async function textQuiz(quiz: IQuiz): Promise<string | never> {
 

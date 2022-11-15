@@ -1,8 +1,9 @@
-import { Chord as ChordClass } from "@tonaljs/tonal";
+
 import { Chord } from "@tonaljs/chord";
-import { getRandomItem, getRandomNote, allChordTypes } from "../utils";
+import { getRandomNote, allChordTypes, getChord } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
+import chalk from "chalk";
 
 export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
   verifyOptions(chordTypes: string[]): boolean {
@@ -14,20 +15,18 @@ export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQ
   chordTypesAndNotes: { chord: Chord; notes: string }[];
   constructor(chordTypes: string[]) {
     super(chordTypes);
-    const chordOptions = this.chordPossibilities.map((chordTypes) =>
-      ChordClass.get(getRandomNote() + " " + chordTypes)
-    );
+    const chordOptions = this.chordPossibilities.map((chordType) => getChord(getRandomNote(), chordType));
     this.chordTypesAndNotes = chordOptions
       .map((chord) => {
         return { chord: chord, notes: chord.notes.shuffleArray().commaSequence() };
       })
       .shuffleArray();
 
-    this.randomChord = getRandomItem(this.chordTypesAndNotes);
+    this.randomChord = this.chordTypesAndNotes.randomItem();
   }
 
   get quizHead() {
-    return [`Choose the ${this.randomChord.chord.type.toUpperCase()} chord in any inversion`];
+    return [`Select the ${chalk.underline(this.randomChord.chord.type.toUpperCase())} chord in any inversion`];
   }
   get questionOptions() {
     return this.chordTypesAndNotes.map((chordTypesAndNotes) => chordTypesAndNotes.notes);

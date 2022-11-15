@@ -1,6 +1,6 @@
 import { Scale as ScaleClass, Interval, Note  } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getRandomNote, allScaleTypes } from "../utils";
+import { getRandomNote, allScaleTypes } from "../utils";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -38,7 +38,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
       ScaleClass.get(this.randomNote + " " + scaleType)
     );
 
-    this.randomScale = getRandomItem(scales);
+    this.randomScale = scales.randomItem();
     this.randomTetraChord = this.randomScale.notes.slice(0,4);
     this.scaleTetraChords = scales.map(scale => scale.notes.slice(0,4).commaSequence()).shuffleArray();  
 

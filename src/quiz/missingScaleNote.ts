@@ -1,6 +1,5 @@
-import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
-import { getRandomItem, getNoteVariants, getRandomNote, allScaleTypes } from "../utils";
+import { getNoteVariants, getRandomNote, allScaleTypes, getScale } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -16,8 +15,8 @@ export const MissingScaleNote: Quiz<IQuiz> = class extends QuizBase implements I
   constructor(scaleTypes: string[]) {
     super(scaleTypes);
 
-    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
-    this.randomNote = getRandomItem(this.scale.notes);
+    this.scale = getScale(getRandomNote(), scaleTypes.randomItem());
+    this.randomNote = this.scale.notes.randomItem();
 
     this.scaleMissingNote = this.scale.notes
       .map((n) => (n === this.randomNote ? "- MISSING -" : n))

@@ -1,8 +1,7 @@
-import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
-import { allScaleTypes, getRandomNote, getRandomItem, getRandomIndex, numberToDegree, getNoteVariants } from "../utils";
+import { allScaleTypes, getRandomNote, getRandomIndex, numberToDegree, getNoteVariants, getScale } from "../utils";
 
 export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
@@ -15,7 +14,7 @@ export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQ
   randomNoteVariants: string[];
   constructor(scaleTypes: string[]) {
     super(scaleTypes);
-    this.scale = ScaleClass.get(getRandomNote() + " " + getRandomItem(scaleTypes));
+    this.scale = getScale(getRandomNote(), scaleTypes.randomItem());
     const randomIndex = getRandomIndex(this.scale.notes);
     this.randomNote = this.scale.notes[randomIndex];
     this.randomDegree = numberToDegree(randomIndex);

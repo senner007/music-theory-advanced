@@ -1,6 +1,6 @@
 import { playMidi } from "../midiplay";
 import { IQuizAudio } from "../quiz-types";
-import { LogAsync } from "../utils/logAsync";
+import { LogAsync } from "../logger/logAsync";
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
     
