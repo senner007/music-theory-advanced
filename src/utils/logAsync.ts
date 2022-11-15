@@ -64,7 +64,7 @@ class LogAsyncUtil {
                 throw (InterruptedPrompt.EVENT_INTERRUPTED)
             }
 
-            return choices.options.filter(c => c.value === answer?.question)[0].value;
+            return answer?.question;
         } catch (err) {
             throw (err);
         }
