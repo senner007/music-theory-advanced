@@ -38,8 +38,9 @@ export class Log {
   }
 }
 
-export function exit () {
-  Log.write("\nBye for now");
+export function customExit () {
+  Log.clear();
+  Log.write("Bye for now");
   process.exit();
 }
 

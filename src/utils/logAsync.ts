@@ -86,7 +86,7 @@ export class LogAsync extends LogAsyncUtil {
 
     static async questionInListIndexedGlobalKeyHook(questionOptions: string[], question: string, interruptKey: string, globalHook: IGlobalHook): Promise<string | never> {
         const options = this.getOptionsIndexed(questionOptions);
-        const questionWithHook = question + chalk.bgWhite("\n  Press: " + globalHook.key + " to " + globalHook.value + " "); // beautify me! 
+        const questionWithHook = question + chalk.bgWhite.gray("\n  Press: " + globalHook.key + " to " + globalHook.value + " "); // beautify me! 
         return this.getQuestions(this.addSeparators(options, interruptKey), questionWithHook, interruptKey);
     }
 }

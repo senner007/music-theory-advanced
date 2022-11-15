@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
-import { Log } from "../utils";
+import { customExit, Log } from "../utils";
 import inquirer from 'inquirer';
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
@@ -49,8 +49,7 @@ export function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
           }]);
       } catch (err) {
         if (err === InterruptedPrompt.EVENT_INTERRUPTED) {
-          Log.write("\nBye for now");
-          break;
+          customExit();
         }
       }
       quiz = new QuizClass(options);

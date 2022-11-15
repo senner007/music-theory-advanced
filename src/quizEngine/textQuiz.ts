@@ -1,5 +1,5 @@
 import { IQuiz } from "../quiz-types";
-import { exit, isInterrupt} from "../utils";
+import { customExit, isInterrupt} from "../utils";
 import { LogAsync } from "../utils/logAsync";
 
 export async function textQuiz(quiz: IQuiz): Promise<string | never> {
@@ -13,7 +13,7 @@ export async function textQuiz(quiz: IQuiz): Promise<string | never> {
 
     } catch (err) {
         if (isInterrupt(err)) {
-            exit();
+            customExit();
         }
         throw (err);
     }

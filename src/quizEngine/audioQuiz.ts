@@ -5,7 +5,7 @@ import { IQuizAudio } from "../quiz-types";
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 InterruptedPrompt.fromAll(inquirer);
 import { LogAsync } from "../utils/logAsync";
-import { exit, isInterrupt } from "../utils";
+import { customExit, isInterrupt } from "../utils";
 
 
 export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
@@ -38,7 +38,7 @@ export async function audioQuiz(quiz: IQuizAudio): Promise<string |never> {
 
       } catch(err) {
         if (isInterrupt(err)) {
-          exit();
+          customExit();
         }
         throw(err);
       } finally {

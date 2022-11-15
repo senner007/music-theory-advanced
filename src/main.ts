@@ -1,5 +1,5 @@
 import { isDev, writeToFile } from "./dev-utils";
-import { allChordTypes, allScaleTypes, exit, isInterrupt} from "./utils";
+import { allChordTypes, allScaleTypes, customExit, isInterrupt} from "./utils";
 import { IQuiz, Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
 import { WhichIsTheChord } from "./quiz/whichIsTheChord";
@@ -27,7 +27,7 @@ const quizzes: Quiz<IQuiz>[] = [MissingScaleNote, NameScaleDegree, WhichIsTheCho
     loopQuiz(choiceSelection);
   } catch(err) {
     if (isInterrupt(err)) {
-      exit();
+      customExit();
     }
   }
 })();
