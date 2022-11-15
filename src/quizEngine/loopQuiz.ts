@@ -7,7 +7,6 @@ import { textQuiz } from "./textQuiz";
 import { audioQuiz } from "./audioQuiz";
 import { Log } from "../logger/logSync";
 
-
 async function getQuiz(quiz: IQuiz | IQuizAudio) {
   if ("getAudio" in quiz) {
     return await audioQuiz(quiz as IQuizAudio)
@@ -60,5 +59,3 @@ export async function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
     }
 
 }
-
-

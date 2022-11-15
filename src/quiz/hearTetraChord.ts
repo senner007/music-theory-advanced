@@ -1,6 +1,6 @@
-import { Interval, Note  } from "@tonaljs/tonal";
+
 import { Scale } from "@tonaljs/scale";
-import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes } from "../utils";
+import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending } from "../utils";
 import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 
@@ -16,13 +16,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
   audio: { noteName: string; duration: number }[]; 
 
   private prepareAudio() {
-    function transposeToAscending(n: string, index: number, arr: string[]) {
-      if (index === 0) return n;
-      const getInterval = Interval.distance(arr[0], n);
-      const intervalData = Interval.get(getInterval);
-      return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
-    }
-
+   
     return this.randomTetraChord
     .map(n => n + "4")
     .map(transposeToAscending)

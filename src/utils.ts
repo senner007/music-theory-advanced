@@ -1,4 +1,4 @@
-import { Note, ScaleType, ChordType } from "@tonaljs/tonal";
+import { Note, ScaleType, ChordType, Interval } from "@tonaljs/tonal";
 import { Scale } from "@tonaljs/scale";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
@@ -93,6 +93,17 @@ export function variantToBase(note:  noteVariant): baseNote {
 
 export function getScaleNoteAtIndex(scale: Scale, index: number): noteVariant {
   return scale.notes[index] as noteVariant;
+}
+
+export function eventByProbability(chance: number) {
+  return Math.random()* 100 < chance;
+}
+
+export function transposeToAscending(n: string, index: number, arr: string[]) {
+  if (index === 0) return n;
+  const getInterval = Interval.distance(arr[0], n);
+  const intervalData = Interval.get(getInterval);
+  return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
 }
 
 export function getNoteVariants(baseNote: baseNote): [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`] {

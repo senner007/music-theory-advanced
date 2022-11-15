@@ -24,6 +24,7 @@
 - fix rising note sequence in terachords quiz 
 - add purpose and philosophy
 - release .exe files
+- allow audio play to compare answers 
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
@@ -37,3 +38,14 @@
 
 #### Spell complete scales
 - choose between number of scale spellings
+
+#### Hear any chord
+- choose between number of chords
+
+#### Hear any scale
+- choose between number of scales
+
+#### Missing note 12-tone row
+- hear the missing note in a 12 tone row
+
+
