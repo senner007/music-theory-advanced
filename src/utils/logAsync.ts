@@ -48,15 +48,16 @@ class LogAsyncUtil {
     }
 
     protected static async getQuestions(choices: IChoices, question: string, interruptKey: string): Promise<string | never> {
-
+        
+        const choiceArray = [...choices.options, choices.separator, choices.interrupt];
         try {
-            const answer = await inquirer.prompt([
+            const answer :  {question: string }= await inquirer.prompt([
                 {
                     type: 'list',
                     name: 'question',
                     message: question,
-                    choices: [...choices.options, choices.separator, choices.interrupt],
-                    pageSize: 10,
+                    choices: choiceArray,
+                    pageSize: choiceArray.length,
                     interruptedKeyName: interruptKey,
                 }]);
                 
