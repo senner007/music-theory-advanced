@@ -26,7 +26,7 @@ export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQ
   }
 
   get quizHead() {
-    return [`Select the ${chalk.underline(this.randomChord.chord.type.toUpperCase())} chord in any inversion`];
+    return [`Select the ${chalk.underline(this.randomChord.chord.type.toUpperCase())} chord in ${chalk.underline('any inversion')}`];
   }
   get questionOptions() {
     return this.chordTypesAndNotes.map((chordTypesAndNotes) => chordTypesAndNotes.notes);
@@ -44,7 +44,7 @@ export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQ
         return ["major", "minor", "augmented", "diminished"];
       },
       name: "Which is the chord",
-      description: "Choose the chord tones that make up the chord type in question",
+      description: "Choose the chord tones that make up the chord type",
     };
   }
 };

@@ -54,8 +54,8 @@ export const MissingScaleNote: Quiz<IQuiz> = class extends QuizBase implements I
           "melodic minor",
         ];
       },
-      name: "Missing scale note",
-      description: "Choose the correct scale note name missing from the scale in question",
+      name: "Name the missing scale note",
+      description: "Choose the correct name for the missing scale note",
     };
   }
 };

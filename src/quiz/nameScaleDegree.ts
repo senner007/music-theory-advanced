@@ -1,4 +1,5 @@
 import { Scale } from "@tonaljs/scale";
+import chalk from "chalk";
 import { IQuiz, Quiz } from "../quiz-types";
 import { QuizBase } from "../quizBase";
 import { allScaleTypes, getRandomNote, getRandomIndex, numberToDegree, getNoteVariants, getScale } from "../utils";
@@ -22,7 +23,8 @@ export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQ
   }
   get quizHead() {
     const degreeName = `${this.randomDegree} degree`;
-    return [this.scale.name, degreeName];
+    return [`The ${chalk.underline(degreeName)} in ${this.scale.name}`];
+   
   }
   get questionOptions() {
     return this.randomNoteVariants;
@@ -49,8 +51,8 @@ export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQ
           "melodic minor",
         ];
       },
-      name: "Name the scale degree",
-      description: "Choose the correct note name for the scale degree in question",
+      name: "Name the scale degree note",
+      description: "Choose the correct note name for the scale degree",
     };
   }
 };
