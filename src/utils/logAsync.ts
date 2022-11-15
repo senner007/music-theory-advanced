@@ -1,58 +1,91 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
+
 InterruptedPrompt.fromAll(inquirer);
 
-export interface IChoices {
+export interface IOptions {
     value: string
-    original?: string
 }
 
-export class LogAsync {
+export interface IOptionsIndexed extends IOptions {
+    name: string
+}
 
-    private static getOptions(questionOptions: string[]): IChoices[] {
-        return questionOptions.map(q => { return { original: q, value: q } });
+export interface IGlobalHook {
+    value: string;
+    key: string;
+}
+
+interface IChoices {
+    options: (IOptions | IOptionsIndexed)[];
+    separator: inquirer.Separator;
+    interrupt: IOptions,
+}
+
+class LogAsyncUtil {
+
+    protected static getOptions(questionOptions: string[]): IOptions[] {
+        return questionOptions.map(q => { return { value: q } });
     }
-    private static getOptionsIndexed(questionOptions: string[]): IChoices[] {
-        return this.getOptions(questionOptions).map((o: IChoices, index: number) => {
-            return { ...o, value: '(' + (index + 1) + ') ' + o.value }
+
+    protected static getOptionsIndexed(questionOptions: string[]): IOptionsIndexed[] {
+        return this.getOptions(questionOptions).map((o: IOptions, index: number) => {
+            return { value: o.value, name: '(' + (index + 1) + ') ' + o.value }
         })
     }
 
-    private static async getQuestions(options: IChoices[], question: string, interruptKey: string): Promise<string | never> {
-        const quitValue = "(Esc) Quit";
-        const choices: ({ value: string } | inquirer.Separator)[] =
-            [
-                ...options,
-                new inquirer.Separator(),
-                { value: quitValue }
-            ];
-        let answer: { question: string };
+    protected static addSeparators(questionOptions: (IOptions | IOptionsIndexed)[], interruptKey: string): IChoices {
+        const quitValue = `(${interruptKey}) Quit`;
+        const choices: IChoices =
+        {
+            options: questionOptions,
+            separator: new inquirer.Separator(),
+            interrupt: { value: quitValue }
+        };
+        return choices;
+    }
+
+    protected static async getQuestions(choices: IChoices, question: string, interruptKey: string): Promise<string | never> {
+
         try {
-            answer = await inquirer.prompt([
+            const answer = await inquirer.prompt([
                 {
                     type: 'list',
                     name: 'question',
                     message: question,
-                    choices: choices,
+                    choices: [...choices.options, choices.separator, choices.interrupt],
+                    pageSize: 10,
                     interruptedKeyName: interruptKey,
                 }]);
+                
+            if (answer.question === choices.interrupt.value) {
+                throw (InterruptedPrompt.EVENT_INTERRUPTED)
+            }
+
+            return choices.options.filter(c => c.value === answer?.question)[0].value;
         } catch (err) {
             throw (err);
         }
-        if (answer.question === quitValue) {
-            throw (InterruptedPrompt.EVENT_INTERRUPTED)
-        }
-        return options.filter(c => c.value === answer?.question)[0].original!;
     }
+}
+
+export class LogAsync extends LogAsyncUtil {
 
     static async questionInList(questionOptions: string[], question: string, interruptKey: string): Promise<string | never> {
         const options = this.getOptions(questionOptions);
-        return this.getQuestions(options, question, interruptKey);
+        return this.getQuestions(this.addSeparators(options, interruptKey), question, interruptKey);
     }
 
     static async questionInListIndexed(questionOptions: string[], question: string, interruptKey: string): Promise<string | never> {
         const options = this.getOptionsIndexed(questionOptions);
-        return this.getQuestions(options, question, interruptKey);
+        return this.getQuestions(this.addSeparators(options, interruptKey), question, interruptKey);
+    }
+
+    static async questionInListIndexedGlobalKeyHook(questionOptions: string[], question: string, interruptKey: string, globalHook: IGlobalHook): Promise<string | never> {
+        const options = this.getOptionsIndexed(questionOptions);
+        const questionWithHook = question + chalk.bgWhite("\n  Press: " + globalHook.key + " to " + globalHook.value + " "); // beautify me! 
+        return this.getQuestions(this.addSeparators(options, interruptKey), questionWithHook, interruptKey);
     }
 }

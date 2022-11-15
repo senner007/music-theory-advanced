@@ -21,6 +21,7 @@ const quizzes: Quiz<IQuiz>[] = [MissingScaleNote, NameScaleDegree, WhichIsTheCho
       "Choose a quiz",
       "escape"
     );
+   
     const choiceSelection = quizzes.filter(q => q.meta.name === choice)[0];
     loopQuiz(choiceSelection);
   } catch(err) {

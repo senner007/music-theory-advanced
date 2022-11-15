@@ -31,9 +31,6 @@ export function loopQuiz(QuizClass: Quiz<IQuiz | IQuizAudio>) {
       }
 
       const choice = await getQuiz(quiz);
-      if (choice === null) {
-        continue;
-      }
 
       const [isCorrect, correctAnswer] = quiz.answer(choice as string);
 

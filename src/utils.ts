@@ -43,18 +43,6 @@ export function exit () {
   process.exit();
 }
 
-// @ts-ignore
-export function exitHandler(chunk, key) {
-  // process.stdout.write('Get Chunk: ' + chunk + '\n');
-  if (key && (key.ctrl && key.name == 'c') || key.name === "space") {
-   exit();
-  }
-}
-
-
-// process.stdin.on('keypress', cb);
-// process.stdin.off('keypress', cb);
-
 export function isInterrupt(err: unknown) {
   return err === InterruptedPrompt.EVENT_INTERRUPTED
 }
