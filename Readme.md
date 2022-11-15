@@ -23,6 +23,8 @@
 - choose between quiz options on start
 - play mp3 harmonic dictations with node ffplay
 - fix rising note sequence in terachords quiz 
+- add purpose and philosophy
+- release .exe files
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
