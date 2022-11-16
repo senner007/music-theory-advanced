@@ -13,9 +13,6 @@ export abstract class QuizBase {
   }
 
   protected abstract verifyOptions(options: string[]): boolean;
-  abstract execute(): Promise<string | never>;
   abstract questionOptions: string[];
   abstract question: string;
-  abstract cleanup(): Promise<void>
-
 }
