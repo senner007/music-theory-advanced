@@ -1,9 +1,9 @@
 import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending, noteVariant, eventByProbability } from "../utils";
-import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
-import { QuizBase } from "../quizBase";
+import { IQuiz, Quiz } from "../quiz-types";
 import { Note } from "@tonaljs/tonal";
+import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
-export const HearScales: Quiz<IQuizAudio> = class extends QuizBase implements IQuiz {
+export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -66,7 +66,7 @@ export const HearScales: Quiz<IQuizAudio> = class extends QuizBase implements IQ
     return this.audio;
   }
 
-  static get meta() {
+  static meta() {
     return {
       get getAllOptions() {
         return [

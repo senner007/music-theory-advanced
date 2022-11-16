@@ -1,8 +1,8 @@
 import { getNoteVariants, getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, variantToBase, getScaleNotes } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { QuizBase } from "../quizBase";
+import { TextQuizBase } from "./quizBase/quizTextBase";
 
-export const MissingScaleNote: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
+export const MissingScaleNote: Quiz = class extends TextQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -37,7 +37,7 @@ export const MissingScaleNote: Quiz<IQuiz> = class extends QuizBase implements I
     return [this.randomNote === guess, this.randomNote];
   }
 
-  static get meta() {
+  static meta() {
     return {
       get getAllOptions() {
         return [

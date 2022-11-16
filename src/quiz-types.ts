@@ -1,19 +1,13 @@
-import { INotePlay } from "./midiplay";
-
 export interface IQuiz {
-  quizHead: string[];
-  questionOptions: string[];
-  question: string;
+  execute() : Promise<string | never>
   answer(guess: string): [boolean, string];
+  quizHead: string[];
+  cleanup() : Promise<void>
 }
 
-export interface IQuizAudio extends IQuiz {
-  getAudio(): INotePlay[];
-}
-
-export interface Quiz<T extends IQuiz> {
-  new (options: string[]): T;
-  meta: {
+export interface Quiz {
+  new (options: string[]): IQuiz;
+  meta(): {
     getAllOptions: string[];
     name: string;
     description: string;

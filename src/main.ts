@@ -1,6 +1,6 @@
 import { isDev, writeToFile } from "./dev-utils";
 import { allChordTypes, allScaleTypes, customExit, isInterrupt} from "./utils";
-import { IQuiz, Quiz } from "./quiz-types";
+import { Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
 import { WhichIsTheChord } from "./quiz/whichIsTheChord";
 import { NameScaleDegree } from "./quiz/nameScaleDegree";
@@ -22,18 +22,18 @@ if (isDev()) {
   writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
 }
 
-const quizzes: Quiz<IQuiz>[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord, HearScales];
+const quizzes: Quiz[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord, HearScales];
 
 ;(async () => {
   while(true) {
     try {
       const choice = await LogAsync.questionInList(
-        quizzes.map((quiz) => quiz.meta.name),
+        quizzes.map((quiz) => quiz.meta().name),
         "Choose a quiz",
         "q"
       );
      
-      const choiceSelection = quizzes.filter(q => q.meta.name === choice)[0];
+      const choiceSelection = quizzes.filter(q => q.meta().name === choice)[0];
       await loopQuiz(choiceSelection);
       Log.clear();
     } catch(err) {

@@ -1,9 +1,9 @@
 import { getRandomNoteLimitSingleAccidental, allChordTypes, getChord } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { QuizBase } from "../quizBase";
 import chalk from "chalk";
+import { TextQuizBase } from "./quizBase/quizTextBase";
 
-export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
+export const WhichIsTheChord: Quiz = class extends TextQuizBase implements IQuiz {
   verifyOptions(chordTypes: string[]): boolean {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
@@ -36,7 +36,7 @@ export const WhichIsTheChord: Quiz<IQuiz> = class extends QuizBase implements IQ
     return [this.randomChord.notes === guess, this.randomChord.notes];
   }
 
-  static get meta() {
+  static meta() {
     return {
       get getAllOptions() {
         return ["major", "minor", "augmented", "diminished"];

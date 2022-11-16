@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import { IQuiz, Quiz } from "../quiz-types";
-import { QuizBase } from "../quizBase";
 import { allScaleTypes, getRandomNoteLimitSingleAccidental, getRandomIndex, numberToDegree, getNoteVariants, getScale, variantToBase, getScaleNoteAtIndex } from "../utils";
+import { TextQuizBase } from "./quizBase/quizTextBase";
 
-export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQuiz {
+export const NameScaleDegree: Quiz = class extends TextQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -35,7 +35,7 @@ export const NameScaleDegree: Quiz<IQuiz> = class extends QuizBase implements IQ
     return [this.randomNote === guess, this.randomNote];
   }
 
-  static get meta() {
+  static meta() {
     return {
       get getAllOptions() {
         return [

@@ -1,10 +1,10 @@
 
 import { Scale } from "@tonaljs/scale";
 import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending } from "../utils";
-import { IQuiz, IQuizAudio, Quiz } from "../quiz-types";
-import { QuizBase } from "../quizBase";
+import { IQuiz, Quiz } from "../quiz-types";
+import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
-export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implements IQuiz {
+export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -60,7 +60,7 @@ export const HearTetraChord: Quiz<IQuizAudio> = class extends QuizBase implement
     return this.audio;
   }
 
-  static get meta() {
+  static meta() {
     return {
       get getAllOptions() {
         return [

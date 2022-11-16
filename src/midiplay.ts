@@ -32,7 +32,6 @@ function notePlay(note: number, activator: "noteon" | "noteoff") {
 }
 
 export async function playMidi(notes: INotePlay[], { signal }: any): Promise<void> {
-
     let abort: boolean = false;
     const ac = new AbortController();
     const onAbort = () => {
