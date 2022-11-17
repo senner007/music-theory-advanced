@@ -8,15 +8,14 @@ export interface INotePlay {
 
 var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 
-const timer = async (time: number, { signal }: any) => {
+const timer = async (time: number, { signal }: AbortController) => {
     return new Promise((res) => {
         let timer: any;
         const onAbort = () => {
             clearTimeout(timer);
             res(0);
         };
-        signal.addEventListener('abort', onAbort, { once: true });
-        timer = setTimeout(() => res(0), time)
+        timer = setTimeout(() => { signal.removeEventListener('abort', onAbort); res(0) } , time)
     });
 }
 
@@ -38,6 +37,7 @@ export async function playMidi(notes: INotePlay[], { signal }: any): Promise<voi
         abort = true;
         ac.abort();
         abortNotes();
+        signal.removeEventListener('abort', onAbort);
     };
     signal.addEventListener('abort', onAbort, { once: true });
 

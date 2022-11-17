@@ -10,6 +10,7 @@ import { LogAsync } from "./logger/logAsync";
 import easymidi from 'easymidi';
 import { Log } from "./logger/logSync";
 import { HearScales } from "./quiz/hearScales";
+import { Hear12thTone } from "./quiz/hear12thTone";
 
 Log.clear();
 
@@ -22,7 +23,7 @@ if (isDev()) {
   writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
 }
 
-const quizzes: Quiz[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord, HearScales];
+const quizzes: Quiz[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord, HearScales, Hear12thTone];
 
 ;(async () => {
   while(true) {

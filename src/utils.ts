@@ -5,6 +5,7 @@ import InterruptedPrompt from "inquirer-interrupted-prompt";
 import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
+import { LogError } from "./dev-utils";
 
 export function customExit() {
   Log.clear();
@@ -83,7 +84,15 @@ function getNotesLimitSingleAccidentals(note: baseNote): [`${baseNote}b`, baseNo
   return [second, third, fourth]
 }
 
-export function getScaleNotes(scale: Scale) {
+export function getChromaticScaleNotes(scale: Scale): baseNoteLimitSingleAccidental[] {
+  console.log(scale)
+    if (scale.type !== "chromatic") {
+      LogError("only a chromatic scale can be passed as argument");
+    }
+    return scale.notes as baseNoteLimitSingleAccidental[];
+}
+
+export function getScaleNotes(scale: Scale): noteVariant[] {
   return scale.notes as noteVariant[];
 }
 
