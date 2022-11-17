@@ -21,10 +21,8 @@
 ## Todos:
 - choose between quiz options on start
 - play mp3 harmonic dictations with node ffplay
-- fix rising note sequence in terachords quiz 
 - add purpose and philosophy
 - release .exe files
-- allow audio play to compare answers 
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
@@ -41,11 +39,5 @@
 
 #### Hear any chord
 - choose between number of chords
-
-#### Hear any scale
-- choose between number of scales
-
-#### Missing note 12-tone row
-- hear the missing note in a 12 tone row
 
 
