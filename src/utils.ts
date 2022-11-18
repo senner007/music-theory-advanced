@@ -26,17 +26,23 @@ export const allScaleTypes = ScaleType.all()
   .map((s) => s.name)
   .sort();
  
-export type baseNote = "C" | "D" | "E" | "F" | "G" | "A" | "B";
-export type baseNoteLimitSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`
-export type noteVariant = `${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`
+export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
+export type Type_base_note_limit_single_accidental = `${baseNote}b` | baseNote | `${baseNote}#`
+export type noteVariant = Readonly<`${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`>
 
-const baseNotes : baseNote[] = ["C", "D", "E", "F", "G", "A", "B"];
+const baseNotes : readonly baseNote[] = Object.freeze(["C", "D", "E", "F", "G", "A", "B"]);
 
 declare global {
   interface Array<T> {
     commaSequence(): string;
-    shuffleArray(): Array<T>;
-    randomItem(): T;
+    shuffleArray(): Readonly<Array<T>>;
+    randomItem(): Readonly<T>;
+  }
+
+  interface ReadonlyArray<T> {
+    shuffleArray(): Readonly<Array<T>>;
+    randomItem(): Readonly<T>;
+    commaSequence(): string;
   }
 }
 
@@ -60,48 +66,52 @@ Array.prototype.randomItem = function () {
   return this[randomIndex];
 };
 
-export function getScale(scaleTonic: baseNoteLimitSingleAccidental, scaleType: string) {
+export function getScale(scaleTonic: Type_base_note_limit_single_accidental, scaleType: string): Scale {
   return ScaleClass.get(scaleTonic + " " + scaleType);
 }
 
-export function getChord(chordTonic: baseNoteLimitSingleAccidental, chordType: string) {
+export function getChord(chordTonic: Type_base_note_limit_single_accidental, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-export function getRandomNoteLimitSingleAccidental(): baseNoteLimitSingleAccidental {
+export function get_random_note_limit_single_accidental()  {
   const baseNote = baseNotes.randomItem();
-  const notesSingleAccidental = getNotesLimitSingleAccidentals(baseNote);
-  return notesSingleAccidental.randomItem();
+  const notesSingleAccidental = get_notes_limit_single_accidentals(baseNote);
+  return notesSingleAccidental.randomItem() as Readonly<Type_base_note_limit_single_accidental>;
 }
 
 export function getRandomIndex<T>(arr: T[]) {
   return Math.floor(Math.random() * arr.length);
 }
 
-function getNotesLimitSingleAccidentals(note: baseNote): [`${baseNote}b`, baseNote, `${baseNote}#`] {
+export function getBaseNotes() {
+  return baseNotes.slice(0); // refactor with class an private basenotes
+}
+
+function get_notes_limit_single_accidentals(note: baseNote) {
   const noteVariants = getNoteVariants(note);
   const [_, second, third, fourth] = noteVariants
-  return [second, third, fourth]
+  return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>
 }
 
-export function getChromaticScaleNotes(scale: Scale): baseNoteLimitSingleAccidental[] {
-  console.log(scale)
-    if (scale.type !== "chromatic") {
-      LogError("only a chromatic scale can be passed as argument");
+export function get_chromatic_scale_notes(scale: Scale) {
+
+    if (scale.type !== "chromatic" || !scale.tonic || !baseNotes.includes(scale.tonic as baseNote)) {
+      LogError("only a chromatic scale with a basenote tonic can be passed as argument");
     }
-    return scale.notes as baseNoteLimitSingleAccidental[];
+    return scale.notes as Readonly<Type_base_note_limit_single_accidental[]>;
 }
 
-export function getScaleNotes(scale: Scale): noteVariant[] {
-  return scale.notes as noteVariant[];
+export function getScaleNotes(scale: Scale) {
+  return scale.notes as Readonly<noteVariant[]>;
 }
 
-export function variantToBase(note:  noteVariant): baseNote {
-  return note.substring(0, 1) as baseNote;
+export function variantToBase(note:  noteVariant) {
+  return note.substring(0, 1) as Readonly<baseNote>;
 }
 
-export function getScaleNoteAtIndex(scale: Scale, index: number): noteVariant {
-  return scale.notes[index] as noteVariant;
+export function get_scale_note_at_index(scale: Scale, index: number) {
+  return scale.notes[index] as Readonly<noteVariant>;
 }
 
 export function eventByProbability(chance: number) {
@@ -115,7 +125,7 @@ export function transposeToAscending(n: string, index: number, arr: string[]) {
   return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
 }
 
-export function getNoteVariants(baseNote: baseNote): [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`] {
+export function getNoteVariants(baseNote: baseNote): Readonly<[`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]> {
   return [
     Note.transpose(baseNote, "1dd") as `${baseNote}bb`,
     Note.transpose(baseNote, "1d") as `${baseNote}b`,

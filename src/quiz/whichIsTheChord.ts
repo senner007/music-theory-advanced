@@ -1,4 +1,4 @@
-import { getRandomNoteLimitSingleAccidental, allChordTypes, getChord } from "../utils";
+import { get_random_note_limit_single_accidental, allChordTypes, getChord } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import chalk from "chalk";
 import { TextQuizBase } from "./quizBase/quizTextBase";
@@ -11,9 +11,9 @@ export const WhichIsTheChord: Quiz = class extends TextQuizBase implements IQuiz
   randomChord;
   chordPossibilities = ["major", "minor", "diminished", "augmented"];
   chordTypesAndNotes;
-  constructor(chordTypes: string[]) {
+  constructor(chordTypes: Readonly<string[]>) {
     super(chordTypes);
-    const chordOptions = this.chordPossibilities.map((chordType) => getChord(getRandomNoteLimitSingleAccidental(), chordType));
+    const chordOptions = this.chordPossibilities.map((chordType) => getChord(get_random_note_limit_single_accidental(), chordType));
     this.chordTypesAndNotes = chordOptions
       .map((chord) => {
         return { chord: chord, notes: chord.notes.shuffleArray().commaSequence() };

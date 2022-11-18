@@ -1,6 +1,6 @@
 
 import { Scale } from "@tonaljs/scale";
-import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending } from "../utils";
+import { get_random_note_limit_single_accidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
@@ -24,9 +24,9 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
     .map(note => { return { noteName: note, duration: 500 } })
   }
 
-  constructor(scaleTypes: string[]) {
+  constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.randomNote = getRandomNoteLimitSingleAccidental();
+    this.randomNote = get_random_note_limit_single_accidental();
 
     const scales: Scale[] = scaleTypes.map(scaleType => 
       getScale(this.randomNote, scaleType)
@@ -51,7 +51,7 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
     return "Which is the correct spelling?";
   }
 
-  answer(guess: string): [boolean, string] {
+  answer(guess: string): Readonly<[boolean, string]> {
     const answer = this.randomTetraChord.commaSequence();
     return [answer === guess, answer];
   }

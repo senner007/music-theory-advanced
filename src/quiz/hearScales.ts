@@ -1,4 +1,4 @@
-import { getRandomNoteLimitSingleAccidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending, noteVariant, eventByProbability } from "../utils";
+import { get_random_note_limit_single_accidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending, noteVariant, eventByProbability } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { Note } from "@tonaljs/tonal";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
@@ -12,10 +12,10 @@ export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
   scalePick;
   similarScales;
   audio;
-  constructor(scaleTypes: string[]) {
+  constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
     const nChoices = 7; // should be option parameter
-    this.randomNote = getRandomNoteLimitSingleAccidental();
+    this.randomNote = get_random_note_limit_single_accidental();
     const allScales = scaleTypes.shuffleArray().map(scaleName => {
       const scale = getScale(this.randomNote, scaleName);
       return { scale: scale, description: scale.type + " - " + scale.intervals };

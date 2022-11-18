@@ -18,7 +18,7 @@ export abstract class AudioQuizBase extends QuizBase {
         }
     }
 
-    constructor(options: string[]) {
+    constructor(options: Readonly<string[]>) {
         super(options);
         this.ac = new AbortController();
     }

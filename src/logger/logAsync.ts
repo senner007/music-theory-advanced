@@ -25,11 +25,11 @@ interface IChoices {
 
 class LogAsyncUtil {
 
-    protected static getOptions(questionOptions: string[]): IOptions[] {
+    protected static getOptions(questionOptions: Readonly<string[]>): IOptions[] {
         return questionOptions.map(q => { return { value: q } });
     }
 
-    protected static getOptionsIndexed(questionOptions: string[]): IOptionsIndexed[] {
+    protected static getOptionsIndexed(questionOptions: Readonly<string[]>): IOptionsIndexed[] {
         return this.getOptions(questionOptions).map((o: IOptions, index: number) => {
             return { value: o.value, name: '(' + (index + 1) + ') ' + o.value }
         })
@@ -73,17 +73,17 @@ class LogAsyncUtil {
 
 export class LogAsync extends LogAsyncUtil {
 
-    static async questionInList(questionOptions: string[], question: string, interruptKey: string): Promise<string | never> {
+    static async questionInList(questionOptions: Readonly<string[]>, question: string, interruptKey: string): Promise<string | never> {
         const options = this.getOptions(questionOptions);
         return this.getQuestions(this.addSeparators(options, interruptKey), question, interruptKey);
     }
 
-    static async questionInListIndexed(questionOptions: string[], question: string, interruptKey: string): Promise<string | never> {
+    static async questionInListIndexed(questionOptions: Readonly<string[]>, question: string, interruptKey: string): Promise<string | never> {
         const options = this.getOptionsIndexed(questionOptions);
         return this.getQuestions(this.addSeparators(options, interruptKey), question, interruptKey);
     }
 
-    static async questionInListIndexedGlobalKeyHook(questionOptions: string[], question: string, interruptKey: string, globalHook: IGlobalHook): Promise<string | never> {
+    static async questionInListIndexedGlobalKeyHook(questionOptions: Readonly<string[]>, question: string, interruptKey: string, globalHook: IGlobalHook): Promise<string | never> {
         const options = this.getOptionsIndexed(questionOptions);
         const questionWithHook = question + chalk.bgWhite.gray("\n  Press: " + globalHook.key + " to " + globalHook.value + " "); // beautify me! 
         return this.getQuestions(this.addSeparators(options, interruptKey), questionWithHook, interruptKey);

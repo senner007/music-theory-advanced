@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { IQuiz, Quiz } from "../quiz-types";
-import { allScaleTypes, getRandomNoteLimitSingleAccidental, getRandomIndex, numberToDegree, getNoteVariants, getScale, variantToBase, getScaleNoteAtIndex } from "../utils";
+import { allScaleTypes, get_random_note_limit_single_accidental, getRandomIndex, numberToDegree, getNoteVariants, getScale, variantToBase, get_scale_note_at_index } from "../utils";
 import { TextQuizBase } from "./quizBase/quizTextBase";
 
 export const NameScaleDegree: Quiz = class extends TextQuizBase implements IQuiz {
@@ -12,11 +12,11 @@ export const NameScaleDegree: Quiz = class extends TextQuizBase implements IQuiz
   randomDegree;
   randomNote;
   randomNoteVariants;
-  constructor(scaleTypes: string[]) {
+  constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.scale = getScale(getRandomNoteLimitSingleAccidental(), scaleTypes.randomItem());
+    this.scale = getScale(get_random_note_limit_single_accidental(), scaleTypes.randomItem());
     const randomIndex = getRandomIndex(this.scale.notes);
-    this.randomNote = getScaleNoteAtIndex(this.scale, randomIndex);
+    this.randomNote = get_scale_note_at_index(this.scale, randomIndex);
     this.randomDegree = numberToDegree(randomIndex);
     this.randomNoteVariants = getNoteVariants(variantToBase(this.randomNote));
   }

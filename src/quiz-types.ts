@@ -1,14 +1,14 @@
 export interface IQuiz {
   execute() : Promise<string | never>
-  answer(guess: string): [boolean, string];
-  quizHead: string[];
+  answer(guess: string): Readonly<[boolean, string]>;
+  quizHead: Readonly<string[]>;
   cleanup() : Promise<void>
 }
 
 export interface Quiz {
-  new (options: string[]): IQuiz;
+  new (options: Readonly<string[]>): IQuiz;
   meta(): {
-    getAllOptions: string[];
+    getAllOptions: Readonly<string[]>;
     name: string;
     description: string;
   };

@@ -1,4 +1,4 @@
-import { baseNoteLimitSingleAccidental, getChromaticScaleNotes, getRandomNoteLimitSingleAccidental,getScale } from "../utils";
+import { getBaseNotes, get_chromatic_scale_notes,getScale } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 import { Interval} from "@tonaljs/tonal";
@@ -11,13 +11,13 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
 
   randomNote;
   startingNote;
-  chromaticScaleShuffled: baseNoteLimitSingleAccidental[];
+  chromaticScaleShuffled;
   missingNote;
-  constructor(scaleTypes: string[]) {
+  constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.randomNote = getRandomNoteLimitSingleAccidental();
+    this.randomNote = getBaseNotes().randomItem();
     const chromaticScale = getScale(this.randomNote, "chromatic");
-    this.chromaticScaleShuffled = getChromaticScaleNotes(chromaticScale).shuffleArray();
+    this.chromaticScaleShuffled = get_chromatic_scale_notes(chromaticScale).shuffleArray();
     this.missingNote = this.chromaticScaleShuffled.slice(1, this.chromaticScaleShuffled.length).randomItem();
     this.startingNote = this.chromaticScaleShuffled[0];
   }
@@ -64,7 +64,7 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
         return [];
       },
       name: "Hear the missing 12th tone",
-      description: "Identify the missing 12th tone in a 12-tone row",
+      description: "Listen to the 12-tone row with one note missing. Identify the missing note.",
     };
   }
 };
