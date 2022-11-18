@@ -1,6 +1,5 @@
-import { get_random_note_limit_single_accidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending, noteVariant, eventByProbability } from "../utils";
+import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { Note } from "@tonaljs/tonal";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
 export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
@@ -12,12 +11,13 @@ export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
   scalePick;
   similarScales;
   audio;
+  octaveAudio = 4;
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
     const nChoices = 7; // should be option parameter
     this.randomNote = get_random_note_limit_single_accidental();
     const allScales = scaleTypes.shuffleArray().map(scaleName => {
-      const scale = getScale(this.randomNote, scaleName);
+      const scale = get_scale(this.randomNote, scaleName);
       return { scale: scale, description: scale.type + " - " + scale.intervals };
     });
 
@@ -33,17 +33,17 @@ export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
   }
 
   private prepareAudio () {
-    const scaleNotes = getScaleNotes(this.scalePick.scale).map(n => n + "4")
-      scaleNotes.push(Note.transpose(scaleNotes[0], "8P") as noteVariant)
-      const scaleNpotesAudio = scaleNotes
-        .map(transposeToAscending)
+    const scaleNotes = get_scale_notes(this.scalePick.scale).toOctave(this.octaveAudio);
+      const scaleNotesWithOctave = add_octave_note(scaleNotes);
+      const scaleNotesAudio = scaleNotesWithOctave
+        .map(transpose_to_ascending)
         .map(note => { return { noteName: note, duration: 500 } })
       
-      if (eventByProbability(50)) {
-        scaleNpotesAudio.reverse();
+      if (event_by_probability(50)) {
+        scaleNotesAudio.reverse();
       }
 
-      return scaleNpotesAudio;
+      return scaleNotesAudio;
       
   }
 

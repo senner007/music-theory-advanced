@@ -37,14 +37,20 @@ declare global {
     commaSequence(): string;
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
+    toOctave(octave: number): Readonly<Array<T>>;
   }
 
   interface ReadonlyArray<T> {
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
     commaSequence(): string;
+    toOctave(octave: number): Readonly<Array<T>>;
   }
 }
+
+Array.prototype.toOctave = function (octave: number) {
+  return this.map(n => n + octave);
+};
 
 Array.prototype.commaSequence = function (): string {
   return this.join(", ");
@@ -62,15 +68,19 @@ Array.prototype.shuffleArray = function () {
 };
 
 Array.prototype.randomItem = function () {
-  const randomIndex = getRandomIndex(this);
+  const randomIndex = get_random_index(this);
   return this[randomIndex];
 };
 
-export function getScale(scaleTonic: Type_base_note_limit_single_accidental, scaleType: string): Scale {
+export function add_octave_note(notes : readonly noteVariant[]): readonly noteVariant[] {
+    return [...notes, Note.transpose(notes[0], "8P") as noteVariant];
+}
+
+export function get_scale(scaleTonic: Type_base_note_limit_single_accidental, scaleType: string): Scale {
   return ScaleClass.get(scaleTonic + " " + scaleType);
 }
 
-export function getChord(chordTonic: Type_base_note_limit_single_accidental, chordType: string) {
+export function get_chord(chordTonic: Type_base_note_limit_single_accidental, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
@@ -80,16 +90,16 @@ export function get_random_note_limit_single_accidental()  {
   return notesSingleAccidental.randomItem() as Readonly<Type_base_note_limit_single_accidental>;
 }
 
-export function getRandomIndex<T>(arr: T[]) {
+export function get_random_index<T>(arr: T[]) {
   return Math.floor(Math.random() * arr.length);
 }
 
-export function getBaseNotes() {
+export function get_base_notes() {
   return baseNotes.slice(0); // refactor with class an private basenotes
 }
 
 function get_notes_limit_single_accidentals(note: baseNote) {
-  const noteVariants = getNoteVariants(note);
+  const noteVariants = get_note_variants(note);
   const [_, second, third, fourth] = noteVariants
   return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>
 }
@@ -102,11 +112,11 @@ export function get_chromatic_scale_notes(scale: Scale) {
     return scale.notes as Readonly<Type_base_note_limit_single_accidental[]>;
 }
 
-export function getScaleNotes(scale: Scale) {
+export function get_scale_notes(scale: Scale) {
   return scale.notes as Readonly<noteVariant[]>;
 }
 
-export function variantToBase(note:  noteVariant) {
+export function variant_to_base(note:  noteVariant) {
   return note.substring(0, 1) as Readonly<baseNote>;
 }
 
@@ -114,18 +124,18 @@ export function get_scale_note_at_index(scale: Scale, index: number) {
   return scale.notes[index] as Readonly<noteVariant>;
 }
 
-export function eventByProbability(chance: number) {
+export function event_by_probability(chance: number) {
   return Math.random()* 100 < chance;
 }
 
-export function transposeToAscending(n: string, index: number, arr: string[]) {
+export function transpose_to_ascending(n: noteVariant, index: number, arr: readonly noteVariant[]) {
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
   return intervalData.dir! < 0 ? Note.transpose(n, "8P"): n
 }
 
-export function getNoteVariants(baseNote: baseNote): Readonly<[`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]> {
+export function get_note_variants(baseNote: baseNote): Readonly<[`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]> {
   return [
     Note.transpose(baseNote, "1dd") as `${baseNote}bb`,
     Note.transpose(baseNote, "1d") as `${baseNote}b`,
@@ -135,7 +145,7 @@ export function getNoteVariants(baseNote: baseNote): Readonly<[`${baseNote}bb`, 
   ];
 }
 
-export function numberToDegree(n: number) {
+export function number_to_degree(n: number) {
   let degree = "";
   switch (n) {
     case 0:

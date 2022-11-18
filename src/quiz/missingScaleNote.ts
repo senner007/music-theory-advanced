@@ -1,4 +1,4 @@
-import { getNoteVariants, get_random_note_limit_single_accidental, allScaleTypes, getScale, variantToBase, getScaleNotes } from "../utils";
+import { get_note_variants, get_random_note_limit_single_accidental, allScaleTypes, get_scale, variant_to_base, get_scale_notes } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { TextQuizBase } from "./quizBase/quizTextBase";
 
@@ -14,14 +14,14 @@ export const MissingScaleNote: Quiz = class extends TextQuizBase implements IQui
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
 
-    this.scale = getScale(get_random_note_limit_single_accidental(), scaleTypes.randomItem());
-    this.randomNote = getScaleNotes(this.scale).randomItem();
+    this.scale = get_scale(get_random_note_limit_single_accidental(), scaleTypes.randomItem());
+    this.randomNote = get_scale_notes(this.scale).randomItem();
 
     this.scaleStringMissingNote = this.scale.notes
       .map((n) => (n === this.randomNote ? "- MISSING -" : n))
       .reduce((acc, cur) => acc + cur + " ", "");
 
-    this.randomNoteVariants = getNoteVariants(variantToBase(this.randomNote));
+    this.randomNoteVariants = get_note_variants(variant_to_base(this.randomNote));
   }
 
   get quizHead() {

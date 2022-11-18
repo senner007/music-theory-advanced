@@ -1,6 +1,6 @@
 
 import { Scale } from "@tonaljs/scale";
-import { get_random_note_limit_single_accidental, allScaleTypes, getScale, getScaleNotes, transposeToAscending } from "../utils";
+import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
@@ -13,13 +13,14 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
   randomScale;
   randomTetraChord;
   scaleTetraChords;
+  octaveAudio = 4;
   audio: { noteName: string; duration: number }[]; 
 
   private prepareAudio() {
    
     return this.randomTetraChord
-    .map(n => n + "4")
-    .map(transposeToAscending)
+    .toOctave(this.octaveAudio)
+    .map(transpose_to_ascending)
     .shuffleArray()
     .map(note => { return { noteName: note, duration: 500 } })
   }
@@ -29,12 +30,12 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
     this.randomNote = get_random_note_limit_single_accidental();
 
     const scales: Scale[] = scaleTypes.map(scaleType => 
-      getScale(this.randomNote, scaleType)
+      get_scale(this.randomNote, scaleType)
     );
 
     this.randomScale = scales.randomItem();
-    this.randomTetraChord = getScaleNotes(this.randomScale).slice(0,4);
-    this.scaleTetraChords = scales.map(scale => getScaleNotes(scale).slice(0,4)).shuffleArray();  
+    this.randomTetraChord = get_scale_notes(this.randomScale).slice(0,4);
+    this.scaleTetraChords = scales.map(scale => get_scale_notes(scale).slice(0,4)).shuffleArray();  
 
     this.audio = this.prepareAudio();
   }

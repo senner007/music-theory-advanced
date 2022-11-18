@@ -1,4 +1,4 @@
-import { getBaseNotes, get_chromatic_scale_notes,getScale } from "../utils";
+import { get_base_notes, get_chromatic_scale_notes,get_scale } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 import { Interval} from "@tonaljs/tonal";
@@ -13,10 +13,11 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
   startingNote;
   chromaticScaleShuffled;
   missingNote;
+  octaveAudio = 4;
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.randomNote = getBaseNotes().randomItem();
-    const chromaticScale = getScale(this.randomNote, "chromatic");
+    this.randomNote = get_base_notes().randomItem();
+    const chromaticScale = get_scale(this.randomNote, "chromatic");
     this.chromaticScaleShuffled = get_chromatic_scale_notes(chromaticScale).shuffleArray();
     this.missingNote = this.chromaticScaleShuffled.slice(1, this.chromaticScaleShuffled.length).randomItem();
     this.startingNote = this.chromaticScaleShuffled[0];
@@ -35,7 +36,7 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
 
     const chromaticScaleShuffledInOctave = this.chromaticScaleShuffled
     .filter(note => note !== this.missingNote)
-    .map(n => n + "4"); // abtract with type safety!
+    .toOctave(this.octaveAudio); // abtract with type safety!
     
     const rowAnswer = chromaticScaleShuffledInOctave
         .map((note, index) => {
@@ -54,7 +55,7 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
   getAudio() {
     return this.chromaticScaleShuffled
         .filter(note => note !== this.missingNote)
-        .map(n => n + "4")
+        .toOctave(this.octaveAudio)
         .map(note => { return { noteName: note, duration: 500 } });
   }
 
