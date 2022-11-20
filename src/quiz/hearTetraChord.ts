@@ -58,7 +58,7 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
   }
 
   getAudio() {
-    return this.audio;
+    return [ { audio : this.audio, audioHandler : "space", onInit : true} ]
   }
 
   static meta() {

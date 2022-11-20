@@ -2,40 +2,72 @@ import { LogAsync } from "../../logger/logAsync";
 import { playMidi, INotePlay } from "../../midiplay";
 import { QuizBase } from "./quizBase";
 
+
+interface IAudioPlay {
+    audio:INotePlay[]
+    audioHandler: string;
+    onInit : boolean;
+}
+
+interface IListener {
+    keyName: string, 
+    listener : (_: any, key: any) => void;
+    ac : { ac : AbortController }
+}
+
 export abstract class AudioQuizBase extends QuizBase {
 
-    ac;
-    eventHandlerKey = "space";
-    private eventhandlerAction = () => {
-        this.ac.abort();
-        this.ac = new AbortController();
-        playMidi(this.getAudio(), this.ac);
-    }
-
-    private globalHookHandler = (_: any, key: any) => {
-        if (key.name === this.eventHandlerKey) {
-            this.eventhandlerAction();
-        }
-    }
+    listenersArray : IListener[] = [];
 
     constructor(options: Readonly<string[]>) {
         super(options);
-        this.ac = new AbortController();
     }
 
-    abstract getAudio(): INotePlay[];
+    private attachHandlers(listeners:  IListener[]) {
+        for (const listener of listeners) {
+            process.stdin.on("keypress", listener.listener);
+        }
+    }
+
+    private detachHandlers(listeners:  IListener[]) {
+        for (const listener of listeners) {
+            listener.ac.ac.abort();
+            process.stdin.off("keypress", listener.listener);
+        }
+    }
+
+    private createHandlers(handlerKeys: IAudioPlay[]) : IListener[] {
+        return handlerKeys.map(handlerKey => {
+            let acObj = { ac : new AbortController() }
+
+            const listener =  (_: any, key: any) => {
+                if (key.name === handlerKey.audioHandler) {
+                    acObj.ac.abort();
+                    acObj.ac = new AbortController();
+                    playMidi(handlerKey.audio, acObj.ac);
+                }
+            }
+            return {
+                keyName : handlerKey.audioHandler,
+                listener : listener,
+                ac : acObj
+            }
+        });
+    }
+
+    abstract getAudio(): IAudioPlay[];
 
     async execute(): Promise<string | never> {
 
-        this.eventhandlerAction();
-        process.stdin.on('keypress', this.globalHookHandler);
+        this.listenersArray = this.createHandlers(this.getAudio());
+        this.attachHandlers(this.listenersArray)
 
         try {
             const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
                 this.questionOptions,
                 "Choose the correct answer",
                 "q",
-                { value: "play audio", key: this.eventHandlerKey }
+                { value: "play audio", key: "space" } // accept array instead
             );
             return choice;
         } catch (err) {
@@ -44,7 +76,6 @@ export abstract class AudioQuizBase extends QuizBase {
     }
 
     cleanup = async (): Promise<void> => {
-        this.ac.abort();
-        process.stdin.off('keypress', this.globalHookHandler);
+        this.detachHandlers(this.listenersArray);
     }
 }

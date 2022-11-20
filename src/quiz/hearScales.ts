@@ -63,7 +63,7 @@ export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
   }
 
   getAudio() {
-    return this.audio;
+    return [ { audio : this.audio, audioHandler : "space", onInit : true} ]
   }
 
   static meta() {

@@ -53,10 +53,12 @@ export const Hear12thTone: Quiz = class extends AudioQuizBase implements IQuiz {
   }
 
   getAudio() {
-    return this.chromaticScaleShuffled
+    const audio = this.chromaticScaleShuffled
         .filter(note => note !== this.missingNote)
         .toOctave(this.octaveAudio)
         .map(note => { return { noteName: note, duration: 500 } });
+
+        return [ { audio : audio, audioHandler : "space", onInit : true} ]
   }
 
   static meta() {
