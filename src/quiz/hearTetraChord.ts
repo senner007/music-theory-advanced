@@ -22,7 +22,7 @@ export const HearTetraChord: Quiz<string> = class extends AudioQuizBase implemen
     .toOctave(this.octaveAudio)
     .map(transpose_to_ascending)
     .shuffleArray()
-    .map(note => { return { noteNames: [note], duration: 500 } })
+    .map(note => { return { noteNames: [note], duration: 500, channel : 1 } })
   }
 
   constructor(scaleTypes: Readonly<string[]>) {
@@ -58,7 +58,7 @@ export const HearTetraChord: Quiz<string> = class extends AudioQuizBase implemen
   }
 
   getAudio() {
-    return [ { audio : this.audio, audioHandler : "space", onInit : true} ]
+    return [ { audio : this.audio, keyboardKey : "space", onInit : true, channel : 1, message: "play audio"} ]
   }
 
   static meta() {

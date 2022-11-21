@@ -58,7 +58,7 @@ export const Hear12thTone: Quiz<string> = class extends AudioQuizBase implements
         .toOctave(this.octaveAudio)
         .map(note => { return { noteNames: [note], duration: 500 } });
 
-        return [ { audio : audio, audioHandler : "space", onInit : true} ]
+        return [ { audio : audio, keyboardKey : "space", onInit : true, channel : 1, message : "play audio"} ]
   }
 
   static meta() {

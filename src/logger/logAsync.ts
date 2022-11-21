@@ -83,9 +83,11 @@ export class LogAsync extends LogAsyncUtil {
         return this.getQuestions(this.addSeparators(options, interruptKey), question, interruptKey);
     }
 
-    static async questionInListIndexedGlobalKeyHook(questionOptions: Readonly<string[]>, question: string, interruptKey: string, globalHook: IGlobalHook): Promise<string | never> {
+    static async questionInListIndexedGlobalKeyHook(questionOptions: Readonly<string[]>, question: string, interruptKey: string, globalHook: IGlobalHook[]): Promise<string | never> {
         const options = this.getOptionsIndexed(questionOptions);
-        const questionWithHook = question + chalk.bgWhite.gray("\n  Press: " + globalHook.key + " to " + globalHook.value + " "); // beautify me! 
+        const questionWithHook = question + chalk.bgWhite.gray( 
+            globalHook.map(hook =>  "\n  Press " + hook.key + " to " + hook.value + " ").join("")
+        ); // beautify me! 
         return this.getQuestions(this.addSeparators(options, interruptKey), questionWithHook, interruptKey);
     }
 }

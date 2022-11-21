@@ -13,13 +13,16 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
   randomNote;
   randomPitchPattern;
   randomPatternName;
-  audio;
+  audioChord;
+  audioArppeggio;
   constructor(pitchPatterns: Readonly<pitchPatternName[]>) {
     super(pitchPatterns);
     this.randomNote = get_random_note_limit_single_accidental();
     this.randomPatternName = pitchPatterns.randomItem();
     this.randomPitchPattern = getPattern(this.randomPatternName);
-    this.audio = this.prepareAudio();
+    const [chord, arppeggio] =  this.prepareAudio();
+    this.audioChord = chord
+    this.audioArppeggio = arppeggio;
   }
 
   private prepareAudio() {
@@ -29,7 +32,13 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
     .toOctave(4)
     .map(transpose_to_ascending);
 
-    return [{ noteNames: patternInversAudio, duration: 3000 } ];
+    return [
+      [{ noteNames: patternInversAudio, duration: 3000 }],
+
+      patternInversAudio.map(a => {
+        return { noteNames: [a], duration: 1000 }
+      })
+    ];
   }
 
   private getPatternDescription(p : pitchPatternName) {
@@ -51,7 +60,8 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
 
   getAudio() {
     return [
-       { audio: this.audio, audioHandler: "space", onInit: true },
+       { audio: this.audioChord, keyboardKey: "space", onInit: true, channel: 1, message : "play trichord harmonically" },
+       { audio: this.audioArppeggio, keyboardKey: "l", onInit: false, channel: 2,  message : "play trichord squentially" },
       ];
   }
 

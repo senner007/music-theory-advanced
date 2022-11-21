@@ -5,8 +5,10 @@ import { QuizBase } from "./quizBase";
 
 interface IAudioPlay {
     audio:INotePlay[]
-    audioHandler: string;
+    keyboardKey: string;
     onInit : boolean;
+    channel : number;
+    message : string; 
 }
 
 interface IListener {
@@ -36,21 +38,21 @@ export abstract class AudioQuizBase extends QuizBase {
         }
     }
 
-    private createHandlers(handlerKeys: IAudioPlay[]) : IListener[] {
-        return handlerKeys.map((handlerKey, index) => {
+    private createListeners(audioParts: IAudioPlay[]) : IListener[] {
+        return audioParts.map(audioPart => {
             let acObj = { ac : new AbortController() }
             let timerObj: any;
 
             const listener =  (_: any, key: any) => {
- 
-                if (key.name === handlerKey.audioHandler) {
+                if (key.name === audioPart.keyboardKey) {
                     acObj.ac.abort();
                     acObj.ac = new AbortController();
-                    playMidi(handlerKey.audio, acObj.ac, index +1, timerObj); 
+                    const channel = audioPart.channel ?? 1;
+                    playMidi(audioPart.audio, acObj.ac, channel, timerObj); 
                 }
             }
             return {
-                keyName : handlerKey.audioHandler,
+                keyName : audioPart.keyboardKey,
                 listener : listener,
                 acObj : acObj
             }
@@ -60,7 +62,7 @@ export abstract class AudioQuizBase extends QuizBase {
     abstract getAudio(): IAudioPlay[];
 
     async execute(): Promise<string | never> {
-        this.listenersArray = this.createHandlers(this.getAudio());
+        this.listenersArray = this.createListeners(this.getAudio());
         this.attachHandlers(this.listenersArray)
         process.stdin.emit('keypress', null, {name: 'space'});
 
@@ -69,7 +71,10 @@ export abstract class AudioQuizBase extends QuizBase {
                 this.questionOptions,
                 "Choose the correct answer", 
                 "q",
-                { value: "play audio", key: "space" } // accept array instead
+                this.getAudio().map(la => {
+                    return { value: la.message, key: la.keyboardKey } 
+                })
+                 // accept array instead
             );
             return choice;
         } catch (err) {
