@@ -4,7 +4,7 @@ import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
-export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz {
+export const HearTetraChord: Quiz<string> = class extends AudioQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -14,7 +14,7 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
   randomTetraChord;
   scaleTetraChords;
   octaveAudio = 4;
-  audio: { noteName: string; duration: number }[]; 
+  audio; 
 
   private prepareAudio() {
    
@@ -22,7 +22,7 @@ export const HearTetraChord: Quiz = class extends AudioQuizBase implements IQuiz
     .toOctave(this.octaveAudio)
     .map(transpose_to_ascending)
     .shuffleArray()
-    .map(note => { return { noteName: note, duration: 500 } })
+    .map(note => { return { noteNames: [note], duration: 500 } })
   }
 
   constructor(scaleTypes: Readonly<string[]>) {

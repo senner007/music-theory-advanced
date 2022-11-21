@@ -3,7 +3,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { allScaleTypes, get_random_note_limit_single_accidental, get_random_index, number_to_degree, get_note_variants, get_scale, variant_to_base, get_scale_note_at_index } from "../utils";
 import { TextQuizBase } from "./quizBase/quizTextBase";
 
-export const NameScaleDegree: Quiz = class extends TextQuizBase implements IQuiz {
+export const NameScaleDegree: Quiz<string> = class extends TextQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

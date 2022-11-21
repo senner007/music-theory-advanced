@@ -1,5 +1,5 @@
 import { isDev, writeToFile } from "./dev-utils";
-import { allChordTypes, allScaleTypes, customExit, isInterrupt} from "./utils";
+import { allChordTypes, allScaleTypes, customExit, isInterrupt } from "./utils";
 import { Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
 import { WhichIsTheChord } from "./quiz/whichIsTheChord";
@@ -7,43 +7,50 @@ import { NameScaleDegree } from "./quiz/nameScaleDegree";
 import { loopQuiz } from "./quizEngine/loopQuiz";
 import { HearTetraChord } from "./quiz/hearTetraChord";
 import { LogAsync } from "./logger/logAsync";
-import easymidi from 'easymidi';
+import easymidi from "easymidi";
 import { Log } from "./logger/logSync";
 import { HearScales } from "./quiz/hearScales";
 import { Hear12thTone } from "./quiz/hear12thTone";
+import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
 
-Log.clear();
+// Log.clear();
 
-Log.write('Found MIDI outputs:');
+Log.write("Found MIDI outputs:");
 for (const mididevice of easymidi.getOutputs()) {
-    Log.success(mididevice);
+  Log.success(mididevice);
 }
 if (isDev()) {
   writeToFile("./txt/chordTypes.txt", allChordTypes.join("\n"));
   writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
 }
 
-const quizzes: Quiz[] = [MissingScaleNote, NameScaleDegree, WhichIsTheChord, HearTetraChord, HearScales, Hear12thTone];
+const quizzes: Quiz<any>[] = [
+  MissingScaleNote,
+  NameScaleDegree,
+  WhichIsTheChord,
+  HearTetraChord,
+  HearScales,
+  Hear12thTone,
+  HearTrichordPitchPatterns,
+];
 
-;(async () => {
-  while(true) {
+(async () => {
+  while (true) {
     try {
+      
       const choice = await LogAsync.questionInList(
         quizzes.map((quiz) => quiz.meta().name),
         "Choose a quiz",
         "q"
       );
-     
-      const choiceSelection = quizzes.filter(q => q.meta().name === choice)[0];
+
+      const choiceSelection = quizzes.filter((q) => q.meta().name === choice)[0];
       await loopQuiz(choiceSelection);
-      Log.clear();
-    } catch(err) {
+      // Log.clear();
+    } catch (err) {
       if (isInterrupt(err)) {
         customExit();
       }
     }
   }
- 
 })();
-
-

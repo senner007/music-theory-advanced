@@ -2,7 +2,7 @@ import { get_note_variants, get_random_note_limit_single_accidental, allScaleTyp
 import { IQuiz, Quiz } from "../quiz-types";
 import { TextQuizBase } from "./quizBase/quizTextBase";
 
-export const MissingScaleNote: Quiz = class extends TextQuizBase implements IQuiz {
+export const MissingScaleNote: Quiz<string> = class extends TextQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

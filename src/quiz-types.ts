@@ -5,8 +5,8 @@ export interface IQuiz {
   cleanup() : Promise<void>
 }
 
-export interface Quiz {
-  new (options: Readonly<string[]>): IQuiz;
+export interface Quiz<T> {
+  new (options: Readonly<T[]>): IQuiz;
   meta(): {
     getAllOptions: Readonly<string[]>;
     name: string;

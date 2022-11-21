@@ -2,7 +2,7 @@ import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
 
-export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
+export const HearScales: Quiz<string> = class extends AudioQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -37,7 +37,7 @@ export const HearScales: Quiz = class extends AudioQuizBase implements IQuiz {
       const scaleNotesWithOctave = add_octave_note(scaleNotes);
       const scaleNotesAudio = scaleNotesWithOctave
         .map(transpose_to_ascending)
-        .map(note => { return { noteName: note, duration: 500 } })
+        .map(note => { return { noteNames: [note], duration: 500 } })
       
       if (event_by_probability(50)) {
         scaleNotesAudio.reverse();

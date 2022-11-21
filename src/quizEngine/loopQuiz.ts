@@ -5,7 +5,7 @@ import { Log } from "../logger/logSync";
 import chalk from "chalk";
 import inquirer from "inquirer";
 
-export async function loopQuiz(QuizClass: Quiz) {
+export async function loopQuiz(QuizClass: Quiz<any>) {
 
   const options = QuizClass.meta().getAllOptions;
 
@@ -13,7 +13,7 @@ export async function loopQuiz(QuizClass: Quiz) {
 
     const quiz = new QuizClass(options);
 
-    Log.clear();
+    // Log.clear();
     Log.write(QuizClass.meta().description);
 
     for (const head of quiz.quizHead) {

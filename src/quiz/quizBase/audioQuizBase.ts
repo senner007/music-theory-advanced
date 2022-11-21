@@ -12,7 +12,7 @@ interface IAudioPlay {
 interface IListener {
     keyName: string, 
     listener : (_: any, key: any) => void;
-    ac : { ac : AbortController }
+    acObj : AbortController
 }
 
 export abstract class AudioQuizBase extends QuizBase {
@@ -31,26 +31,28 @@ export abstract class AudioQuizBase extends QuizBase {
 
     private detachHandlers(listeners:  IListener[]) {
         for (const listener of listeners) {
-            listener.ac.ac.abort();
+            listener.acObj.abort();
             process.stdin.off("keypress", listener.listener);
         }
     }
 
     private createHandlers(handlerKeys: IAudioPlay[]) : IListener[] {
         return handlerKeys.map(handlerKey => {
-            let acObj = { ac : new AbortController() }
+            let acObj = new AbortController()
 
             const listener =  (_: any, key: any) => {
+                console.log("key press")
                 if (key.name === handlerKey.audioHandler) {
-                    acObj.ac.abort();
-                    acObj.ac = new AbortController();
-                    playMidi(handlerKey.audio, acObj.ac);
+                    acObj.abort();
+                    console.log("new abort controller" + new Date())
+                    acObj = new AbortController();
+                    playMidi(handlerKey.audio, acObj); 
                 }
             }
             return {
                 keyName : handlerKey.audioHandler,
                 listener : listener,
-                ac : acObj
+                acObj : acObj
             }
         });
     }
@@ -58,7 +60,6 @@ export abstract class AudioQuizBase extends QuizBase {
     abstract getAudio(): IAudioPlay[];
 
     async execute(): Promise<string | never> {
-
         this.listenersArray = this.createHandlers(this.getAudio());
         this.attachHandlers(this.listenersArray)
         process.stdin.emit('keypress', null, {name: 'space'});
@@ -66,7 +67,7 @@ export abstract class AudioQuizBase extends QuizBase {
         try {
             const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
                 this.questionOptions,
-                "Choose the correct answer",
+                "Choose the correct answer", 
                 "q",
                 { value: "play audio", key: "space" } // accept array instead
             );

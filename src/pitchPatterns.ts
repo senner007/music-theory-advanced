@@ -5,7 +5,7 @@ type semitones = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 type pattern = [semitones, semitones, semitones];
 
-type pitchPatternName =
+export type pitchPatternName =
     "013" |
     "014" |
     "015" |
@@ -17,7 +17,7 @@ type pitchPatternName =
     "027" |
     "036" |
     "037" |
-    "038";
+    "048";
 
 type pitchPattern = Record<pitchPatternName, pattern>;
 
@@ -33,16 +33,29 @@ export const pitchPatterns: pitchPattern = {
     "027": [0, 2, 7],
     "036": [0, 3, 6],
     "037": [0, 3, 7],
-    "038": [0, 3, 8],
+    "048": [0, 4, 8],
 };
 
+export function getPattern(patternName : pitchPatternName) {
+    return pitchPatterns[patternName];
+}
 
-export function getPatternIntervals(patternName: pitchPatternName): [string, string] {
 
-    const pattern = pitchPatterns[patternName] as pattern;
+export function getPatternIntervals(pattern: pattern): [string, string] {
     return [Interval.fromSemitones(pattern[1]), Interval.fromSemitones(pattern[2] - pattern[1])]
 }
 
-export function getPitchPattern(note: noteVariant, intervals : [string, string]) {
-    return [Note.transpose(note, intervals[0]), Note.transpose(note, intervals[1])]
+export function getPitchPatternInversions(note: noteVariant, intervals : [string, string]) {
+    const note2 = Note.transpose(note, intervals[0]);
+    const note3 = Note.transpose(note2, intervals[1]);
+
+    const note2Inversion = Note.transpose(note, intervals[1]);
+
+    return [
+        [note, note2, note3],
+        [note, note2Inversion, note3]
+    ]
+
+
+    // return [Note.transpose(note, intervals[0]), Note.transpose(note, intervals[1])]
 }
