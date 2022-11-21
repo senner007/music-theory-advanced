@@ -24,7 +24,6 @@
 - add purpose and philosophy
 - release .exe files
 - improve similarity of scale selection in "Hear Scales" quiz
-- fix toActave wrong return type
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
