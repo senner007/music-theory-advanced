@@ -13,7 +13,7 @@ import { HearScales } from "./quiz/hearScales";
 import { Hear12thTone } from "./quiz/hear12thTone";
 import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
 
-// Log.clear();
+Log.clear();
 
 Log.write("Found MIDI outputs:");
 for (const mididevice of easymidi.getOutputs()) {
@@ -46,7 +46,7 @@ const quizzes: Quiz<any>[] = [
 
       const choiceSelection = quizzes.filter((q) => q.meta().name === choice)[0];
       await loopQuiz(choiceSelection);
-      // Log.clear();
+      Log.clear();
     } catch (err) {
       if (isInterrupt(err)) {
         customExit();

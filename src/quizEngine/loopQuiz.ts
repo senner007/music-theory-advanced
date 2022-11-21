@@ -13,7 +13,7 @@ export async function loopQuiz(QuizClass: Quiz<any>) {
 
     const quiz = new QuizClass(options);
 
-    // Log.clear();
+    Log.clear();
     Log.write(QuizClass.meta().description);
 
     for (const head of quiz.quizHead) {

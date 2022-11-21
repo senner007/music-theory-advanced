@@ -8,66 +8,52 @@ export interface INotePlay {
 
 var output = new easymidi.Output('Microsoft GS Wavetable Synth');
 
-const timer = async (time: number, { signal }: AbortController) => {
-    return new Promise((res) => {
-        // console.log("new timer id")
-        let timer: any;
-        const onAbort = (_: any) => {
-            // console.log("on abort")
-            clearTimeout(timer);
-            signal.removeEventListener('abort', onAbort);
-            return res(0);
-        };
-        signal.addEventListener('abort', onAbort, { once: true });
-        timer = setTimeout(() => {  console.log("stop"); res(0) } , time)
-    });
-}
-
 const channelObj: INote = {
     note: 0,
     velocity: 127,
     channel: 3
 }
 
-function notePlay(note: number, activator: "noteon" | "noteoff") {
+function notePlay(note: number, activator: "noteon" | "noteoff", channel: number) {
     // @ts-ignore
-    output.send(activator, { ...channelObj, note });
+    output.send(activator, { ...channelObj, note, channel : channel });
 }
 
-export async function playMidi(notes: INotePlay[], { signal }: any): Promise<void> {
+
+export async function playMidi(notes: INotePlay[], { signal }: any, channel : number, timerObj: any): Promise<void> {
 
     let abort: boolean = false;
-    const ac = new AbortController();
+
     const onAbort = () => {
-   
+        clearTimeout(timerObj)
         abort = true;
-        ac.abort();
         abortNotes();
-        
     };
     signal.addEventListener('abort', onAbort, { once: true });
 
     const notesNames = notes.map(note => { return { ...note, noteNumbers: note.noteNames.map(noteName => Note.midi(noteName) as number) } })
 
     function abortNotes() {
-        signal.removeEventListener('abort', onAbort);
         for (const note of notesNames) {
             for (const noteNumber of note.noteNumbers) {
-                notePlay(noteNumber, "noteoff")
+                notePlay(noteNumber, "noteoff", channel)
             }
         }
     }
 
     for (const note of notesNames) {
         if (abort) break;
-        for (const noteNumber of note.noteNumbers) {
-            notePlay(noteNumber, "noteon")
+
+        for (let index = 0; index < note.noteNumbers.length; index++) {
+            notePlay(note.noteNumbers[index], "noteon", channel)
         }
-        console.log("call timer")
-        await timer(note.duration, ac);
-        console.log("noteoff")
-        for (const noteNumber of note.noteNumbers) {
-            notePlay(noteNumber, "noteoff")
+
+        await new Promise((res) => {
+            timerObj = setTimeout(() => { res(0) } , note.duration)
+        });
+
+        for (let index = 0; index < note.noteNumbers.length; index++) {
+            notePlay(note.noteNumbers[index], "noteoff", channel)
         }
     }
 }

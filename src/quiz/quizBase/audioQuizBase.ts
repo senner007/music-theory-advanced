@@ -12,7 +12,7 @@ interface IAudioPlay {
 interface IListener {
     keyName: string, 
     listener : (_: any, key: any) => void;
-    acObj : AbortController
+    acObj : { ac : AbortController }
 }
 
 export abstract class AudioQuizBase extends QuizBase {
@@ -31,22 +31,22 @@ export abstract class AudioQuizBase extends QuizBase {
 
     private detachHandlers(listeners:  IListener[]) {
         for (const listener of listeners) {
-            listener.acObj.abort();
+            listener.acObj.ac.abort();
             process.stdin.off("keypress", listener.listener);
         }
     }
 
     private createHandlers(handlerKeys: IAudioPlay[]) : IListener[] {
-        return handlerKeys.map(handlerKey => {
-            let acObj = new AbortController()
+        return handlerKeys.map((handlerKey, index) => {
+            let acObj = { ac : new AbortController() }
+            let timerObj: any;
 
             const listener =  (_: any, key: any) => {
-                console.log("key press")
+ 
                 if (key.name === handlerKey.audioHandler) {
-                    acObj.abort();
-                    console.log("new abort controller" + new Date())
-                    acObj = new AbortController();
-                    playMidi(handlerKey.audio, acObj); 
+                    acObj.ac.abort();
+                    acObj.ac = new AbortController();
+                    playMidi(handlerKey.audio, acObj.ac, index +1, timerObj); 
                 }
             }
             return {

@@ -25,12 +25,11 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
   private prepareAudio() {
     const pitchIntervals = getPatternIntervals(this.randomPitchPattern);
     const patternInversions = getPitchPatternInversions(this.randomNote, pitchIntervals).randomItem();
-    // @ts-ignore
     const patternInversAudio = patternInversions
     .toOctave(4)
     .map(transpose_to_ascending);
 
-    return [{ noteNames: ["A4"], duration: 3000 } ];
+    return [{ noteNames: patternInversAudio, duration: 3000 } ];
   }
 
   private getPatternDescription(p : pitchPatternName) {
@@ -51,7 +50,9 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
   }
 
   getAudio() {
-    return [{ audio: this.audio, audioHandler: "space", onInit: true }];
+    return [
+       { audio: this.audio, audioHandler: "space", onInit: true },
+      ];
   }
 
   static meta() {
