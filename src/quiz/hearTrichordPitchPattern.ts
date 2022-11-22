@@ -1,7 +1,13 @@
 import { get_random_note_limit_single_accidental, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { AudioQuizBase } from "./quizBase/audioQuizBase";
-import { getPattern, getPatternIntervals, getPitchPatternInversions, pitchPatternName, pitchPatterns } from "../pitchPatterns";
+import {
+  getPattern,
+  getPatternIntervals,
+  getPitchPatternInversions,
+  pitchPatternName,
+  pitchPatterns,
+} from "../pitchPatterns";
 
 const pitchPatternNameArray: pitchPatternName[] = Object.keys(pitchPatterns) as pitchPatternName[];
 
@@ -14,34 +20,32 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
   randomPitchPattern;
   randomPatternName;
   audioChord;
-  audioArppeggio;
+  audioArpeggio;
   constructor(pitchPatterns: Readonly<pitchPatternName[]>) {
     super(pitchPatterns);
     this.randomNote = get_random_note_limit_single_accidental();
     this.randomPatternName = pitchPatterns.randomItem();
     this.randomPitchPattern = getPattern(this.randomPatternName);
-    const [chord, arppeggio] =  this.prepareAudio();
-    this.audioChord = chord
-    this.audioArppeggio = arppeggio;
+    const [chord, arppeggio] = this.prepareAudio();
+    this.audioChord = chord;
+    this.audioArpeggio = arppeggio;
   }
 
   private prepareAudio() {
     const pitchIntervals = getPatternIntervals(this.randomPitchPattern);
-    const patternInversions = getPitchPatternInversions(this.randomNote, pitchIntervals).randomItem();
-    const patternInversAudio = patternInversions
-    .toOctave(4)
-    .map(transpose_to_ascending);
+    const patternInversions = getPitchPatternInversions(this.randomNote, pitchIntervals);
+    const patternInversAudio = patternInversions.randomItem().toOctave(4).map(transpose_to_ascending);
 
     return [
       [{ noteNames: patternInversAudio, duration: 3000 }],
 
-      patternInversAudio.map(a => {
-        return { noteNames: [a], duration: 1000 }
-      })
+      patternInversAudio.map((a) => {
+        return { noteNames: [a], duration: 1000 };
+      }),
     ];
   }
 
-  private getPatternDescription(p : pitchPatternName) {
+  private getPatternDescription(p: pitchPatternName) {
     return p + " - " + pitchPatterns[p].toString();
   }
 
@@ -49,20 +53,23 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
     return [];
   }
   get questionOptions() {
-    return pitchPatternNameArray.map(this.getPatternDescription)
+    return pitchPatternNameArray.map(this.getPatternDescription);
   }
   get question() {
     return "Which pitch pattern?";
   }
   answer(guess: string): [boolean, string] {
-    return [this.getPatternDescription(this.randomPatternName) === guess, this.getPatternDescription(this.randomPatternName)];
+    return [
+      this.getPatternDescription(this.randomPatternName) === guess,
+      this.getPatternDescription(this.randomPatternName),
+    ];
   }
 
   getAudio() {
     return [
-       { audio: this.audioChord, keyboardKey: "space", onInit: true, channel: 1, message : "play trichord harmonically" },
-       { audio: this.audioArppeggio, keyboardKey: "l", onInit: false, channel: 2,  message : "play trichord squentially" },
-      ];
+      { audio: this.audioChord, keyboardKey: "space", onInit: true, channel: 1, message: "play trichord harmonically" },
+      { audio: this.audioArpeggio, keyboardKey: "l", onInit: false, channel: 2, message: "play trichord sequentially" },
+    ];
   }
 
   static meta() {

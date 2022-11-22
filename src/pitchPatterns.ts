@@ -53,7 +53,4 @@ export function getPitchPatternInversions(note: noteVariant, intervals : [string
         [note, note2, note3],
         [note, note2Inversion, note3]
     ]
-
-
-    // return [Note.transpose(note, intervals[0]), Note.transpose(note, intervals[1])]
 }

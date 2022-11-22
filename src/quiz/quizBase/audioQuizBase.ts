@@ -63,9 +63,13 @@ export abstract class AudioQuizBase extends QuizBase {
 
     async execute(): Promise<string | never> {
         this.listenersArray = this.createListeners(this.getAudio());
-        this.attachHandlers(this.listenersArray)
-        process.stdin.emit('keypress', null, {name: 'space'});
-
+        this.attachHandlers(this.listenersArray);
+        this.getAudio().forEach(audioPart => {
+            if (audioPart.onInit) {
+                process.stdin.emit('keypress', null, {name: audioPart.keyboardKey});
+            }
+        })
+        
         try {
             const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
                 this.questionOptions,
