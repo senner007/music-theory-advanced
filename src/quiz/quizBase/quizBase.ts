@@ -2,7 +2,7 @@ import { LogError } from "../../dev-utils";
 import { Quiz } from "../../quiz-types";
 
 export abstract class QuizBase {
-  constructor(options: Readonly<string[]>) {
+  constructor(options: Readonly<any[]>) {
     this.errorHandleOptions(options);
   }
 

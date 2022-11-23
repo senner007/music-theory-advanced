@@ -2,7 +2,7 @@ import { LogAsync } from "../../logger/logAsync";
 import { QuizBase } from "./quizBase";
 
 export abstract class TextQuizBase extends QuizBase {
-    constructor(options: Readonly<string[]>) {
+    constructor(options: Readonly<any[]>) {
         super(options);
     }
 

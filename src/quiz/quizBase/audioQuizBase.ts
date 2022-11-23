@@ -21,7 +21,7 @@ export abstract class AudioQuizBase extends QuizBase {
 
     listenersArray : IListener[] = [];
 
-    constructor(options: Readonly<string[]>) {
+    constructor(options: Readonly<any[]>) {
         super(options);
     }
 
@@ -78,7 +78,6 @@ export abstract class AudioQuizBase extends QuizBase {
                 this.getAudio().map(la => {
                     return { value: la.message, key: la.keyboardKey } 
                 })
-                 // accept array instead
             );
             return choice;
         } catch (err) {

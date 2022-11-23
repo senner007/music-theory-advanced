@@ -4,7 +4,7 @@ import { AudioQuizBase } from "./quizBase/audioQuizBase";
 import { Interval} from "@tonaljs/tonal";
 import chalk from "chalk";
 
-export const Hear12thTone: Quiz<string> = class extends AudioQuizBase implements IQuiz {
+export const Hear12thTone: Quiz<undefined> = class extends AudioQuizBase implements IQuiz {
   verifyOptions(): boolean {
     return true;
   }
@@ -14,7 +14,7 @@ export const Hear12thTone: Quiz<string> = class extends AudioQuizBase implements
   chromaticScaleShuffled;
   missingNote;
   octaveAudio = 4;
-  constructor(scaleTypes: Readonly<string[]>) {
+  constructor(scaleTypes: Readonly<undefined[]>) {
     super(scaleTypes);
     this.randomNote = get_base_notes().randomItem();
     const chromaticScale = get_scale(this.randomNote, "chromatic");
@@ -36,15 +36,15 @@ export const Hear12thTone: Quiz<string> = class extends AudioQuizBase implements
 
     const chromaticScaleShuffledInOctave = this.chromaticScaleShuffled
     .filter(note => note !== this.missingNote)
-    .toOctave(this.octaveAudio); // abtract with type safety!
+    .toOctave(this.octaveAudio);
     
-    const rowAnswer = chromaticScaleShuffledInOctave
+    const notesWithIntervalsRows = chromaticScaleShuffledInOctave
         .map((note, index) => {
-            if (index === 0) note;
+            if (index === 0) return `${note}\n`;
             const interval = Interval.distance(chromaticScaleShuffledInOctave[index - 1], note);
             return `${note}, ${interval}\n`;
-        }).reduce((a, b) => a + b, "")
-    const answer = `Note: ${chalk.green(this.missingNote)}\nThe intervals are:\n${rowAnswer}`
+        }).join("")
+    const answer = `Note: ${chalk.green(this.missingNote)}\nThe intervals are:\n${notesWithIntervalsRows}`
     
     return [
         this.missingNote === guess, 
