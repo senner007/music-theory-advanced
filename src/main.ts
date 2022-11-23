@@ -12,6 +12,7 @@ import { Log } from "./logger/logSync";
 import { HearScales } from "./quiz/hearScales";
 import { Hear12thTone } from "./quiz/hear12thTone";
 import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
+import { FunctionalHearing } from "./quiz/functionalHearing";
 
 Log.clear();
 
@@ -32,6 +33,7 @@ const quizzes: Quiz<any>[] = [
   HearScales,
   Hear12thTone,
   HearTrichordPitchPatterns,
+  FunctionalHearing
 ];
 
 (async () => {

@@ -1,6 +1,6 @@
 export interface IQuiz {
   execute() : Promise<string | never>
-  answer(guess: string): Readonly<[boolean, string]>;
+  feedback(choice: string): string;
   quizHead: Readonly<string[]>;
   cleanup() : Promise<void>
 }

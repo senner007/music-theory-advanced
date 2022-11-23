@@ -2,9 +2,9 @@
 import { Scale } from "@tonaljs/scale";
 import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { AudioQuizBase } from "./quizBase/audioQuizBase";
+import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
-export const HearTetraChord: Quiz<string> = class extends AudioQuizBase implements IQuiz {
+export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -52,9 +52,8 @@ export const HearTetraChord: Quiz<string> = class extends AudioQuizBase implemen
     return "Which is the correct spelling?";
   }
 
-  answer(guess: string): Readonly<[boolean, string]> {
-    const answer = this.randomTetraChord.commaSequence();
-    return [answer === guess, answer];
+  answer(): string {
+    return this.randomTetraChord.commaSequence();
   }
 
   getAudio() {

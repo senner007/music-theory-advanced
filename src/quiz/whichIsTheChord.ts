@@ -32,8 +32,8 @@ export const WhichIsTheChord: Quiz<string> = class extends TextQuizBase implemen
   get question() {
     return `Which is correct?`;
   }
-  answer(guess: string): [boolean, string] {
-    return [this.randomChord.notes === guess, this.randomChord.notes];
+  answer(): string {
+    return this.randomChord.notes;
   }
 
   static meta() {

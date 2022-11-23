@@ -1,8 +1,8 @@
 import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { AudioQuizBase } from "./quizBase/audioQuizBase";
+import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
-export const HearScales: Quiz<string> = class extends AudioQuizBase implements IQuiz {
+export const HearScales: Quiz<string> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }
@@ -58,8 +58,8 @@ export const HearScales: Quiz<string> = class extends AudioQuizBase implements I
   get question() {
     return "Which note is missing?";
   }
-  answer(guess: string): [boolean, string] {
-    return [this.scalePick.description === guess, this.scalePick.description];
+  answer(): string {
+    return this.scalePick.description;
   }
 
   getAudio() {

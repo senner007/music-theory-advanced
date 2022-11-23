@@ -33,8 +33,8 @@ export const MissingScaleNote: Quiz<string> = class extends TextQuizBase impleme
   get question() {
     return "Which note is missing?";
   }
-  answer(guess: string): [boolean, string] {
-    return [this.randomNote === guess, this.randomNote];
+  answer(): string {
+    return this.randomNote;
   }
 
   static meta() {

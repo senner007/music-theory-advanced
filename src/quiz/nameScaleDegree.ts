@@ -31,8 +31,8 @@ export const NameScaleDegree: Quiz<string> = class extends TextQuizBase implemen
   get question() {
     return `Which is the degree?`;
   }
-  answer(guess: string): [boolean, string] {
-    return [this.randomNote === guess, this.randomNote];
+  answer(): string {
+    return this.randomNote;
   }
 
   static meta() {

@@ -1,4 +1,3 @@
-import { LogAsync } from "../../logger/logAsync";
 import { playMidi, INotePlay } from "../../midiplay";
 import { QuizBase } from "./quizBase";
 
@@ -23,6 +22,7 @@ export abstract class AudioQuizBase extends QuizBase {
 
     constructor(options: Readonly<any[]>) {
         super(options);
+       
     }
 
     private attachHandlers(listeners:  IListener[]) {
@@ -61,7 +61,7 @@ export abstract class AudioQuizBase extends QuizBase {
 
     abstract getAudio(): IAudioPlay[];
 
-    async execute(): Promise<string | never> {
+    private setAudioListeners() {
         this.listenersArray = this.createListeners(this.getAudio());
         this.attachHandlers(this.listenersArray);
         this.getAudio().forEach(audioPart => {
@@ -69,23 +69,21 @@ export abstract class AudioQuizBase extends QuizBase {
                 process.stdin.emit('keypress', null, {name: audioPart.keyboardKey});
             }
         })
-        
-        try {
-            const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
-                this.questionOptions,
-                "Choose the correct answer", 
-                "q",
-                this.getAudio().map(la => {
-                    return { value: la.message, key: la.keyboardKey } 
-                })
-            );
-            return choice;
-        } catch (err) {
-            throw (err);
-        }
+    } 
+
+    abstract callQuiz():  Promise<string | never>
+    
+
+    async execute(): Promise<string | never> {
+
+        this.setAudioListeners();
+        return await this.callQuiz();
+       
     }
 
     cleanup = async (): Promise<void> => {
         this.detachHandlers(this.listenersArray);
     }
+
+   
 }

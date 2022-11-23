@@ -1,10 +1,10 @@
 import { get_base_notes, get_chromatic_scale_notes,get_scale } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { AudioQuizBase } from "./quizBase/audioQuizBase";
 import { Interval} from "@tonaljs/tonal";
 import chalk from "chalk";
+import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
-export const Hear12thTone: Quiz<undefined> = class extends AudioQuizBase implements IQuiz {
+export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(): boolean {
     return true;
   }
@@ -32,8 +32,11 @@ export const Hear12thTone: Quiz<undefined> = class extends AudioQuizBase impleme
   get question() {
     return "Which note is missing?";
   }
-  answer(guess: string): [boolean, string] {
+  answer(): string {
+    return this.missingNote;
+  }
 
+  feedbackWrong(): string {
     const chromaticScaleShuffledInOctave = this.chromaticScaleShuffled
     .filter(note => note !== this.missingNote)
     .toOctave(this.octaveAudio);
@@ -45,11 +48,8 @@ export const Hear12thTone: Quiz<undefined> = class extends AudioQuizBase impleme
             return `${note}, ${interval}\n`;
         }).join("")
     const answer = `Note: ${chalk.green(this.missingNote)}\nThe intervals are:\n${notesWithIntervalsRows}`
-    
-    return [
-        this.missingNote === guess, 
-        answer
-    ];
+
+    return super.feedbackWrong() + answer;
   }
 
   getAudio() {

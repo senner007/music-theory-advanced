@@ -1,6 +1,5 @@
 import { get_random_note_limit_single_accidental, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { AudioQuizBase } from "./quizBase/audioQuizBase";
 import {
   getPattern,
   getPatternIntervals,
@@ -8,10 +7,11 @@ import {
   pitchPatternName,
   pitchPatterns,
 } from "../pitchPatterns";
+import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
 const pitchPatternNameArray: pitchPatternName[] = Object.keys(pitchPatterns) as pitchPatternName[];
 
-export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends AudioQuizBase implements IQuiz {
+export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(selectPitchPatterns: pitchPatternName[]): boolean {
     return selectPitchPatterns.every((pattern) => pitchPatternNameArray.includes(pattern));
   }
@@ -58,11 +58,8 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends A
   get question() {
     return "Which pitch pattern?";
   }
-  answer(guess: string): [boolean, string] {
-    return [
-      this.getPatternDescription(this.randomPatternName) === guess,
-      this.getPatternDescription(this.randomPatternName),
-    ];
+  answer(): string {
+    return this.getPatternDescription(this.randomPatternName)
   }
 
   getAudio() {
