@@ -13,8 +13,14 @@ export abstract class SingingQuizBase extends AudioQuizBase {
 
   async callQuiz(): Promise<string | never> {
    
-    LogTable.write(new SolfegeMelody(["C3", "C4", "G3"], "C"));
-    
+    LogTable.write(new SolfegeMelody([
+        { note: "C3", duration: 2 },
+        { note: "G3", duration: 1 },
+        { note: "E3", duration: 2 },
+        { note: "G3", duration: 1 },
+        { note: "B3", duration: 2 },
+      ], "C"));
+
     try {
       const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
         this.questionOptions,

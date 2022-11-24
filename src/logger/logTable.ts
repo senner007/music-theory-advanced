@@ -11,10 +11,20 @@ export interface ISolfegeNote {
 }
 
 export class SolfegeMelody {
+
+  private verifyDuration() {
+    if (this.duration > 30) LogError("Melody duration exceeded")
+  }
+
   private sortedMelody;
-  constructor(public melody: baseNoteAllAccidentalOctave[], private key: baseNoteCommonAccidental) {
+  constructor(public melody: ISolfegeNote[], private key: baseNoteCommonAccidental) {
     console.log(this.key);
-    this.sortedMelody = Note.sortedNames(this.melody) as baseNoteAllAccidentalOctave[];
+    this.sortedMelody = this.getSortedMelody();
+    this.verifyDuration();
+  }
+
+  private getSortedMelody(): baseNoteAllAccidentalOctave[] {
+    return Note.sortedNames(this.melody.map(n => n.note)) as baseNoteAllAccidentalOctave[];
   }
 
   private get lowest(): baseNoteAllAccidentalOctave {
@@ -27,6 +37,10 @@ export class SolfegeMelody {
 
   get length() {
     return this.melody.length;
+  }
+
+  get duration(): number {
+    return this.melody.map(n => n.duration).reduce((a, b) => a + b, 0);
   }
 
   getDistanceFromLowest(note: baseNoteAllAccidentalOctave): number {
@@ -104,22 +118,27 @@ export class LogTable {
 
     const obj: IObj = {};
     Array.from({ length: ambitus + 1 }).forEach((_, index: number) => {
-      obj[index] = Array.from({ length: solfege.length });
+      obj[index] = Array.from({ length: solfege.duration });
     });
 
-    solfege.melody.forEach((c, index: number) => {
-      const key = solfege.getDistanceFromLowest(c);
-      const syllable = solfegeObj[getNoteRemoveOctave(c)] as Syllable;
-      obj[key][index] = syllable;
+    let counter: number = 0;
+
+    solfege.melody.forEach((c) => {
+      const key = solfege.getDistanceFromLowest(c.note);
+      const syllable = solfegeObj[getNoteRemoveOctave(c.note)] as Syllable;
+      obj[key][counter] = syllable;
+      counter = counter + c.duration;
     });
 
     const rows = Object.values(obj);
 
     var table = AsciiTable.factory({
-      heading: [...Array(solfege.melody.length).keys()],
+      heading: [...Array(solfege.duration).keys()]
+        .map(h => h % 4 === 0 ? "0" + (h/4 + 1) : "  ")
+        .map((h, index) => index === 0 ? "01" : h),
       rows: rows.reverse(),
     });
-
+    
     console.log(table.toString());
   }
 }
