@@ -1,6 +1,13 @@
-import { get_note_variants, get_random_note_limit_single_accidental, allScaleTypes, get_scale, variant_to_base, get_scale_notes } from "../utils";
+import {
+  get_note_variants,
+  get_random_note_common_accidental,
+  allScaleTypes,
+  get_scale,
+  variant_to_base,
+  get_scale_notes,
+} from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
-import { TextQuizBase } from "./quizBase/quizTextBase";
+import { TextQuizBase } from "./quizBase/textBase";
 
 export const MissingScaleNote: Quiz<string> = class extends TextQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
@@ -14,7 +21,7 @@ export const MissingScaleNote: Quiz<string> = class extends TextQuizBase impleme
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
 
-    this.scale = get_scale(get_random_note_limit_single_accidental(), scaleTypes.randomItem());
+    this.scale = get_scale(get_random_note_common_accidental(), scaleTypes.randomItem());
     this.randomNote = get_scale_notes(this.scale).randomItem();
 
     this.scaleStringMissingNote = this.scale.notes

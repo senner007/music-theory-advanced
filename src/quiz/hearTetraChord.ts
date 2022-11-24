@@ -1,6 +1,6 @@
 
 import { Scale } from "@tonaljs/scale";
-import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending } from "../utils";
+import { get_random_note_common_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
@@ -27,7 +27,7 @@ export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase impl
 
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.randomNote = get_random_note_limit_single_accidental();
+    this.randomNote = get_random_note_common_accidental();
 
     const scales: Scale[] = scaleTypes.map(scaleType => 
       get_scale(this.randomNote, scaleType)

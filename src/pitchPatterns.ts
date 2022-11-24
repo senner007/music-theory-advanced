@@ -1,4 +1,4 @@
-import { noteVariant } from "./utils";
+import { baseNoteAllAccidental } from "./utils";
 import { Interval, Note } from "@tonaljs/tonal";
 
 type semitones = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -43,7 +43,7 @@ export function getPatternIntervals(pattern: pattern): [string, string] {
     return [Interval.fromSemitones(pattern[1]), Interval.fromSemitones(pattern[2] - pattern[1])]
 }
 
-export function getPitchPatternInversions(note: noteVariant, intervals : [string, string]) {
+export function getPitchPatternInversions(note: baseNoteAllAccidental, intervals : [string, string]) {
     const note2 = Note.transpose(note, intervals[0]);
     const note3 = Note.transpose(note2, intervals[1]);
 

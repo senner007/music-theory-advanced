@@ -19,7 +19,7 @@
 - npm run prod
 
 ## Todos:
-- choose between quiz options on start
+- choose between quiz options on start with audio tempo settings slider
 - play mp3 harmonic dictations with node ffplay
 - add purpose and philosophy
 - release .exe files
@@ -35,10 +35,11 @@
 - sing note in range C4 - C5
 - sing bottom, top, middle of two notes, three notes
 
-#### Spell complete scales
-- choose between number of scale spellings
-
 #### Hear any chord
 - choose between number of chords
+
+#### Sing functional degrees
+- choose between degrees
+
 
 

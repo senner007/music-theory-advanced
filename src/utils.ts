@@ -28,9 +28,9 @@ export const allScaleTypes = ScaleType.all()
 
 type octave = "3" | "4" | "5";
 export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
-export type Type_base_note_limit_single_accidental = `${baseNote}b` | baseNote | `${baseNote}#`;
-export type noteVariant = Readonly<`${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`>;
-export type noteVariantOctave = Readonly<`${noteVariant}${octave}`>;
+export type baseNoteCommonAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
+export type baseNoteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`>;
+export type baseNoteAllAccidentalOctave = Readonly<`${baseNoteAllAccidental}${octave}`>;
 
 const baseNotes: readonly baseNote[] = Object.freeze(["C", "D", "E", "F", "G", "A", "B"]);
 
@@ -41,12 +41,12 @@ declare global {
     randomItem(): Readonly<T>;
   }
 
-  interface Array<T extends noteVariantOctave> {
-    toOctave(octave: number): Readonly<Array<noteVariantOctave>>;
+  interface Array<T extends baseNoteAllAccidentalOctave> {
+    toOctave(octave: number): Readonly<Array<baseNoteAllAccidentalOctave>>;
   }
 
-  interface ReadonlyArray<T extends noteVariantOctave> {
-    toOctave(octave: number): Readonly<Array<noteVariantOctave>>;
+  interface ReadonlyArray<T extends baseNoteAllAccidentalOctave> {
+    toOctave(octave: number): Readonly<Array<baseNoteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T> {
@@ -56,11 +56,11 @@ declare global {
   }
 }
 
-Array.prototype.toOctave = function toOctave<T extends Readonly<noteVariant>>(
+Array.prototype.toOctave = function toOctave<T extends Readonly<baseNoteAllAccidental>>(
   this: T[],
   octave: number
-): Readonly<noteVariantOctave[]> {
-  return this.map((n) => (n + octave) as noteVariantOctave);
+): Readonly<baseNoteAllAccidentalOctave[]> {
+  return this.map((n) => (n + octave) as baseNoteAllAccidentalOctave);
 };
 
 Array.prototype.commaSequence = function (): string {
@@ -83,22 +83,22 @@ Array.prototype.randomItem = function () {
   return this[randomIndex];
 };
 
-export function add_octave_note(notes: readonly noteVariantOctave[]): readonly noteVariantOctave[] {
-  return [...notes, Note.transpose(notes[0], "8P") as noteVariantOctave];
+export function add_octave_note(notes: readonly baseNoteAllAccidentalOctave[]): readonly baseNoteAllAccidentalOctave[] {
+  return [...notes, Note.transpose(notes[0], "8P") as baseNoteAllAccidentalOctave];
 }
 
-export function get_scale(scaleTonic: Type_base_note_limit_single_accidental, scaleType: string): Scale {
+export function get_scale(scaleTonic: baseNoteCommonAccidental, scaleType: string): Scale {
   return ScaleClass.get(scaleTonic + " " + scaleType);
 }
 
-export function get_chord(chordTonic: Type_base_note_limit_single_accidental, chordType: string) {
+export function get_chord(chordTonic: baseNoteCommonAccidental, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-export function get_random_note_limit_single_accidental() {
+export function get_random_note_common_accidental() {
   const baseNote = baseNotes.randomItem();
-  const notesSingleAccidental = get_notes_limit_single_accidentals(baseNote);
-  return notesSingleAccidental.randomItem() as Readonly<Type_base_note_limit_single_accidental>;
+  const notesSingleAccidental = get_notes_common_accidentals(baseNote);
+  return notesSingleAccidental.randomItem() as Readonly<baseNoteCommonAccidental>;
 }
 
 export function get_random_index<T>(arr: T[]) {
@@ -109,7 +109,7 @@ export function get_base_notes() {
   return baseNotes.slice(0); // refactor with class an private basenotes
 }
 
-function get_notes_limit_single_accidentals(note: baseNote) {
+function get_notes_common_accidentals(note: baseNote) {
   const noteVariants = get_note_variants(note);
   const [_, second, third, fourth] = noteVariants;
   return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
@@ -119,26 +119,26 @@ export function get_chromatic_scale_notes(scale: Scale) {
   if (scale.type !== "chromatic" || !scale.tonic || !baseNotes.includes(scale.tonic as baseNote)) {
     LogError("only a chromatic scale with a basenote tonic can be passed as argument");
   }
-  return scale.notes as Readonly<Type_base_note_limit_single_accidental[]>;
+  return scale.notes as Readonly<baseNoteCommonAccidental[]>;
 }
 
 export function get_scale_notes(scale: Scale) {
-  return scale.notes as Readonly<noteVariant[]>;
+  return scale.notes as Readonly<baseNoteAllAccidental[]>;
 }
 
-export function variant_to_base(note: noteVariant) {
+export function variant_to_base(note: baseNoteAllAccidental) {
   return note.substring(0, 1) as Readonly<baseNote>;
 }
 
 export function get_scale_note_at_index(scale: Scale, index: number) {
-  return scale.notes[index] as Readonly<noteVariant>;
+  return scale.notes[index] as Readonly<baseNoteAllAccidental>;
 }
 
 export function event_by_probability(chance: number) {
   return Math.random() * 100 < chance;
 }
 
-export function transpose_to_ascending(n: Readonly<noteVariantOctave>, index: number, arr: readonly noteVariantOctave[]) {
+export function transpose_to_ascending(n: Readonly<baseNoteAllAccidentalOctave>, index: number, arr: readonly baseNoteAllAccidentalOctave[]) {
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);

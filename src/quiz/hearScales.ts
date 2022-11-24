@@ -1,4 +1,4 @@
-import { get_random_note_limit_single_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
+import { get_random_note_common_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
@@ -15,7 +15,7 @@ export const HearScales: Quiz<string> = class extends ListeningQuizBase implemen
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
     const nChoices = 7; // should be option parameter
-    this.randomNote = get_random_note_limit_single_accidental();
+    this.randomNote = get_random_note_common_accidental();
     const allScales = scaleTypes.shuffleArray().map(scaleName => {
       const scale = get_scale(this.randomNote, scaleName);
       return { scale: scale, description: scale.type + " - " + scale.intervals };
