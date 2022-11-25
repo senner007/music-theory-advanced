@@ -2,7 +2,7 @@ import { Quiz } from "../quiz-types";
 // @ts-ignore
 import InterruptedPrompt from "inquirer-interrupted-prompt";
 import { Log } from "../logger/logSync";
-import inquirer from "inquirer";
+import { LogAsync } from "../logger/logAsync";
 
 export async function loopQuiz(QuizClass: Quiz<any>) {
 
@@ -29,14 +29,14 @@ export async function loopQuiz(QuizClass: Quiz<any>) {
     }
 
     Log.write(quiz.feedback(choice));
+
  
     try {
-      await inquirer.prompt([
-        {
-          name: 'continueorquit',
-          message: 'Press to continue or q to quit',
-          interruptedKeyName: "q"
-        }]);
+      await LogAsync.questionInList(
+        ["Continue"],
+        "Continue or Quit",
+        "q"
+      );
     } catch (err) {
       break;
     } finally {
