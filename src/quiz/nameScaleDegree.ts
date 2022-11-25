@@ -1,6 +1,15 @@
 import chalk from "chalk";
 import { IQuiz, Quiz } from "../quiz-types";
-import { allScaleTypes, random_note_single_accidental, random_index, number_to_degree, note_variants, create_scale, variant_to_base, scale_note_at_index } from "../utils";
+import {
+  allScaleTypes,
+  random_note_single_accidental,
+  random_index,
+  number_to_degree,
+  note_variants,
+  create_scale,
+  variant_to_base,
+  scale_note_at_index
+} from "../utils";
 import { TextQuizBase } from "./quizBase/textBase";
 
 export const NameScaleDegree: Quiz<string> = class extends TextQuizBase implements IQuiz {
@@ -23,7 +32,6 @@ export const NameScaleDegree: Quiz<string> = class extends TextQuizBase implemen
   get quizHead() {
     const degreeName = `${this.randomDegree} degree`;
     return [`The ${chalk.underline(degreeName)} in ${this.scale.name}`];
-   
   }
   get questionOptions() {
     return this.randomNoteVariants;

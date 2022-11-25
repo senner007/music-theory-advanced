@@ -171,6 +171,10 @@ export function note_variants(
   ];
 }
 
+export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note : T, interval : string): T {
+  return Note.transpose(note, interval) as T
+}
+
 export function number_to_degree(n: number) {
   let degree = "";
   switch (n) {
