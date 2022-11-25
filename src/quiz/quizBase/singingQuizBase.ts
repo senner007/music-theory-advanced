@@ -1,5 +1,6 @@
 import { LogAsync } from "../../logger/logAsync";
-import { LogTable, SolfegeMelody } from "../../logger/logTable";
+import { LogTable } from "../../logger/logTable";
+import { SolfegeMelody } from "../../solfege";
 import { AudioQuizBase } from "./audioQuizBase";
 
 export abstract class SingingQuizBase extends AudioQuizBase {
@@ -14,12 +15,11 @@ export abstract class SingingQuizBase extends AudioQuizBase {
   async callQuiz(): Promise<string | never> {
    
     LogTable.write(new SolfegeMelody([
-        { note: "C3", duration: 2 },
+        { note: "D3", duration: 2 },
         { note: "G3", duration: 1 },
-        { note: "E3", duration: 2 },
+        { note: "F#3", duration: 2 },
         { note: "G3", duration: 1 },
-        { note: "B3", duration: 2 },
-      ], "C"));
+      ], "D"));
 
     try {
       const choice = await LogAsync.questionInListIndexedGlobalKeyHook(

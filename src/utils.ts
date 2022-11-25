@@ -28,9 +28,9 @@ export const allScaleTypes = ScaleType.all()
 
 type octave = "3" | "4" | "5";
 export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
-export type baseNoteCommonAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
-export type baseNoteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}b` | baseNote | `${baseNote}#` | `${baseNote}##`>;
-export type baseNoteAllAccidentalOctave = Readonly<`${baseNoteAllAccidental}${octave}`>;
+export type noteSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
+export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
+export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
 const baseNotes: readonly baseNote[] = Object.freeze(["C", "D", "E", "F", "G", "A", "B"]);
 
@@ -41,12 +41,12 @@ declare global {
     randomItem(): Readonly<T>;
   }
 
-  interface Array<T extends baseNoteAllAccidentalOctave> {
-    toOctave(octave: number): Readonly<Array<baseNoteAllAccidentalOctave>>;
+  interface Array<T extends noteAllAccidentalOctave> {
+    toOctave(octave: number): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
-  interface ReadonlyArray<T extends baseNoteAllAccidentalOctave> {
-    toOctave(octave: number): Readonly<Array<baseNoteAllAccidentalOctave>>;
+  interface ReadonlyArray<T extends noteAllAccidentalOctave> {
+    toOctave(octave: number): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T> {
@@ -56,11 +56,11 @@ declare global {
   }
 }
 
-Array.prototype.toOctave = function toOctave<T extends Readonly<baseNoteAllAccidental>>(
+Array.prototype.toOctave = function toOctave<T extends Readonly<noteAllAccidental>>(
   this: T[],
   octave: number
-): Readonly<baseNoteAllAccidentalOctave[]> {
-  return this.map((n) => (n + octave) as baseNoteAllAccidentalOctave);
+): Readonly<noteAllAccidentalOctave[]> {
+  return this.map((n) => (n + octave) as noteAllAccidentalOctave);
 };
 
 Array.prototype.commaSequence = function (): string {
@@ -79,73 +79,73 @@ Array.prototype.shuffleArray = function () {
 };
 
 Array.prototype.randomItem = function () {
-  const randomIndex = get_random_index(this);
+  const randomIndex = random_index(this);
   return this[randomIndex];
 };
 
-export function add_octave_note(notes: readonly baseNoteAllAccidentalOctave[]): readonly baseNoteAllAccidentalOctave[] {
-  return [...notes, Note.transpose(notes[0], "8P") as baseNoteAllAccidentalOctave];
+export function add_octave_note(notes: readonly noteAllAccidentalOctave[]): readonly noteAllAccidentalOctave[] {
+  return [...notes, Note.transpose(notes[0], "8P") as noteAllAccidentalOctave];
 }
 
-export function get_scale(scaleTonic: baseNoteCommonAccidental, scaleType: string): Scale {
+export function create_scale(scaleTonic: noteSingleAccidental, scaleType: string): Scale {
   return ScaleClass.get(scaleTonic + " " + scaleType);
 }
 
-export function get_chord(chordTonic: baseNoteCommonAccidental, chordType: string) {
+export function create_chord(chordTonic: noteSingleAccidental, chordType: string) {
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-export function get_random_note_common_accidental() {
+export function random_note_single_accidental() {
   const baseNote = baseNotes.randomItem();
-  const notesSingleAccidental = get_notes_common_accidentals(baseNote);
-  return notesSingleAccidental.randomItem() as Readonly<baseNoteCommonAccidental>;
+  const notesSingleAccidental = note_single_accidentals(baseNote);
+  return notesSingleAccidental.randomItem() as Readonly<noteSingleAccidental>;
 }
 
-export function get_random_index<T>(arr: T[]) {
+export function random_index<T>(arr: T[]) {
   return Math.floor(Math.random() * arr.length);
 }
 
-export function get_base_notes() {
+export function base_notes() {
   return baseNotes.slice(0); // refactor with class an private basenotes
 }
 
-function get_notes_common_accidentals(note: baseNote) {
-  const noteVariants = get_note_variants(note);
+function note_single_accidentals(note: baseNote) {
+  const noteVariants = note_variants(note);
   const [_, second, third, fourth] = noteVariants;
   return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
 }
 
-export function get_chromatic_scale_notes(scale: Scale) {
+export function chromatic_scale_notes(scale: Scale) {
   if (scale.type !== "chromatic" || !scale.tonic || !baseNotes.includes(scale.tonic as baseNote)) {
     LogError("only a chromatic scale with a basenote tonic can be passed as argument");
   }
-  return scale.notes as Readonly<baseNoteCommonAccidental[]>;
+  return scale.notes as Readonly<noteSingleAccidental[]>;
 }
 
-export function get_scale_notes(scale: Scale) {
-  return scale.notes as Readonly<baseNoteAllAccidental[]>;
+export function scale_notes(scale: Scale) {
+  return scale.notes as Readonly<noteAllAccidental[]>;
 }
 
-export function variant_to_base(note: baseNoteAllAccidental) {
+export function variant_to_base(note: noteAllAccidental) {
   return note.substring(0, 1) as Readonly<baseNote>;
 }
 
-export function get_scale_note_at_index(scale: Scale, index: number) {
-  return scale.notes[index] as Readonly<baseNoteAllAccidental>;
+export function scale_note_at_index(scale: Scale, index: number) {
+  return scale.notes[index] as Readonly<noteAllAccidental>;
 }
 
 export function event_by_probability(chance: number) {
   return Math.random() * 100 < chance;
 }
 
-export function transpose_to_ascending(n: Readonly<baseNoteAllAccidentalOctave>, index: number, arr: readonly baseNoteAllAccidentalOctave[]) {
+export function transpose_to_ascending(n: Readonly<noteAllAccidentalOctave>, index: number, arr: readonly noteAllAccidentalOctave[]) {
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
   return intervalData.dir! < 0 ? Note.transpose(n, "8P") : n;
 }
 
-export function get_note_variants(
+export function note_variants(
   baseNote: baseNote
 ): Readonly<[`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]> {
   return [

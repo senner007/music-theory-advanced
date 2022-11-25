@@ -1,6 +1,6 @@
 
 import { Scale } from "@tonaljs/scale";
-import { get_random_note_common_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending } from "../utils";
+import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
@@ -27,15 +27,15 @@ export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase impl
 
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
-    this.randomNote = get_random_note_common_accidental();
+    this.randomNote = random_note_single_accidental();
 
     const scales: Scale[] = scaleTypes.map(scaleType => 
-      get_scale(this.randomNote, scaleType)
+      create_scale(this.randomNote, scaleType)
     );
 
     this.randomScale = scales.randomItem();
-    this.randomTetraChord = get_scale_notes(this.randomScale).slice(0,4);
-    this.scaleTetraChords = scales.map(scale => get_scale_notes(scale).slice(0,4)).shuffleArray();  
+    this.randomTetraChord = scale_notes(this.randomScale).slice(0,4);
+    this.scaleTetraChords = scales.map(scale => scale_notes(scale).slice(0,4)).shuffleArray();  
 
     this.audio = this.prepareAudio();
   }

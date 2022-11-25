@@ -1,4 +1,4 @@
-import { get_random_note_common_accidental, transpose_to_ascending } from "../utils";
+import { random_note_single_accidental, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
   getPattern,
@@ -23,7 +23,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
   audioArpeggio;
   constructor(pitchPatterns: Readonly<pitchPatternName[]>) {
     super(pitchPatterns);
-    this.randomNote = get_random_note_common_accidental();
+    this.randomNote = random_note_single_accidental();
     this.randomPatternName = pitchPatterns.randomItem();
     this.randomPitchPattern = getPattern(this.randomPatternName);
     const [chord, arppeggio] = this.prepareAudio();

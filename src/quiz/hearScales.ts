@@ -1,4 +1,4 @@
-import { get_random_note_common_accidental, allScaleTypes, get_scale, get_scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
+import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 
@@ -15,9 +15,9 @@ export const HearScales: Quiz<string> = class extends ListeningQuizBase implemen
   constructor(scaleTypes: Readonly<string[]>) {
     super(scaleTypes);
     const nChoices = 7; // should be option parameter
-    this.randomNote = get_random_note_common_accidental();
+    this.randomNote = random_note_single_accidental();
     const allScales = scaleTypes.shuffleArray().map(scaleName => {
-      const scale = get_scale(this.randomNote, scaleName);
+      const scale = create_scale(this.randomNote, scaleName);
       return { scale: scale, description: scale.type + " - " + scale.intervals };
     });
 
@@ -33,7 +33,7 @@ export const HearScales: Quiz<string> = class extends ListeningQuizBase implemen
   }
 
   private prepareAudio () {
-    const scaleNotes = get_scale_notes(this.scalePick.scale).toOctave(this.octaveAudio);
+    const scaleNotes = scale_notes(this.scalePick.scale).toOctave(this.octaveAudio);
       const scaleNotesWithOctave = add_octave_note(scaleNotes);
       const scaleNotesAudio = scaleNotesWithOctave
         .map(transpose_to_ascending)
