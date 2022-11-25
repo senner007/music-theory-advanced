@@ -1,26 +1,7 @@
 import { noteAllAccidental } from "./utils";
 import { Interval, Note } from "@tonaljs/tonal";
 
-type semitones = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
-type pattern = [semitones, semitones, semitones];
-
-export type pitchPatternName =
-    "013" |
-    "014" |
-    "015" |
-    "016" |
-    "024" |
-    "025" |
-    "026" |
-    "027" |
-    "036" |
-    "037" |
-    "048";
-
-type pitchPattern = Record<pitchPatternName, pattern>;
-
-export const pitchPatterns: pitchPattern = {
+export const pitchPatterns = {
     "013": [0, 1, 3],
     "014": [0, 1, 4],
     "015": [0, 1, 5],
@@ -32,7 +13,12 @@ export const pitchPatterns: pitchPattern = {
     "036": [0, 3, 6],
     "037": [0, 3, 7],
     "048": [0, 4, 8],
-};
+} as const;
+
+export type pitchPatternName = keyof typeof pitchPatterns;
+
+type pattern = typeof pitchPatterns[pitchPatternName];
+
 
 export function getPattern(patternName : pitchPatternName) {
     return pitchPatterns[patternName];

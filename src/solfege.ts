@@ -61,55 +61,47 @@ export class SolfegeMelody {
   }
 }
 
-export type Syllable =
-  | "Daw"
-  | "De"
-  | "Do"
-  | "Di"
-  | "Dai"
-  | "Ra"
-  | "Re"
-  | "Ri"
-  | "Mi"
-  | "Mai"
-  | "Fe"
-  | "Fa"
-  | "Fi"
-  | "Se"
-  | "So"
-  | "Si"
-  | "Le"
-  | "La"
-  | "Li"
-  | "Te"
-  | "Ti"
-  | "Tai";
-
-export const syllables_in_key_of_c: Readonly<Partial<Record<noteAllAccidental, Syllable>>> = {
-  // fill remaining and remove partial
+export const syllables_in_key_of_c = {
   Cbb: "Daw",
   Cb: "De",
   C: "Do",
   "C#": "Di",
   "C##": "Dai",
+  "Dbb" : "---",
   Db: "Ra",
   D: "Re",
   "D#": "Ri",
+  "D##" : "Rai",
+  "Ebb" : "Maw",
+  "Eb" : "Me",
   E: "Mi",
   "E#": "Mai",
+  "E##" : "---",
+  "Fbb" : "---",
   Fb: "Fe",
   F: "Fa",
   "F#": "Fi",
+  "F##": "Fai",
+  "Gbb": "Saw",
   Gb: "Se",
   G: "So",
   "G#": "Si",
+  "G##" : "Sai",
+  "Abb": "Law",
   Ab: "Le",
   A: "La",
   "A#": "Li",
+  "A##" : "Lai",
+  "Bbb" : "Taw",
   Bb: "Te",
   B: "Ti",
   "B#": "Tai",
-};
+  "B##" : "---"
+} as const;
+
+export type solfegeDict = keyof typeof syllables_in_key_of_c;
+
+export type Syllable = typeof syllables_in_key_of_c[solfegeDict];
 
 type RemoveOctave<T> = T extends `${infer U}${octave}` ? U : never;
 

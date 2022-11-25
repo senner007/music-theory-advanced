@@ -32,7 +32,7 @@ export type noteSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
-const baseNotes: readonly baseNote[] = Object.freeze(["C", "D", "E", "F", "G", "A", "B"]);
+const baseNotes: readonly baseNote[] = ["C", "D", "E", "F", "G", "A", "B"] as const;
 
 declare global {
   interface Array<T> {
