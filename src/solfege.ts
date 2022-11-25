@@ -1,7 +1,7 @@
 import { Interval, Note } from "@tonaljs/tonal";
 import { LogError } from "./dev-utils";
 import { INotePlay } from "./midiplay";
-import { noteAllAccidentalOctave, noteSingleAccidental, noteAllAccidental, octave, baseNote } from "./utils";
+import { noteAllAccidentalOctave, noteSingleAccidental, noteAllAccidental, octave } from "./utils";
 
 export class SolfegeMelody {
   private verify_duration_length() {
@@ -20,7 +20,7 @@ export class SolfegeMelody {
   }
 
   private sort_melody(): noteAllAccidentalOctave[] {
-    const flatMelody = this.melody.map((n) => n.noteNames).flat()
+    const flatMelody = this.melody.map((n) => n.noteNames).flat();
     return Note.sortedNames(flatMelody) as noteAllAccidentalOctave[];
   }
 
@@ -85,7 +85,8 @@ export type Syllable =
   | "Ti"
   | "Tai";
 
-export const syllables_in_key_of_c: Readonly<Partial<Record<noteAllAccidental, Syllable>>> = { // fill remaining and remove partial
+export const syllables_in_key_of_c: Readonly<Partial<Record<noteAllAccidental, Syllable>>> = {
+  // fill remaining and remove partial
   Cbb: "Daw",
   Cb: "De",
   C: "Do",
