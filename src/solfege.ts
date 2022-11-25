@@ -1,7 +1,7 @@
 import { Interval, Note } from "@tonaljs/tonal";
 import { LogError } from "./dev-utils";
 import { INotePlay } from "./midiplay";
-import { noteAllAccidentalOctave, noteSingleAccidental, noteAllAccidental } from "./utils";
+import { noteAllAccidentalOctave, noteSingleAccidental, noteAllAccidental, octave, baseNote } from "./utils";
 
 export class SolfegeMelody {
   private verify_duration_length() {
@@ -110,6 +110,8 @@ export const syllables_in_key_of_c: Readonly<Partial<Record<noteAllAccidental, S
   "B#": "Tai",
 };
 
-function remove_octave(note: noteAllAccidentalOctave): noteAllAccidental {
-  return note.replace(/[0-9]/g, "") as noteAllAccidental;
+type RemoveOctave<T> = T extends `${infer U}${octave}` ? U : never;
+
+function remove_octave<T extends `${noteAllAccidental}${octave}`>(note: T): RemoveOctave<T> {
+  return note.replace(/[0-9]/g, "") as RemoveOctave<T>;
 }
