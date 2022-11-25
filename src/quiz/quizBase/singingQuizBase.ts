@@ -1,6 +1,7 @@
 import { LogAsync } from "../../logger/logAsync";
 import { LogTable } from "../../logger/logTable";
 import { SolfegeMelody } from "../../solfege";
+import { noteSingleAccidental } from "../../utils";
 import { AudioQuizBase } from "./audioQuizBase";
 
 export abstract class SingingQuizBase extends AudioQuizBase {
@@ -8,18 +9,15 @@ export abstract class SingingQuizBase extends AudioQuizBase {
     return ["Right", "Wrong"];
   }
 
+  abstract key: noteSingleAccidental;
+
   feedback(choice: string) {
     return choice === "Right" ? "Well done!" : "Try again";
   }
 
   async callQuiz(): Promise<string | never> {
    
-    LogTable.write(new SolfegeMelody([
-        { noteNames: ["D3", "B3"], duration: 2 },
-        { noteNames: ["G3"], duration: 1 },
-        { noteNames: ["F#3"], duration: 2 },
-        { noteNames: ["G3"], duration: 1 },
-      ], "D"));
+    LogTable.write(new SolfegeMelody(this.getAudio()[0].audio, this.key));
 
     try {
       const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
