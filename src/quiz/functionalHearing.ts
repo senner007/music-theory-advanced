@@ -1,18 +1,48 @@
+import { Interval, Note } from "@tonaljs/tonal";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
-import { noteSingleAccidental } from "../utils";
+import { Syllable, syllables_in_key_of_c } from "../solfege";
+import { isTooHight, isTooLow, noteAllAccidental, noteAllAccidentalOctave, noteSingleAccidental, octave, random_note_single_accidental, toOctave } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-export const FunctionalHearing: Quiz<string> = class extends SingingQuizBase implements IQuiz {
-  // @ts-ignore
-  verifyOptions(steps: string[]): boolean {
-    return true;
+export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase implements IQuiz {
+  verifyOptions(syllables: Syllable[]): boolean {
+    return syllables.every((syllable) => Object.values(syllables_in_key_of_c).includes(syllable));
   }
 
   key: noteSingleAccidental;
-  constructor(scaleTypes: Readonly<string[]>) {
-    super(scaleTypes);
-    this.key = "D";
+  octaves : octave[] = ["3", "4", "5"]
+  audio;
+  constructor(syllables: Readonly<Syllable[]>) {
+    super(syllables);
+    this.key = random_note_single_accidental();
+
+    const syllableKeysInC = Object.keys(syllables_in_key_of_c) as noteAllAccidental[];
+    const optionSyllableNotesInC = syllableKeysInC.filter((key) => {
+      return syllables.includes(syllables_in_key_of_c[key] as Syllable);
+    });
+
+    const distanceToKey = Interval.distance("C",  this.key);
+    const syllableNotesTransposed = optionSyllableNotesInC
+      .map(s => {
+        return Note.transpose(s, distanceToKey) as noteAllAccidental
+      })
+
+    this.audio = [...Array(10).keys()]
+      .map(_ => {
+        const note = syllableNotesTransposed.randomItem();
+        const randomOctave = this.octaves.randomItem();
+        
+        const octaveNote = toOctave(note, randomOctave);
+        if (isTooHight(octaveNote)) {
+          return Note.transpose(octaveNote, "-8P") as noteAllAccidentalOctave
+        }
+
+        if (isTooLow(octaveNote)) {
+          return Note.transpose(octaveNote, "8P") as noteAllAccidentalOctave;
+        }
+        return octaveNote as noteAllAccidentalOctave;
+      });
   }
 
   get quizHead() {
@@ -24,20 +54,28 @@ export const FunctionalHearing: Quiz<string> = class extends SingingQuizBase imp
   }
 
   getAudio() {
-    const audio: INotePlay[] = [
-      { noteNames: ["D3"], duration: 1 },
-      { noteNames: ["G3"], duration: 1 },
-      { noteNames: ["F#3"], duration: 1 },
-      { noteNames: ["G3"], duration: 1 },
-      { noteNames: ["A3"], duration: 1 },
+    const audio = this.audio.map((n) : INotePlay => {
+      return { noteNames : [n], duration : 1}
+    })
+
+    const keyAudio = [
+      { noteNames : [ // abstract me out!
+        toOctave(this.key, "3"), 
+        toOctave(Note.transpose(this.key, "3M") as noteAllAccidental, "3"), 
+        toOctave(Note.transpose(this.key, "5P") as noteAllAccidental, "3")
+      ], duration : 2
+      } as INotePlay];
+
+    return [
+      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play audio" },
+      { audio: keyAudio, keyboardKey: "k", onInit: false, channel: 1, message: "play audio" }
     ];
-    return [{ audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play audio" }];
   }
 
   static meta() {
     return {
       get getAllOptions() {
-        return ["Mi"];
+        return ["Do", "Mi"];
       },
       name: "Sing functional degrees",
       description: "Sing the solfege degrees outlined in the table below",

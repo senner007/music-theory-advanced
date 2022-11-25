@@ -20,9 +20,8 @@ function notePlay(note: number, activator: "noteon" | "noteoff", channel: number
     output.send(activator, { ...channelObj, note, channel : channel });
 }
 
-const GlobaldurationMapper = (duration : number) => duration * 500;
 
-export async function playMidi(notes: INotePlay[], { signal }: any, channel : number, timerObj: any): Promise<void> {
+export async function playMidi(notes: INotePlay[], { signal }: any, channel : number, timerObj: any, tempo : number): Promise<void> {
 
     let abort: boolean = false;
 
@@ -51,7 +50,7 @@ export async function playMidi(notes: INotePlay[], { signal }: any, channel : nu
         }
 
         await new Promise((res) => {
-            timerObj = setTimeout(() => { res(0) } , GlobaldurationMapper(note.duration))
+            timerObj = setTimeout(() => { res(0) } , tempo * note.duration)
         });
 
         for (let index = 0; index < note.noteNumbers.length; index++) {

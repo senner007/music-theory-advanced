@@ -85,7 +85,7 @@ export type Syllable =
   | "Ti"
   | "Tai";
 
-const syllables_in_key_of_c: Partial<Record<noteAllAccidental, Syllable>> = { // fill remaining and remove partial
+export const syllables_in_key_of_c: Readonly<Partial<Record<noteAllAccidental, Syllable>>> = { // fill remaining and remove partial
   Cbb: "Daw",
   Cb: "De",
   C: "Do",

@@ -35,7 +35,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
   private prepareAudio() : INotePlay[][] {
     const pitchIntervals = getPatternIntervals(this.randomPitchPattern);
     const patternInversions = getPitchPatternInversions(this.randomNote, pitchIntervals);
-    const patternInversAudio = patternInversions.randomItem().toOctave(4).map(transpose_to_ascending);
+    const patternInversAudio = patternInversions.randomItem().toOctave("4").map(transpose_to_ascending);
 
     return [
       [{ noteNames: patternInversAudio, duration: 4 }],

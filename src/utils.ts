@@ -26,7 +26,7 @@ export const allScaleTypes = ScaleType.all()
   .map((s) => s.name)
   .sort();
 
-type octave = "3" | "4" | "5";
+export type octave = "3" | "4" | "5";
 export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
 export type noteSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
@@ -42,11 +42,11 @@ declare global {
   }
 
   interface Array<T extends noteAllAccidentalOctave> {
-    toOctave(octave: number): Readonly<Array<noteAllAccidentalOctave>>;
+    toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T extends noteAllAccidentalOctave> {
-    toOctave(octave: number): Readonly<Array<noteAllAccidentalOctave>>;
+    toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T> {
@@ -56,11 +56,24 @@ declare global {
   }
 }
 
-Array.prototype.toOctave = function toOctave<T extends Readonly<noteAllAccidental>>(
+export function isTooLow(n : noteAllAccidentalOctave) {
+  return Note.sortedNames([n, "F3"])[0] === n;
+}
+
+export function isTooHight(n : noteAllAccidentalOctave) {
+  return Note.sortedNames([n, "G5"])[1] === n;
+}
+
+
+export function toOctave<T extends Readonly<noteAllAccidental>>(n: T , octave : octave) {
+  return (n + octave) as noteAllAccidentalOctave
+}
+
+Array.prototype.toOctave = function<T extends Readonly<noteAllAccidental>>(
   this: T[],
-  octave: number
+  octave: octave
 ): Readonly<noteAllAccidentalOctave[]> {
-  return this.map((n) => (n + octave) as noteAllAccidentalOctave);
+  return this.map((n) => toOctave(n, octave));
 };
 
 Array.prototype.commaSequence = function (): string {

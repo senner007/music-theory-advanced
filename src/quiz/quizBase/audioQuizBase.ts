@@ -20,6 +20,8 @@ export abstract class AudioQuizBase extends QuizBase {
 
     listenersArray : IListener[] = [];
 
+    protected tempo : number = 500;
+
     constructor(options: Readonly<any[]>) {
         super(options);
        
@@ -48,7 +50,7 @@ export abstract class AudioQuizBase extends QuizBase {
                     acObj.ac.abort();
                     acObj.ac = new AbortController();
                     const channel = audioPart.channel ?? 1;
-                    playMidi(audioPart.audio, acObj.ac, channel, timerObj); 
+                    playMidi(audioPart.audio, acObj.ac, channel, timerObj, this.tempo); 
                 }
             }
             return {

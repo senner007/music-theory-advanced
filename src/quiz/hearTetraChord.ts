@@ -1,6 +1,6 @@
 
 import { Scale } from "@tonaljs/scale";
-import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending } from "../utils";
+import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending, octave } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
@@ -14,7 +14,7 @@ export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase impl
   randomScale;
   randomTetraChord;
   scaleTetraChords;
-  octaveAudio = 4;
+  octaveAudio = "4" as octave;
   audio; 
 
   private prepareAudio() : INotePlay[] {

@@ -1,4 +1,4 @@
-import { base_notes, chromatic_scale_notes,create_scale } from "../utils";
+import { base_notes, chromatic_scale_notes,create_scale, octave } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { Interval} from "@tonaljs/tonal";
 import chalk from "chalk";
@@ -14,7 +14,7 @@ export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase imp
   startingNote;
   chromaticScaleShuffled;
   missingNote;
-  octaveAudio = 4;
+  octaveAudio : octave = "4";
   constructor(scaleTypes: Readonly<undefined[]>) {
     super(scaleTypes);
     this.randomNote = base_notes().randomItem();
@@ -54,6 +54,7 @@ export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase imp
   }
 
   getAudio() {
+
     const audio = this.chromaticScaleShuffled
         .filter(note => note !== this.missingNote)
         .toOctave(this.octaveAudio)
