@@ -1,11 +1,7 @@
 import { Interval, Note } from "@tonaljs/tonal";
 import { LogError } from "./dev-utils";
+import { INotePlay } from "./midiplay";
 import { noteAllAccidentalOctave, noteSingleAccidental, noteAllAccidental } from "./utils";
-
-export interface ISolfegeNote {
-  note: noteAllAccidentalOctave;
-  duration: 1 | 2;
-}
 
 export class SolfegeMelody {
   private verify_duration_length() {
@@ -13,7 +9,7 @@ export class SolfegeMelody {
   }
 
   private sortedMelody;
-  constructor(private melody: ISolfegeNote[], private key: noteSingleAccidental) {
+  constructor(private melody: INotePlay[], private key: noteSingleAccidental) {
     this.sortedMelody = this.sort_melody();
     this.verify_duration_length();
   }
@@ -24,7 +20,8 @@ export class SolfegeMelody {
   }
 
   private sort_melody(): noteAllAccidentalOctave[] {
-    return Note.sortedNames(this.melody.map((n) => n.note)) as noteAllAccidentalOctave[];
+    const flatMelody = this.melody.map((n) => n.noteNames).flat()
+    return Note.sortedNames(flatMelody) as noteAllAccidentalOctave[];
   }
 
   public get getMelody() {

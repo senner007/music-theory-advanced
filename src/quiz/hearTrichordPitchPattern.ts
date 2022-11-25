@@ -8,6 +8,7 @@ import {
   pitchPatterns,
 } from "../pitchPatterns";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
+import { INotePlay } from "../midiplay";
 
 const pitchPatternNameArray: pitchPatternName[] = Object.keys(pitchPatterns) as pitchPatternName[];
 
@@ -31,16 +32,16 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
     this.audioArpeggio = arppeggio;
   }
 
-  private prepareAudio() {
+  private prepareAudio() : INotePlay[][] {
     const pitchIntervals = getPatternIntervals(this.randomPitchPattern);
     const patternInversions = getPitchPatternInversions(this.randomNote, pitchIntervals);
     const patternInversAudio = patternInversions.randomItem().toOctave(4).map(transpose_to_ascending);
 
     return [
-      [{ noteNames: patternInversAudio, duration: 3000 }],
+      [{ noteNames: patternInversAudio, duration: 4 }],
 
       patternInversAudio.map((a) => {
-        return { noteNames: [a], duration: 1000 };
+        return { noteNames: [a], duration: 2 };
       }),
     ];
   }

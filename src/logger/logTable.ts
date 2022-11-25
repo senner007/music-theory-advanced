@@ -22,8 +22,13 @@ function fillTableObject(solfege: SolfegeMelody, tableObject: ITableObject) {
   let totalDuration: number = 0;
 
   solfege.getMelody.forEach((melodyNote) => {
-    const pitchRow = solfege.distance_from_lowest(melodyNote.note);
-    tableObject[pitchRow][totalDuration] = solfege.syllable(melodyNote.note);
+   
+    melodyNote.noteNames.forEach(n => {
+      const pitchRow: number = solfege.distance_from_lowest(n)
+      const pitchSyllable = solfege.syllable(n);
+      tableObject[pitchRow][totalDuration] = pitchSyllable;
+    })
+   
     totalDuration = totalDuration + melodyNote.duration;
   });
 

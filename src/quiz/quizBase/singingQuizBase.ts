@@ -15,10 +15,10 @@ export abstract class SingingQuizBase extends AudioQuizBase {
   async callQuiz(): Promise<string | never> {
    
     LogTable.write(new SolfegeMelody([
-        { note: "D3", duration: 2 },
-        { note: "G3", duration: 1 },
-        { note: "F#3", duration: 2 },
-        { note: "G3", duration: 1 },
+        { noteNames: ["D3", "B3"], duration: 2 },
+        { noteNames: ["G3"], duration: 1 },
+        { noteNames: ["F#3"], duration: 2 },
+        { noteNames: ["G3"], duration: 1 },
       ], "D"));
 
     try {

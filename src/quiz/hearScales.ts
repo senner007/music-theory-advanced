@@ -1,6 +1,7 @@
 import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending, event_by_probability, add_octave_note } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
+import { INotePlay } from "../midiplay";
 
 export const HearScales: Quiz<string> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
@@ -32,12 +33,12 @@ export const HearScales: Quiz<string> = class extends ListeningQuizBase implemen
 
   }
 
-  private prepareAudio () {
+  private prepareAudio (): INotePlay[] {
     const scaleNotes = scale_notes(this.scalePick.scale).toOctave(this.octaveAudio);
       const scaleNotesWithOctave = add_octave_note(scaleNotes);
       const scaleNotesAudio = scaleNotesWithOctave
         .map(transpose_to_ascending)
-        .map(note => { return { noteNames: [note], duration: 500 } })
+        .map(note => { return { noteNames: [note], duration: 1 } as INotePlay })
       
       if (event_by_probability(50)) {
         scaleNotesAudio.reverse();

@@ -3,6 +3,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { Interval} from "@tonaljs/tonal";
 import chalk from "chalk";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
+import { INotePlay } from "../midiplay";
 
 export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(): boolean {
@@ -56,7 +57,7 @@ export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase imp
     const audio = this.chromaticScaleShuffled
         .filter(note => note !== this.missingNote)
         .toOctave(this.octaveAudio)
-        .map(note => { return { noteNames: [note], duration: 500 } });
+        .map(note => { return { noteNames: [note], duration: 1 } as INotePlay });
 
         return [ { audio : audio, keyboardKey : "space", onInit : true, channel : 1, message : "play audio"} ]
   }

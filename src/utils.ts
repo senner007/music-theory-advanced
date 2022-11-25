@@ -142,7 +142,7 @@ export function transpose_to_ascending(n: Readonly<noteAllAccidentalOctave>, ind
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
-  return intervalData.dir! < 0 ? Note.transpose(n, "8P") : n;
+  return (intervalData.dir! < 0 ? Note.transpose(n, "8P") : n) as Readonly<noteAllAccidentalOctave>;
 }
 
 export function note_variants(

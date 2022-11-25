@@ -44,10 +44,10 @@ export function getPatternIntervals(pattern: pattern): [string, string] {
 }
 
 export function getPitchPatternInversions(note: noteAllAccidental, intervals : [string, string]) {
-    const note2 = Note.transpose(note, intervals[0]);
-    const note3 = Note.transpose(note2, intervals[1]);
+    const note2 = Note.transpose(note, intervals[0]) as noteAllAccidental;
+    const note3 = Note.transpose(note2, intervals[1]) as noteAllAccidental;
 
-    const note2Inversion = Note.transpose(note, intervals[1]);
+    const note2Inversion = Note.transpose(note, intervals[1]) as noteAllAccidental;
 
     return [
         [note, note2, note3],
