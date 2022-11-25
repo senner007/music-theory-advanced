@@ -26,7 +26,7 @@ export const allScaleTypes = ScaleType.all()
   .map((s) => s.name)
   .sort();
 
-export type octave = "3" | "4" | "5";
+export type octave = "2" | "3" | "4" | "5";
 export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
 export type noteSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
@@ -109,6 +109,13 @@ export function create_chord(chordTonic: noteSingleAccidental, chordType: string
 }
 
 export function random_note_single_accidental() {
+
+  function note_single_accidentals(note: baseNote) {
+    const noteVariants = note_variants(note);
+    const [_, second, third, fourth] = noteVariants;
+    return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
+  }
+
   const baseNote = baseNotes.randomItem();
   const notesSingleAccidental = note_single_accidentals(baseNote);
   return notesSingleAccidental.randomItem() as Readonly<noteSingleAccidental>;
@@ -120,12 +127,6 @@ export function random_index<T>(arr: T[]) {
 
 export function base_notes() {
   return baseNotes.slice(0); // refactor with class an private basenotes
-}
-
-function note_single_accidentals(note: baseNote) {
-  const noteVariants = note_variants(note);
-  const [_, second, third, fourth] = noteVariants;
-  return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
 }
 
 export function chromatic_scale_notes(scale: Scale) {

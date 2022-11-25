@@ -13,6 +13,7 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
   key: noteSingleAccidental;
   octaves : octave[] = ["3", "4", "5"]
   audio;
+  stepnumber : number = 12;
   constructor(syllables: Readonly<Syllable[]>) {
     super(syllables);
     this.key = random_note_single_accidental();
@@ -28,7 +29,7 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
         return Note.transpose(s, distanceToKey) as noteAllAccidental
       })
 
-    this.audio = [...Array(10).keys()]
+    this.audio = [...Array(this.stepnumber).keys()]
       .map(_ => {
         const note = syllableNotesTransposed.randomItem();
         const randomOctave = this.octaves.randomItem();
@@ -60,6 +61,7 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
 
     const keyAudio = [
       { noteNames : [ // abstract me out!
+        toOctave(this.key, "2"), 
         toOctave(this.key, "3"), 
         toOctave(Note.transpose(this.key, "3M") as noteAllAccidental, "3"), 
         toOctave(Note.transpose(this.key, "5P") as noteAllAccidental, "3")
@@ -67,15 +69,15 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
       } as INotePlay];
 
     return [
-      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play audio" },
-      { audio: keyAudio, keyboardKey: "k", onInit: false, channel: 1, message: "play audio" }
+      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play melody" },
+      { audio: keyAudio, keyboardKey: "l", onInit: false, channel: 1, message: "play key" }
     ];
   }
 
   static meta() {
     return {
       get getAllOptions() {
-        return ["Do", "Mi"];
+        return ["Do", "Re","Mi", "Fa", "So", "La", "Ti"];
       },
       name: "Sing functional degrees",
       description: "Sing the solfege degrees outlined in the table below",
