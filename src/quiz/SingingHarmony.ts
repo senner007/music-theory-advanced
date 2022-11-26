@@ -1,42 +1,14 @@
 import chalk from "chalk";
+import { romanNumeralChord, to_roman_numeral, progressions, Progression } from "../harmonicProgressions";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
   noteSingleAccidental,
   toOctave,
   note_transpose,
-  to_roman_numeral,
-  Progression,
-  romanNumeralChord,
-  RomanNumeral,
-  RomanNumeralBelow,
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-type ProgressionObject = Readonly<
-  {
-    chords: Readonly<(RomanNumeral | RomanNumeralBelow)[]>;
-    description?: string;
-    isDiatonic: boolean;
-  }[]
->;
-
-export const progressions: ProgressionObject = [
-  { chords: ["I", "I6", "IV", "V", "I"], isDiatonic: true },
-  { chords: ["I6", "IV", "V65-u", "I"], isDiatonic: true },
-  { chords: ["I", "V7-u", "I"], isDiatonic: true },
-  { chords: ["I", "ii", "IV64", "V65-u"], isDiatonic: true },
-  {
-    chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"],
-    description: "Pachelbel canon",
-    isDiatonic: true,
-  },
-  {
-    chords: ["I", "IV64", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
-    description: "Circle of fifth progression",
-    isDiatonic: true,
-  },
-] as const;
 
 export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<Progression> implements IQuiz {
   verifyOptions(_: Progression[]): boolean {

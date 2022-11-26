@@ -6,7 +6,6 @@ import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
 import { LogError } from "./dev-utils";
-import { progressions } from "./quiz/SingingHarmony";
 
 export function customExit() {
   Log.clear();
@@ -209,46 +208,34 @@ export function number_to_degree(n: number) {
   return degree;
 }
 
-export function romanNumeralChord(romanNumeral: RomanNumeral | RomanNumeralBelow) {
-  if (romanNumeral.includes("-u")) {
-    const basicRomanNumeral: RomanNumeral = to_roman_numeral(romanNumeral as RomanNumeralBelow);
-    return to_actave_under(romanNumeralsDict[basicRomanNumeral]);
-  }
-  return romanNumeralsDict[romanNumeral as RomanNumeral];
-}
+"*************************************************************"
+"* Test for uniqueness"
+"https://ja.nsommer.dk/articles/type-checked-unique-arrays.html"
 
-type dict = Record<string, noteAllAccidentalOctave[]>;
+type InArray<T, X> =
+  // See if X is the first element in array T
+  T extends readonly [X, ...infer _Rest]
+    ? true
+    // If not, is X the only element in T?
+    : T extends readonly [X]
+      ? true
+      // No match, check if there's any elements left in T and loop recursive
+      : T extends readonly [infer _, ...infer Rest]
+        ? InArray<Rest, X>
+        // There's nothing left in the array and we found no match
+        : false
+        
 
-const romanNumeralsDict = {
-  I: ["C3", "E3", "G3"],
-  I6: ["E3", "G3", "C4"],
-  I64: ["G3", "C4", "E4"],
-  V: ["G3", "B3", "D4"],
-  V6: ["B3", "D4", "G4"],
-  V65: ["B3", "D4", "F4", "G4"],
-  V7: ["G3", "B3", "D4", "F4"],
-  ii: ["D3", "F3", "A3"],
-  ii64: ["A3", "D4", "F4"],
-  iii6: ["G3", "B3", "E4"],
-  iii64: ["B3", "E4", "G4"],
-  IV: ["F3", "A3", "C4"],
-  IV6: ["A3", "C4", "F4"],
-  IV64: ["C3", "F3", "A3"],
-  vi: ["A3", "C4", "E4"],
-  vii: ["B3", "D4", "F4"],
-} satisfies dict;
+export type UniqueArray<T> =
+  T extends readonly [infer X, ...infer Rest]
+    // We've just extracted X from T, having Rest be the remaining values.
+    // Let's see if X is in Rest, and if it is, we know we have a duplicate
+    ? InArray<Rest, X> extends true
+      ? ['Encountered value with duplicates:', X]
+      // X is not duplicated, move on to check the next value, and see
+      // if that's also unique.
+      : readonly [X, ...UniqueArray<Rest>]
+    // T did not extend [X, ...Rest], so there's nothing to do - just return T
+    : T
 
-
-export type Progression = typeof progressions[number];
-
-export type RomanNumeral = keyof typeof romanNumeralsDict;
-
-export type RomanNumeralBelow = `${RomanNumeral}-u`;
-
-function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
-  return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
-}
-
-export function to_roman_numeral(romanNumeral: RomanNumeral | RomanNumeralBelow): RomanNumeral {
-  return romanNumeral.replace(/-u/g, "") as RomanNumeral;
-}
+"*************************************************************"
