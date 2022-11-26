@@ -7,8 +7,8 @@ import {
   note_transpose,
   remove_roman_numeral_position,
   Progression,
-  romanNumeralsDict,
   progressions,
+  romanNumeralChord,
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
@@ -27,9 +27,7 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
     this.key = "C";
     this.randomProgression = progressions.randomItem();
 
-    this.audio = this.randomProgression.chords.map(c => {
-      return romanNumeralsDict[c]
-    })
+    this.audio = this.randomProgression.chords.map(c => romanNumeralChord(c))
 
   }
 

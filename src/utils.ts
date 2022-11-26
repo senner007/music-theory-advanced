@@ -56,24 +56,23 @@ declare global {
   }
 }
 
-export function ObjectKeys<Obj extends {}>(obj : Obj) : (keyof Obj)[] {
+export function ObjectKeys<Obj extends {}>(obj: Obj): (keyof Obj)[] {
   return Object.keys(obj) as (keyof Obj)[];
 }
 
-export function isTooLow(n : noteAllAccidentalOctave) {
+export function isTooLow(n: noteAllAccidentalOctave) {
   return Note.sortedNames([n, "F3"])[0] === n;
 }
 
-export function isTooHight(n : noteAllAccidentalOctave) {
+export function isTooHight(n: noteAllAccidentalOctave) {
   return Note.sortedNames([n, "G5"])[1] === n;
 }
 
-
-export function toOctave<T extends Readonly<noteAllAccidental>>(n: T , octave : octave) {
-  return (n + octave) as noteAllAccidentalOctave
+export function toOctave<T extends Readonly<noteAllAccidental>>(n: T, octave: octave) {
+  return (n + octave) as noteAllAccidentalOctave;
 }
 
-Array.prototype.toOctave = function<T extends Readonly<noteAllAccidental>>(
+Array.prototype.toOctave = function <T extends Readonly<noteAllAccidental>>(
   this: T[],
   octave: octave
 ): Readonly<noteAllAccidentalOctave[]> {
@@ -113,7 +112,6 @@ export function create_chord(chordTonic: noteSingleAccidental, chordType: string
 }
 
 export function random_note_single_accidental() {
-
   function note_single_accidentals(note: baseNote) {
     const noteVariants = note_variants(note);
     const [_, second, third, fourth] = noteVariants;
@@ -156,7 +154,11 @@ export function event_by_probability(chance: number) {
   return Math.random() * 100 < chance;
 }
 
-export function transpose_to_ascending(n: Readonly<noteAllAccidentalOctave>, index: number, arr: readonly noteAllAccidentalOctave[]) {
+export function transpose_to_ascending(
+  n: Readonly<noteAllAccidentalOctave>,
+  index: number,
+  arr: readonly noteAllAccidentalOctave[]
+) {
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
@@ -175,8 +177,8 @@ export function note_variants(
   ];
 }
 
-export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note : T, interval : string): T {
-  return Note.transpose(note, interval) as T
+export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note: T, interval: string): T {
+  return Note.transpose(note, interval) as T;
 }
 
 export function number_to_degree(n: number) {
@@ -206,38 +208,51 @@ export function number_to_degree(n: number) {
   return degree;
 }
 
-export const romanNumeralsDict: Record<RomanNumeral, Readonly<noteAllAccidentalOctave[]>> = {
-  "I" : ["C3", "E3", "G3"],
-  // @ts-ignore
-  "I6-u" : ["E2", "G2", "C3"],
-  "I64-u" : ["G2", "C3", "E3"],
-  "V6-u" : ["B2", "D3", "G3"],
-  "V-u" : ["G2", "B2", "D3"], 
-  "V65" : ["B2", "D3", "F3", "G3"],
-  "V7-u" : ["G2", "B2", "D3", "F3"],
-  "ii" : ["D3", "F3", "A3"],
-  "iii6-u" : ["G2", "B2", "E3"],
-  // @ts-ignore
-  "IV-u" : ["F2", "A2", "C3"],
-  "IV6-u" : ["A2", "C3", "F3"],
-  "IV64" : ["C3", "F3", "A3"],
-  "vi-u" : ["A2", "C3", "E3"]
+export function romanNumeralChord(romanNumeral: RomanNumeral) {
+  if (romanNumeral.includes("-u")) {
+    const basicRomanNumeral: RomanNumeralBasic = remove_roman_numeral_position(romanNumeral as RomanNumeralUnder);
+    return to_actave_under(romanNumeralsDict[basicRomanNumeral]);
+  }
+  return romanNumeralsDict[romanNumeral as RomanNumeralBasic];
+}
+
+const romanNumeralsDict: Record<RomanNumeralBasic, Readonly<noteAllAccidentalOctave[]>> = {
+  I: ["C3", "E3", "G3"],
+  I6: ["E3", "G3", "C4"],
+  I64: ["G3", "C4", "E4"],
+  V6: ["B3", "D4", "G4"],
+  V65: ["B2", "D3", "F3", "G3"],
+  V7: ["G3", "B3", "D4", "F4"],
+  ii: ["D3", "F3", "A3"],
+  iii6: ["G3", "B3", "E4"],
+  IV: ["F3", "A3", "C4"],
+  IV6: ["A3", "C4", "F4"],
+  IV64: ["C3", "F3", "A3"],
+  vi: ["A3", "C4", "E4"],
 } as const;
 
 export const progressions = [
-    { chords: ["I", "V-u", "I"] },
-    { chords: ["I", "V7-u", "I"] }, // -u means under
-    { chords: ["I", "ii", "IV64", "V65"] },
-    { chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"] }
+  { chords: ["I", "V6-u", "I"] },
+  { chords: ["I6", "IV", "V65-u", "I"] },
+  { chords: ["I", "V7-u", "I"] }, // -u means under
+  { chords: ["I", "ii", "IV64", "V65"] },
+  { chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"] },
 ] as const;
 
 export type Progression = typeof progressions[number];
 
-export type RomanNumeral = typeof progressions[number]['chords'][number];
+export type RomanNumeral = typeof progressions[number]["chords"][number];
 
-export type RemoveChordPosition<T> = T extends `${infer U}-u` ? U : never;
+type GetBasicRomanNumeral<T> = T extends `${infer U}-u` ? U : T;
 
-export function remove_roman_numeral_position(romanNumeral: RomanNumeral): RemoveChordPosition<RomanNumeral> {
-  return romanNumeral.replace(/-u/g, "") as RemoveChordPosition<RomanNumeral>;
+type RomanNumeralBasic = GetBasicRomanNumeral<RomanNumeral>;
+
+export type RomanNumeralUnder = `${RomanNumeralBasic}-u`;
+
+function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
+  return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
 }
 
+export function remove_roman_numeral_position(romanNumeral: RomanNumeral | RomanNumeralUnder): RomanNumeralBasic {
+  return romanNumeral.replace(/-u/g, "") as RomanNumeralBasic;
+}
