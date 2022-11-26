@@ -1,4 +1,4 @@
-import { random_note_single_accidental, transpose_to_ascending } from "../utils";
+import { ObjectKeys, random_note_single_accidental, transpose_to_ascending } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
   getPattern,
@@ -10,7 +10,7 @@ import {
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
 
-const pitchPatternNameArray: pitchPatternName[] = Object.keys(pitchPatterns) as pitchPatternName[];
+const pitchPatternNameArray: pitchPatternName[] = ObjectKeys(pitchPatterns);
 
 export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase implements IQuiz {
   verifyOptions(selectPitchPatterns: pitchPatternName[]): boolean {

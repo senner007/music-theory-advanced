@@ -28,7 +28,7 @@ export const allScaleTypes = ScaleType.all()
 
 export type octave = "2" | "3" | "4" | "5";
 export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
-export type noteSingleAccidental = `${baseNote}b` | baseNote | `${baseNote}#`;
+export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseNote}#`>;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
@@ -54,6 +54,10 @@ declare global {
     randomItem(): Readonly<T>;
     commaSequence(): string;
   }
+}
+
+export function ObjectKeys<Obj extends {}>(obj : Obj) : (keyof Obj)[] {
+  return Object.keys(obj) as (keyof Obj)[];
 }
 
 export function isTooLow(n : noteAllAccidentalOctave) {
@@ -201,3 +205,5 @@ export function number_to_degree(n: number) {
   }
   return degree;
 }
+
+

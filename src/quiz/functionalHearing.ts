@@ -4,14 +4,14 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { Syllable, syllables_in_key_of_c } from "../solfege";
 import {
   isTooHight,
-  isTooLow,
-  noteAllAccidental,
+  isTooLow, 
   noteAllAccidentalOctave,
   noteSingleAccidental,
   octave,
   random_note_single_accidental,
   toOctave,
   note_transpose,
+  ObjectKeys
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
@@ -28,7 +28,7 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
     super(syllables);
     this.key = random_note_single_accidental();
 
-    const syllableKeysInC = Object.keys(syllables_in_key_of_c) as noteAllAccidental[];
+    const syllableKeysInC = ObjectKeys(syllables_in_key_of_c) 
     const optionSyllableNotesInC = syllableKeysInC.filter((key) => {
       return syllables.includes(syllables_in_key_of_c[key] as Syllable);
     });
