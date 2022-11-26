@@ -9,7 +9,7 @@ export abstract class SingingQuizBase extends AudioQuizBase {
     return ["Right", "Wrong"];
   }
 
-  protected tempo : number = 1000;
+  protected tempo: number = 1000;
 
   abstract key: noteSingleAccidental;
 
@@ -18,7 +18,6 @@ export abstract class SingingQuizBase extends AudioQuizBase {
   }
 
   async callQuiz(): Promise<string | never> {
-   
     LogTable.write(new SolfegeMelody(this.getAudio()[0].audio, this.key));
 
     try {

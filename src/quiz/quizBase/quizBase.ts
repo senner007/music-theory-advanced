@@ -1,9 +1,40 @@
 import { LogError } from "../../dev-utils";
 import { Quiz } from "../../quiz-types";
 
+export interface IListener {
+  keyName: string;
+  listener: (_: any, key: any) => void;
+  acObj: { ac: AbortController };
+}
+
 export abstract class QuizBase {
+  listenersArray: IListener[] = [];
   constructor(options: Readonly<any[]>) {
     this.errorHandleOptions(options);
+    const pageUpListener = this.addPageScollListener();
+    this.listenersArray.push(pageUpListener);
+  }
+
+  private addPageScollListener(): IListener {
+    const twice = (func: Function) => {
+      for (let i = 0; i < 2; i++) {
+        func();
+      }
+    };
+
+    const listener = (_: any, key: any) => {
+      if (key.name === "pageup") {
+        twice(() => process.stdin.emit("keypress", null, { name: "up" }));
+      }
+      if (key.name === "pagedown") {
+        twice(() => process.stdin.emit("keypress", null, { name: "down" }));
+      }
+    };
+    return {
+      keyName: "pageup",
+      listener: listener,
+      acObj: { ac: new AbortController() },
+    };
   }
 
   private errorHandleOptions(options: Readonly<string[]>): void | never {
@@ -15,4 +46,21 @@ export abstract class QuizBase {
   protected abstract verifyOptions(options: Readonly<string[]>): boolean;
   abstract questionOptions: Readonly<string[]>;
   abstract question: string;
+
+  protected attachHandlers(listeners: IListener[]) {
+    for (const listener of listeners) {
+      process.stdin.on("keypress", listener.listener);
+    }
+  }
+
+  private detachHandlers(listeners: IListener[]) {
+    for (const listener of listeners) {
+      listener.acObj.ac.abort();
+      process.stdin.off("keypress", listener.listener);
+    }
+  }
+
+  cleanup = async (): Promise<void> => {
+    this.detachHandlers(this.listenersArray);
+  };
 }

@@ -1,5 +1,5 @@
 import { playMidi, INotePlay } from "../../midiplay";
-import { QuizBase } from "./quizBase";
+import { IListener, QuizBase } from "./quizBase";
 
 interface IAudioPlay {
   audio: INotePlay[];
@@ -9,31 +9,11 @@ interface IAudioPlay {
   message: string;
 }
 
-interface IListener {
-  keyName: string;
-  listener: (_: any, key: any) => void;
-  acObj: { ac: AbortController };
-}
-
 export abstract class AudioQuizBase extends QuizBase {
-  listenersArray: IListener[] = [];
   protected tempo: number = 500;
 
   constructor(options: Readonly<any[]>) {
     super(options);
-  }
-
-  private attachHandlers(listeners: IListener[]) {
-    for (const listener of listeners) {
-      process.stdin.on("keypress", listener.listener);
-    }
-  }
-
-  private detachHandlers(listeners: IListener[]) {
-    for (const listener of listeners) {
-      listener.acObj.ac.abort();
-      process.stdin.off("keypress", listener.listener);
-    }
   }
 
   private createListeners(audioParts: IAudioPlay[]): IListener[] {
@@ -60,7 +40,7 @@ export abstract class AudioQuizBase extends QuizBase {
   abstract getAudio(): IAudioPlay[];
 
   private setAudioListeners() {
-    this.listenersArray = this.createListeners(this.getAudio());
+    this.listenersArray.push(...this.createListeners(this.getAudio()));
     this.attachHandlers(this.listenersArray);
     this.getAudio().forEach((audioPart) => {
       if (audioPart.onInit) {
@@ -75,8 +55,4 @@ export abstract class AudioQuizBase extends QuizBase {
     this.setAudioListeners();
     return await this.callQuiz();
   }
-
-  cleanup = async (): Promise<void> => {
-    this.detachHandlers(this.listenersArray);
-  };
 }
