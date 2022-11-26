@@ -66,7 +66,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
   getAudio() {
     return [
       { audio: this.audioChord, keyboardKey: "space", onInit: true, channel: 1, message: "play trichord harmonically" },
-      { audio: this.audioArpeggio, keyboardKey: "l", onInit: false, channel: 2, message: "play trichord sequentially" },
+      { audio: this.audioArpeggio, keyboardKey: "l", onInit: false, channel: 1, message: "play trichord sequentially" },
     ];
   }
 

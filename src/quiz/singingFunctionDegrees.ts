@@ -82,7 +82,7 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
 
     return [
       { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play melody" },
-      { audio: keyAudio, keyboardKey: "l", onInit: false, channel: 1, message: "play key" },
+      { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
   }
 

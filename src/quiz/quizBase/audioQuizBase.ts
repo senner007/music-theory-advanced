@@ -23,16 +23,18 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
 
       const listener = (_: any, key: any) => {
         if (key.name === audioPart.keyboardKey) {
-          acObj.ac.abort();
-          acObj.ac = new AbortController();
-          const channel = audioPart.channel ?? 1;
-          playMidi(audioPart.audio, acObj.ac, channel, timerObj, this.tempo);
+          this.listenersArray
+            .filter(l => l.channel === audioPart.channel)
+            .forEach(l => l.acObj?.ac.abort())
+            acObj.ac = new AbortController();
+          playMidi(audioPart.audio, acObj.ac, audioPart.channel, timerObj, this.tempo);
         }
       };
       return {
         keyName: audioPart.keyboardKey,
         listener: listener,
         acObj: acObj,
+        channel : audioPart.channel
       };
     });
   }

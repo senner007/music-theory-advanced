@@ -2,7 +2,6 @@ import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
   noteSingleAccidental,
-  octave,
   toOctave,
   note_transpose,
   to_roman_numeral,
@@ -27,7 +26,6 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   key: noteSingleAccidental;
-  octaves: octave[] = ["3", "4", "5"];
   audio;
   randomProgression;
   tempo = 500;
@@ -79,15 +77,15 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
 
     return [
       { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play progression" },
-      { audio: sequentialAudio, keyboardKey: "a", onInit: false, channel: 2, message: "play progression arpeggiated" },
+      { audio: sequentialAudio, keyboardKey: "a", onInit: false, channel: 1, message: "arpeggiate progression" },
       {
         audio: sequentialAlternatingDirectionAudio,
         keyboardKey: "s",
         onInit: false,
-        channel: 3,
-        message: "play progression arpeggiated alternating directions",
+        channel: 1,
+        message: "arpeggiate alternating up and down",
       },
-      { audio: keyAudio, keyboardKey: "l", onInit: false, channel: 4, message: "play key" },
+      { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
   }
 

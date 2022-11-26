@@ -4,7 +4,8 @@ import { Quiz } from "../../quiz-types";
 export interface IListener {
   keyName: string;
   listener: (_: any, key: any) => void;
-  acObj: { ac: AbortController };
+  acObj?: { ac: AbortController };
+  channel? : number;
 }
 
 export abstract class QuizBase<T> {
@@ -32,8 +33,7 @@ export abstract class QuizBase<T> {
     };
     return {
       keyName: "pageup",
-      listener: listener,
-      acObj: { ac: new AbortController() },
+      listener: listener
     };
   }
 
@@ -55,7 +55,7 @@ export abstract class QuizBase<T> {
 
   private detachHandlers(listeners: IListener[]) {
     for (const listener of listeners) {
-      listener.acObj.ac.abort();
+      listener.acObj?.ac.abort();
       process.stdin.off("keypress", listener.listener);
     }
   }
