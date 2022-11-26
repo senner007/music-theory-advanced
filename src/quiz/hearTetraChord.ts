@@ -58,7 +58,7 @@ export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase<stri
   }
 
   getAudio() {
-    return [ { audio : this.audio, keyboardKey : "space", onInit : true, channel : 1, message: "play audio"} ]
+    return [ { audio : this.audio, keyboardKey : "space", onInit : true, channel : 1, message: "play tetrachord"} ]
   }
 
   static meta() {

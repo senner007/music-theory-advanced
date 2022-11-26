@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
@@ -12,12 +13,29 @@ import {
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-export const progressions: Readonly<{ chords: Readonly<(RomanNumeral | RomanNumeralBelow)[]> }[]> = [
-  { chords: ["I", "I6", "IV", "V", "I"] },
-  { chords: ["I6", "IV", "V65", "I"] },
-  { chords: ["I", "V7-u", "I"] }, // -u means under
-  { chords: ["I", "ii", "IV64", "V65"] },
-  { chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"] },
+type ProgressionObject = Readonly<
+  {
+    chords: Readonly<(RomanNumeral | RomanNumeralBelow)[]>;
+    description?: string;
+    isDiatonic: boolean;
+  }[]
+>;
+
+export const progressions: ProgressionObject = [
+  { chords: ["I", "I6", "IV", "V", "I"], isDiatonic: true },
+  { chords: ["I6", "IV", "V65-u", "I"], isDiatonic: true },
+  { chords: ["I", "V7-u", "I"], isDiatonic: true },
+  { chords: ["I", "ii", "IV64", "V65-u"], isDiatonic: true },
+  {
+    chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"],
+    description: "Pachelbel canon",
+    isDiatonic: true,
+  },
+  {
+    chords: ["I", "IV64", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
+    description: "Circle of fifth progression",
+    isDiatonic: true,
+  },
 ] as const;
 
 export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<Progression> implements IQuiz {
@@ -38,7 +56,14 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   get quizHead() {
-    return ["Progression: " + this.randomProgression.chords.map(to_roman_numeral).join(", ")];
+    return [
+      this.randomProgression.description
+        ? `The progression is known as the ${chalk.underline(this.randomProgression.description)}`
+        : "",
+      `${
+        this.randomProgression.isDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")
+      } progression: ${this.randomProgression.chords.map(to_roman_numeral).join(", ")}`,
+    ];
   }
 
   get question() {
@@ -95,7 +120,7 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
         return progressions;
       },
       name: "Sing harmonic progressions",
-      description: "Sing the harmonic progression as solfege",
+      description: "Sing the harmonic progression as solfege degrees",
     };
   }
 };
