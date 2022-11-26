@@ -5,7 +5,7 @@ import {
   octave,
   toOctave,
   note_transpose,
-  remove_roman_numeral_position,
+  to_roman_numeral,
   Progression,
   progressions,
   romanNumeralChord,
@@ -32,7 +32,7 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   get quizHead() {
-    return ["Progression: " + this.randomProgression.chords.map(remove_roman_numeral_position).join(", ")];
+    return ["Progression: " + this.randomProgression.chords.map(to_roman_numeral).join(", ")];
   }
 
   get question() {

@@ -208,18 +208,21 @@ export function number_to_degree(n: number) {
   return degree;
 }
 
-export function romanNumeralChord(romanNumeral: RomanNumeral) {
+export function romanNumeralChord(romanNumeral: RomanNumeral | RomanNumeralBelow) {
   if (romanNumeral.includes("-u")) {
-    const basicRomanNumeral: RomanNumeralBasic = remove_roman_numeral_position(romanNumeral as RomanNumeralUnder);
+    const basicRomanNumeral: RomanNumeral = to_roman_numeral(romanNumeral as RomanNumeralBelow);
     return to_actave_under(romanNumeralsDict[basicRomanNumeral]);
   }
-  return romanNumeralsDict[romanNumeral as RomanNumeralBasic];
+  return romanNumeralsDict[romanNumeral as RomanNumeral];
 }
 
-const romanNumeralsDict: Record<RomanNumeralBasic, Readonly<noteAllAccidentalOctave[]>> = {
+type dict = Record<string, noteAllAccidentalOctave[]>;
+
+const romanNumeralsDict = {
   I: ["C3", "E3", "G3"],
   I6: ["E3", "G3", "C4"],
   I64: ["G3", "C4", "E4"],
+  V: ["G3", "B3", "D4"],
   V6: ["B3", "D4", "G4"],
   V65: ["B2", "D3", "F3", "G3"],
   V7: ["G3", "B3", "D4", "F4"],
@@ -229,9 +232,9 @@ const romanNumeralsDict: Record<RomanNumeralBasic, Readonly<noteAllAccidentalOct
   IV6: ["A3", "C4", "F4"],
   IV64: ["C3", "F3", "A3"],
   vi: ["A3", "C4", "E4"],
-} as const;
+} satisfies dict;
 
-export const progressions = [
+export const progressions : Readonly<{ chords: Readonly<(RomanNumeral | RomanNumeralBelow)[]> }[]> = [
   { chords: ["I", "V6-u", "I"] },
   { chords: ["I6", "IV", "V65-u", "I"] },
   { chords: ["I", "V7-u", "I"] }, // -u means under
@@ -241,18 +244,15 @@ export const progressions = [
 
 export type Progression = typeof progressions[number];
 
-export type RomanNumeral = typeof progressions[number]["chords"][number];
+export type RomanNumeral = keyof typeof romanNumeralsDict;
 
-type GetBasicRomanNumeral<T> = T extends `${infer U}-u` ? U : T;
 
-type RomanNumeralBasic = GetBasicRomanNumeral<RomanNumeral>;
-
-export type RomanNumeralUnder = `${RomanNumeralBasic}-u`;
+export type RomanNumeralBelow = `${RomanNumeral}-u`;
 
 function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
   return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
 }
 
-export function remove_roman_numeral_position(romanNumeral: RomanNumeral | RomanNumeralUnder): RomanNumeralBasic {
-  return romanNumeral.replace(/-u/g, "") as RomanNumeralBasic;
+export function to_roman_numeral(romanNumeral: RomanNumeral | RomanNumeralBelow): RomanNumeral {
+  return romanNumeral.replace(/-u/g, "") as RomanNumeral;
 }
