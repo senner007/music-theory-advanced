@@ -12,7 +12,7 @@ import { INotePlay } from "../midiplay";
 
 const pitchPatternNameArray: pitchPatternName[] = ObjectKeys(pitchPatterns);
 
-export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase implements IQuiz {
+export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase<pitchPatternName> implements IQuiz {
   verifyOptions(selectPitchPatterns: pitchPatternName[]): boolean {
     return selectPitchPatterns.every((pattern) => pitchPatternNameArray.includes(pattern));
   }

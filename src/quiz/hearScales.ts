@@ -3,7 +3,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
 
-export const HearScales: Quiz<string> = class extends ListeningQuizBase implements IQuiz {
+export const HearScales: Quiz<string> = class extends ListeningQuizBase<string> implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

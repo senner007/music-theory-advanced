@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { LogAsync } from "../../logger/logAsync";
 import { QuizBase } from "./quizBase";
 
-export abstract class TextQuizBase extends QuizBase {
+export abstract class TextQuizBase<T> extends QuizBase<T> {
   constructor(options: Readonly<any[]>) {
     super(options);
   }

@@ -3,7 +3,7 @@ import { Note } from "@tonaljs/tonal";
 import { noteAllAccidentalOctave } from './utils';
 
 export interface INotePlay {
-    noteNames: noteAllAccidentalOctave[],
+    noteNames: Readonly<noteAllAccidentalOctave[]>,
     duration: 1 | 2 | 3 | 4;
 }
 

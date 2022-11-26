@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { LogAsync } from "../../logger/logAsync";
 import { AudioQuizBase } from "./audioQuizBase";
 
-export abstract class ListeningQuizBase extends AudioQuizBase {
+export abstract class ListeningQuizBase<T> extends AudioQuizBase<T> {
   abstract answer(): Readonly<string>;
 
   feedbackWrong() {

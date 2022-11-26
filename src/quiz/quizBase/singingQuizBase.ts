@@ -4,7 +4,7 @@ import { SolfegeMelody } from "../../solfege";
 import { noteSingleAccidental } from "../../utils";
 import { AudioQuizBase } from "./audioQuizBase";
 
-export abstract class SingingQuizBase extends AudioQuizBase {
+export abstract class SingingQuizBase<T> extends AudioQuizBase<T> {
   get questionOptions() {
     return ["Right", "Wrong"];
   }
@@ -23,7 +23,7 @@ export abstract class SingingQuizBase extends AudioQuizBase {
     try {
       const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
         this.questionOptions,
-        "Evaluation",
+        "Self-evaluation",
         "q",
         this.getAudio().map((la) => {
           return { value: la.message, key: la.keyboardKey };

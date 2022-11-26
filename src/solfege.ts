@@ -108,3 +108,4 @@ type RemoveOctave<T> = T extends `${infer U}${octave}` ? U : never;
 function remove_octave<T extends `${noteAllAccidental}${octave}`>(note: T): RemoveOctave<T> {
   return note.replace(/[0-9]/g, "") as RemoveOctave<T>;
 }
+

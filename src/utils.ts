@@ -206,4 +206,38 @@ export function number_to_degree(n: number) {
   return degree;
 }
 
+export const romanNumeralsDict: Record<RomanNumeral, Readonly<noteAllAccidentalOctave[]>> = {
+  "I" : ["C3", "E3", "G3"],
+  // @ts-ignore
+  "I6-u" : ["E2", "G2", "C3"],
+  "I64-u" : ["G2", "C3", "E3"],
+  "V6-u" : ["B2", "D3", "G3"],
+  "V-u" : ["G2", "B2", "D3"], 
+  "V65" : ["B2", "D3", "F3", "G3"],
+  "V7-u" : ["G2", "B2", "D3", "F3"],
+  "ii" : ["D3", "F3", "A3"],
+  "iii6-u" : ["G2", "B2", "E3"],
+  // @ts-ignore
+  "IV-u" : ["F2", "A2", "C3"],
+  "IV6-u" : ["A2", "C3", "F3"],
+  "IV64" : ["C3", "F3", "A3"],
+  "vi-u" : ["A2", "C3", "E3"]
+} as const;
+
+export const progressions = [
+    { chords: ["I", "V-u", "I"] },
+    { chords: ["I", "V7-u", "I"] }, // -u means under
+    { chords: ["I", "ii", "IV64", "V65"] },
+    { chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"] }
+] as const;
+
+export type Progression = typeof progressions[number];
+
+export type RomanNumeral = typeof progressions[number]['chords'][number];
+
+export type RemoveChordPosition<T> = T extends `${infer U}-u` ? U : never;
+
+export function remove_roman_numeral_position(romanNumeral: RomanNumeral): RemoveChordPosition<RomanNumeral> {
+  return romanNumeral.replace(/-u/g, "") as RemoveChordPosition<RomanNumeral>;
+}
 

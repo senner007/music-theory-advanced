@@ -12,7 +12,7 @@ import {
 } from "../utils";
 import { TextQuizBase } from "./quizBase/textBase";
 
-export const NameScaleDegree: Quiz<string> = class extends TextQuizBase implements IQuiz {
+export const NameScaleDegree: Quiz<string> = class extends TextQuizBase<string> implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

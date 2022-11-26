@@ -7,7 +7,7 @@ export interface IListener {
   acObj: { ac: AbortController };
 }
 
-export abstract class QuizBase {
+export abstract class QuizBase<T> {
   listenersArray: IListener[] = [];
   constructor(options: Readonly<any[]>) {
     this.errorHandleOptions(options);
@@ -37,13 +37,13 @@ export abstract class QuizBase {
     };
   }
 
-  private errorHandleOptions(options: Readonly<string[]>): void | never {
+  private errorHandleOptions(options: Readonly<T[]>): void | never {
     const optionsAreValid = this.verifyOptions(options);
     const quizConstructor: Quiz<any> = this.constructor as Quiz<any>;
     if (!optionsAreValid) LogError("options invalid in class: " + "'" + quizConstructor.meta.name + "'");
   }
 
-  protected abstract verifyOptions(options: Readonly<string[]>): boolean;
+  protected abstract verifyOptions(options: Readonly<T[]>): boolean;
   abstract questionOptions: Readonly<string[]>;
   abstract question: string;
 

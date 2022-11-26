@@ -9,7 +9,7 @@ interface IAudioPlay {
   message: string;
 }
 
-export abstract class AudioQuizBase extends QuizBase {
+export abstract class AudioQuizBase<T> extends QuizBase<T> {
   protected tempo: number = 500;
 
   constructor(options: Readonly<any[]>) {

@@ -8,7 +8,7 @@ export interface IQuiz {
 export interface Quiz<T> {
   new (options: Readonly<T[]>): IQuiz;
   meta(): {
-    getAllOptions: Readonly<string[]>;
+    getAllOptions: Readonly<T[]>;
     name: string;
     description: string;
   };

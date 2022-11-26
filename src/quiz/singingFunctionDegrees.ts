@@ -15,7 +15,7 @@ import {
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase implements IQuiz {
+export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQuizBase<Syllable> implements IQuiz {
   verifyOptions(syllables: Syllable[]): boolean {
     return syllables.every((syllable) => Object.values(syllables_in_key_of_c).includes(syllable));
   }
@@ -86,7 +86,7 @@ export const FunctionalHearing: Quiz<Syllable> = class extends SingingQuizBase i
 
   static meta() {
     return {
-      get getAllOptions() {
+      get getAllOptions(): Syllable[] {
         return ["Do", "Re", "Mi", "Fa", "So", "La", "Ti"];
       },
       name: "Sing functional degrees",
