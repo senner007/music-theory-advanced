@@ -9,7 +9,7 @@ export abstract class SingingQuizBase<T> extends AudioQuizBase<T> {
     return ["Right", "Wrong"];
   }
 
-  protected tempo: number = 1000;
+  abstract tempo: number;
 
   abstract key: noteSingleAccidental;
 

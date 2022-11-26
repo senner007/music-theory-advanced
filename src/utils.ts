@@ -6,6 +6,7 @@ import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
 import { LogError } from "./dev-utils";
+import { progressions } from "./quiz/SingingHarmony";
 
 export function customExit() {
   Log.clear();
@@ -234,18 +235,10 @@ const romanNumeralsDict = {
   vi: ["A3", "C4", "E4"],
 } satisfies dict;
 
-export const progressions : Readonly<{ chords: Readonly<(RomanNumeral | RomanNumeralBelow)[]> }[]> = [
-  { chords: ["I", "V6-u", "I"] },
-  { chords: ["I6", "IV", "V65-u", "I"] },
-  { chords: ["I", "V7-u", "I"] }, // -u means under
-  { chords: ["I", "ii", "IV64", "V65"] },
-  { chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"] },
-] as const;
 
 export type Progression = typeof progressions[number];
 
 export type RomanNumeral = keyof typeof romanNumeralsDict;
-
 
 export type RomanNumeralBelow = `${RomanNumeral}-u`;
 

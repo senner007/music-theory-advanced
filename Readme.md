@@ -25,6 +25,7 @@
 - release .exe files
 - improve similarity of scale selection in "Hear Scales" quiz
 - write roman numerals in table heading
+- add count in for singing
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
