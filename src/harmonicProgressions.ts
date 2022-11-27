@@ -1,5 +1,7 @@
 import { Note } from "@tonaljs/tonal"
-import { noteAllAccidentalOctave, UniqueArray  } from "./utils"
+import { noteAllAccidentalOctave } from "./utils"
+import fs from 'fs';
+import { LogError } from "./dev-utils";
 
 export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralBelow) {
     if (romanNumeral.includes("-u")) {
@@ -54,23 +56,31 @@ type ProgressionObject = Readonly<
   }[]
 >;
 
-export const progressionsObj = [
-  { chords: ["I", "I6", "IV", "V", "I"], isDiatonic: true },
-  { chords: ["I6", "IV", "V65-u", "I"], isDiatonic: true },
-  { chords: ["I", "V7-u", "I"], isDiatonic: true },
-  { chords: ["I", "ii", "IV64", "V65-u"], isDiatonic: true },
-  {
-    chords: ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"],
-    description: "Pachelbel canon",
-    isDiatonic: true,
-  },
-  {
-    chords: ["I", "IV64", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
-    description: "Circle of fifth progression",
-    isDiatonic: true,
-  },
-] as const;
+export const progressions = JSON.parse(fs.readFileSync('harmonic-progressions.json') as any) as ProgressionObject;
 
-export const progressions: ProgressionObject & UniqueArray<typeof progressionsObj> = progressionsObj // compile error if not unique
+(function JSONContentVerify() {
+    const progressionsTemp: string[] = [];
+    progressions.forEach((key, keyIndex) => {
 
+        const chordsString = key.chords.join("");
+        if (progressionsTemp.includes(chordsString)) {
+            LogError(
+`Json content error at: 
+Index : ${keyIndex} progression : ${chordsString}
+Progression is not unique`
+            )
+        }
+        progressionsTemp.push(chordsString)
+
+        key.chords.forEach((chord, chordIndex) => {
+            if (!(chord in romanNumeralsDict || to_roman_numeral(chord) in romanNumeralsDict)) {
+                LogError(
+`Json content error at: 
+Index : ${chordIndex} chord : ${chord}
+Roman numeral not in dictionary`
+                )
+            }
+        })
+    })
+})();
 

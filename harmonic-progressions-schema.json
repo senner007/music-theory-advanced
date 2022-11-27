@@ -1,0 +1,40 @@
+{
+    "type": "array",
+    "title": "Harmonic progressions",
+    "uniqueItems": true,
+    "items": {
+        "title": "Progression",
+        "type": "object",
+        "required": [
+            "chords",
+            "isDiatonic"
+        ],
+        "properties": {
+            "chords": {
+                "type": "array",
+                "description": "The person's first name.",
+                "minItems": 2,
+                "items": {
+                    "title": "Chord",
+                    "type": "string"
+                }
+            },
+            "description": {
+                "type": "string",
+                "description": "Progression description."
+            },
+            "isDiatonic": {
+                "description": "Is the progression diatonic",
+                "type": "boolean"
+            },
+            "tags": {
+                "type": "array",
+                "description": "Optional tags to describe description",
+                "items": {
+                    "title": "tag",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

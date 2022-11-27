@@ -1,0 +1,24 @@
+[
+  {
+    "chords": ["I", "I6", "IV", "V", "I"],
+    "isDiatonic": true
+  },
+  {
+    "chords": ["I", "V7-u", "I"],
+    "isDiatonic": true
+  },
+  {
+    "chords": ["I", "ii", "IV64", "V65-u"],
+    "isDiatonic": true
+  },
+  {
+    "chords": ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"],
+    "description": "Pachelbel canon",
+    "isDiatonic": true
+  },
+  {
+    "chords": ["I", "IV64", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
+    "description": "Circle of fifth progression",
+    "isDiatonic": true
+  }
+]
