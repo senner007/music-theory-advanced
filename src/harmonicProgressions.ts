@@ -14,22 +14,27 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralB
   type dict = Record<string, noteAllAccidentalOctave[]>;
   
   const romanNumeralsDict = {
+    i: ["C3", "Eb3", "G3"],
     I: ["C3", "E3", "G3"],
     I6: ["E3", "G3", "C4"],
     I64: ["G3", "C4", "E4"],
     V: ["G3", "B3", "D4"],
+    V7: ["G3", "B3", "D4", "F4"],
     V6: ["B3", "D4", "G4"],
     V65: ["B3", "D4", "F4", "G4"],
-    V7: ["G3", "B3", "D4", "F4"],
     ii: ["D3", "F3", "A3"],
+    ii6: ["F3", "A3", "D4"],
     ii64: ["A3", "D4", "F4"],
     iii6: ["G3", "B3", "E4"],
     iii64: ["B3", "E4", "G4"],
+    iv: ["F3", "Ab3", "C4"],
+    iv6: ["Ab3", "C4", "F4"],
     IV: ["F3", "A3", "C4"],
     IV6: ["A3", "C4", "F4"],
-    IV64: ["C3", "F3", "A3"],
+    IV64: ["C4", "F4", "A4"],
     vi: ["A3", "C4", "E4"],
     vii: ["B3", "D4", "F4"],
+    viio6: ["D4", "F4", "B4"],
   } satisfies dict;
   
   

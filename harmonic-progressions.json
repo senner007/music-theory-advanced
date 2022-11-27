@@ -1,24 +1,47 @@
 [
   {
+    "chords": ["I", "IV64-u", "ii"],
+    "isDiatonic": true,
+    "tags": ["Inversion"]
+  },
+  {
+    "chords": ["i", "iv6-u", "V65-u"],
+    "isDiatonic": true,
+    "tags": ["Inversion"]
+  },
+  {
+    "chords": ["I", "viio6-u", "I6"],
+    "isDiatonic": true,
+    "tags": ["Inversion"]
+  },
+  {
+    "chords": ["I", "ii64-u", "I", "I6"],
+    "isDiatonic": true
+  },
+  {
     "chords": ["I", "I6", "IV", "V", "I"],
     "isDiatonic": true
   },
   {
     "chords": ["I", "V7-u", "I"],
-    "isDiatonic": true
+    "isDiatonic": true,
+    "tags": ["DominantSeven"]
   },
   {
-    "chords": ["I", "ii", "IV64", "V65-u"],
-    "isDiatonic": true
+    "chords": ["I", "ii", "IV64-u", "V65-u"],
+    "isDiatonic": true,
+    "tags": ["Inversion"]
   },
   {
     "chords": ["I", "V6-u", "vi-u", "iii6-u", "IV6-u", "I64-u", "IV6-u", "V6-u"],
     "description": "Pachelbel canon",
-    "isDiatonic": true
+    "isDiatonic": true,
+    "tags": ["Inversion"]
   },
   {
-    "chords": ["I", "IV64", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
+    "chords": ["I", "IV64-u", "vii-u", "iii64-u", "vi-u", "ii64-u", "V6-u", "I"],
     "description": "Circle of fifth progression",
-    "isDiatonic": true
+    "isDiatonic": true,
+    "tags": ["Inversion"]
   }
 ]

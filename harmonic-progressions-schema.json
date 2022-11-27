@@ -32,7 +32,11 @@
                 "description": "Optional tags to describe description",
                 "items": {
                     "title": "tag",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "Inversion",
+                        "DominantSeven"
+                    ]
                 }
             }
         }
