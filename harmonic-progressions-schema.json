@@ -7,17 +7,27 @@
         "type": "object",
         "required": [
             "chords",
-            "isDiatonic"
+            "isDiatonic",
+            "isMajor"
         ],
         "properties": {
             "chords": {
                 "type": "array",
-                "description": "The person's first name.",
+                "description": "Chords",
                 "minItems": 2,
                 "items": {
                     "title": "Chord",
                     "type": "string"
                 }
+            },
+            "bass" : {
+                "type": "array",
+                    "description": "Bass movement",
+                    "minItems": 2,
+                    "items": {
+                        "title": "Bass Chord",
+                        "type": "string"
+                    }
             },
             "description": {
                 "type": "string",
@@ -25,6 +35,10 @@
             },
             "isDiatonic": {
                 "description": "Is the progression diatonic",
+                "type": "boolean"
+            },
+            "isMajor": {
+                "description": "Is the progression major or minor",
                 "type": "boolean"
             },
             "tags": {
@@ -35,7 +49,8 @@
                     "type": "string",
                     "enum": [
                         "Inversion",
-                        "DominantSeven"
+                        "DominantSeven",
+                        "Plagal"
                     ]
                 }
             }

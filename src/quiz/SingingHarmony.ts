@@ -30,7 +30,7 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   get quizHead() {
     return [
       this.randomProgression.description
-        ? `The progression is known as the ${chalk.underline(this.randomProgression.description)}`
+        ? `Progression description: ${chalk.underline(this.randomProgression.description)}`
         : "",
       `${
         this.randomProgression.isDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")

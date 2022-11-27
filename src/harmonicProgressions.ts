@@ -15,10 +15,12 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralB
   
   const romanNumeralsDict = {
     i: ["C3", "Eb3", "G3"],
+    i6: ["Eb3", "G3", "C4"],
     I: ["C3", "E3", "G3"],
     I6: ["E3", "G3", "C4"],
     I64: ["G3", "C4", "E4"],
     V: ["G3", "B3", "D4"],
+    V64: ["D4", "G4", "B4"],
     V7: ["G3", "B3", "D4", "F4"],
     V6: ["B3", "D4", "G4"],
     V65: ["B3", "D4", "F4", "G4"],
@@ -36,7 +38,6 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralB
     vii: ["B3", "D4", "F4"],
     viio6: ["D4", "F4", "B4"],
   } satisfies dict;
-  
   
   export type Progression = typeof progressions[number];
   
