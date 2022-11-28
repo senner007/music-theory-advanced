@@ -3,14 +3,10 @@ import { noteAllAccidentalOctave } from "./utils"
 import fs from 'fs';
 import { LogError } from "./dev-utils";
 
-export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove | RomanNumeralBelow) {
+export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove ) {
     if (romanNumeral.includes("-a")) {
       const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralAbove);
       return to_actave_above(romanNumeralsDict[basicRomanNumeral]);
-    }
-    if (romanNumeral.includes("-u")) {
-      const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralBelow);
-      return to_actave_under(romanNumeralsDict[basicRomanNumeral]);
     }
     return romanNumeralsDict[romanNumeral as RomanNumeralType];
   }
@@ -53,24 +49,18 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
   
   export type RomanNumeralAbove = `${RomanNumeralType}-a`;
 
-  export type RomanNumeralBelow = `${RomanNumeralType}-u`;
-  
-  export function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
-    return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
-  }
-
   function to_actave_above(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
     return notes.map((n) => Note.transpose(n, "8P")) as noteAllAccidentalOctave[];
   }
   
-  export function to_roman_numeral(romanNumeral: RomanNumeralType | RomanNumeralBelow | RomanNumeralAbove): RomanNumeralType {
+  export function to_roman_numeral(romanNumeral: RomanNumeralType  | RomanNumeralAbove): RomanNumeralType {
     return romanNumeral.replace(/-a/g, "") as RomanNumeralType;
   }
 
 
 export type Progression = Readonly<
   {
-    chords: Readonly<(RomanNumeralType | RomanNumeralBelow)[]>;
+    chords: Readonly<(RomanNumeralType | RomanNumeralAbove)[]>;
     bass: Readonly<noteAllAccidentalOctave[]>;
     isMajor: boolean
     description?: string;
