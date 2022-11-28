@@ -3,10 +3,14 @@ import { noteAllAccidentalOctave } from "./utils"
 import fs from 'fs';
 import { LogError } from "./dev-utils";
 
-export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralBelow) {
+export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove | RomanNumeralBelow) {
     if (romanNumeral.includes("-a")) {
-      const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralBelow);
+      const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralAbove);
       return to_actave_above(romanNumeralsDict[basicRomanNumeral]);
+    }
+    if (romanNumeral.includes("-u")) {
+      const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralBelow);
+      return to_actave_under(romanNumeralsDict[basicRomanNumeral]);
     }
     return romanNumeralsDict[romanNumeral as RomanNumeralType];
   }
@@ -14,70 +18,81 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralB
   type dict = Record<string, noteAllAccidentalOctave[]>;
   
   const romanNumeralsDict = {
-    i: ["C3", "Eb3", "G3"],
-    i6: ["Eb3", "G3", "C4"],
-    i64: ["G3", "C4", "Eb4"],
-    I: ["C3", "E3", "G3"],
-    I6: ["E3", "G3", "C4"],
-    I64: ["G3", "C4", "E4"],
-    V: ["G3", "B3", "D4"],
-    V64: ["D3", "G3", "B3"],
-    V7: ["G3", "B3", "D4", "F4"],
-    "V7(mP5)" : ["G3", "B3", "F4"],
-    V6: ["B2", "D3", "G3"],
-    V65: ["B3", "D4", "F4", "G4"],
-    ii: ["D3", "F3", "A3"],
-    iio6: ["F3", "Ab3", "D4"],
-    iio64: ["Ab3", "D4", "F4"],
-    ii6: ["F3", "A3", "D4"],
-    ii64: ["A3", "D4", "F4"],
-    iii6: ["G3", "B3", "E4"],
-    iii64: ["B3", "E4", "G4"],
-    iv: ["F3", "Ab3", "C4"],
-    iv6: ["Ab3", "C4", "F4"],
-    iv64: ["C3", "F3", "Ab3"],
-    IV: ["F3", "A3", "C4"],
-    IV6: ["A3", "C4", "F4"],
-    IV64: ["C3", "F3", "A3"],
-    vi: ["A3", "C4", "E4"],
-    vii: ["B3", "D4", "F4"],
-    viio6: ["D4", "F4", "B4"]
+    i: ["C4", "Eb4", "G4"],
+    i6: ["Eb4", "G4", "C5"],
+    i64: ["G4", "C5", "Eb5"],
+    I: ["C4", "E4", "G4"],
+    I6: ["E4", "G4", "C5"],
+    I64: ["G4", "C5", "E5"],
+    V: ["G4", "B4", "D5"],
+    V64: ["D4", "G4", "B4"],
+    V7: ["G4", "B4", "D5", "F5"],
+    "V7(mP5)" : ["G4", "B4", "F5"],
+    V6: ["B3", "D4", "G4"],
+    V65: ["B4", "D5", "F5", "G5"],
+    ii: ["D4", "F4", "A4"],
+    iio6: ["F4", "Ab4", "D5"],
+    iio64: ["Ab4", "D5", "F5"],
+    ii6: ["F4", "A4", "D5"],
+    ii64: ["A4", "D5", "F5"],
+    iii6: ["G4", "B4", "E5"],
+    iii64: ["B4", "E5", "G5"],
+    iv: ["F4", "Ab4", "C5"],
+    iv6: ["Ab4", "C5", "F5"],
+    iv64: ["C4", "F4", "Ab4"],
+    IV: ["F4", "A4", "C5"],
+    IV6: ["A4", "C5", "F5"],
+    IV64: ["C4", "F4", "A4"],
+    vi: ["A4", "C5", "E5"],
+    vii: ["B4", "D5", "F5"],
+    viio6: ["D5", "F5", "B5"]
   } satisfies dict;
-  
-  export type Progression = typeof progressions[number];
+
   
   export type RomanNumeralType = keyof typeof romanNumeralsDict;
   
-  export type RomanNumeralBelow = `${RomanNumeralType}-a`;
+  export type RomanNumeralAbove = `${RomanNumeralType}-a`;
+
+  export type RomanNumeralBelow = `${RomanNumeralType}-u`;
   
-  // function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
-  //   return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
-  // }
+  export function to_actave_under(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
+    return notes.map((n) => Note.transpose(n, "-8P")) as noteAllAccidentalOctave[];
+  }
 
   function to_actave_above(notes: Readonly<noteAllAccidentalOctave[]>): noteAllAccidentalOctave[] {
     return notes.map((n) => Note.transpose(n, "8P")) as noteAllAccidentalOctave[];
   }
   
-  export function to_roman_numeral(romanNumeral: RomanNumeralType | RomanNumeralBelow): RomanNumeralType {
+  export function to_roman_numeral(romanNumeral: RomanNumeralType | RomanNumeralBelow | RomanNumeralAbove): RomanNumeralType {
     return romanNumeral.replace(/-a/g, "") as RomanNumeralType;
   }
 
 
-type ProgressionObject = Readonly<
+export type Progression = Readonly<
   {
     chords: Readonly<(RomanNumeralType | RomanNumeralBelow)[]>;
-    bass: Readonly<(RomanNumeralType | RomanNumeralBelow)[]>;
+    bass: Readonly<noteAllAccidentalOctave[]>;
     isMajor: boolean
     description?: string;
     isDiatonic: boolean;
-  }[]
+  }
 >;
 
-export const progressions = (JSON.parse(fs.readFileSync('harmonic-progressions.json') as any) as ProgressionObject);
+type ProgressionsJSON = {
+  level : number;
+  description: string;
+  progressions: Progression[]
+}
 
-(function JSONContentVerify() {
+const progressionsJson = (JSON.parse(fs.readFileSync('harmonic-progressions.json') as any) as ProgressionsJSON);
+
+
+export const progressions = progressionsJson.progressions;
+
+;(function JSONContentVerify() {
     const progressionsTemp: string[] = [];
-    progressions.forEach((key, keyIndex) => {
+    progressionsJson.progressions.forEach((key , keyIndex) => {
+      console.log(key)
 
         const chordsString = key.chords.join("") + key.bass.join("");
         if (progressionsTemp.includes(chordsString)) {
@@ -97,7 +112,7 @@ Index : ${chordIndex} chord : ${chord}
 Roman numeral not in dictionary`
                 )
             }
-        })
+        });
     })
 })();
 

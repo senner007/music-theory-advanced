@@ -1,5 +1,6 @@
+import { Chord } from "@tonaljs/tonal";
 import chalk from "chalk";
-import { romanNumeralChord, to_roman_numeral, progressions, Progression } from "../harmonicProgressions";
+import { romanNumeralChord, progressions, Progression } from "../harmonicProgressions";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
@@ -19,12 +20,17 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   audio;
   randomProgression;
   tempo = 500;
+  chords;
   constructor(progressions: Readonly<Progression[]>) {
     super(progressions);
     this.key = "C";
     this.randomProgression = progressions.randomItem();
 
     this.audio = this.randomProgression.chords.map((c) => romanNumeralChord(c));
+
+    this.chords = this.audio.map((n, index: number) => {
+      return Chord.detect([this.randomProgression.bass[index],...n]);
+    });
   }
 
   get quizHead() {
@@ -34,7 +40,7 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
         : "",
       `${
         this.randomProgression.isDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")
-      } progression: ${this.randomProgression.chords.map(to_roman_numeral).join(", ")}`,
+      } progression: ${this.chords.map(c => c[0]).join(", ")}`,
     ];
   }
 
@@ -43,8 +49,8 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   getAudio() {
-    const audio = this.audio.map((n): INotePlay => {
-      return { noteNames: n, duration: 2 };
+    const audio = this.audio.map((n, index): INotePlay => {
+      return { noteNames: [this.randomProgression.bass[index],...n], duration: 2 };
     });
 
     const sequentialAudio = this.audio
