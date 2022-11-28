@@ -92,7 +92,6 @@ export const progressions = progressionsJson.progressions;
 ;(function JSONContentVerify() {
     const progressionsTemp: string[] = [];
     progressionsJson.progressions.forEach((key , keyIndex) => {
-      console.log(key)
 
         const chordsString = key.chords.join("") + key.bass.join("");
         if (progressionsTemp.includes(chordsString)) {

@@ -1,4 +1,4 @@
-import { Chord } from "@tonaljs/tonal";
+import { Chord, Interval, Note } from "@tonaljs/tonal";
 import chalk from "chalk";
 import { romanNumeralChord, progressions, Progression } from "../harmonicProgressions";
 import { INotePlay } from "../midiplay";
@@ -7,6 +7,8 @@ import {
   noteSingleAccidental,
   toOctave,
   note_transpose,
+  random_note_single_accidental,
+  noteAllAccidentalOctave,
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
@@ -17,20 +19,50 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   key: noteSingleAccidental;
-  audio;
   randomProgression;
   tempo = 500;
   chords;
+  randomProgressionInC;
+  randomProgressionInKey;
   constructor(progressions: Readonly<Progression[]>) {
     super(progressions);
-    this.key = "C";
+    this.key = this.key = random_note_single_accidental();
     this.randomProgression = progressions.randomItem();
 
-    this.audio = this.randomProgression.chords.map((c) => romanNumeralChord(c));
+    this.randomProgressionInC = {
+      chords : this.randomProgression.chords.map((c) => romanNumeralChord(c)),
+      bass : this.randomProgression.bass
+    }
 
-    this.chords = this.audio.map((n, index: number) => {
-      return Chord.detect([this.randomProgression.bass[index],...n]);
+    this.randomProgressionInKey = this.transposeProgression();
+
+    this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
+      return Chord.detect([this.randomProgressionInKey.bass[index],...n]);
     });
+  }
+  // refactor me!
+  private transposeProgression() : { chords : noteAllAccidentalOctave[][], bass : noteAllAccidentalOctave[]} {
+    const distanceToKey = Interval.distance("C", this.key);
+    const transposed =  {
+      chords :  this.randomProgressionInC.chords.map(c => c.map(Note.transposeBy(distanceToKey))) as noteAllAccidentalOctave[][],
+      bass : this.randomProgressionInC.bass.map(Note.transposeBy(distanceToKey)) as noteAllAccidentalOctave[]
+    }
+    const notesSorted = Note.sortedNames(transposed.chords.flatMap(n => n));
+    const lowestNote = notesSorted[0]
+    const highestNote = notesSorted[notesSorted.length -1]
+    if (Note.sortedNames(["C4", lowestNote])[0] === lowestNote) {
+      return {
+        chords : transposed.chords.map(c => c.map(Note.transposeBy("8P"))) as noteAllAccidentalOctave[][],
+        bass : transposed.bass.map(Note.transposeBy("8P")) as noteAllAccidentalOctave[]
+      }
+    }
+    if (Note.sortedNames(["G5", highestNote])[1] === highestNote) {
+      return {
+        chords : transposed.chords.map(c => c.map(Note.transposeBy("-8P"))) as noteAllAccidentalOctave[][],
+        bass : transposed.bass.map(Note.transposeBy("-8P")) as noteAllAccidentalOctave[]
+      }
+    }
+    return transposed;
   }
 
   get quizHead() {
@@ -49,17 +81,17 @@ export const SingingHarmony: Quiz<Progression> = class extends SingingQuizBase<P
   }
 
   getAudio() {
-    const audio = this.audio.map((n, index): INotePlay => {
-      return { noteNames: [this.randomProgression.bass[index],...n], duration: 2 };
+    const audio = this.randomProgressionInKey.chords.map((n, index): INotePlay => {
+      return { noteNames: [this.randomProgressionInKey.bass[index],...n], duration: 2 };
     });
 
-    const sequentialAudio = this.audio
+    const sequentialAudio = this.randomProgressionInKey.chords
       .flatMap((n) => n)
       .map((n): INotePlay => {
         return { noteNames: [n], duration: 1 };
       });
 
-    const sequentialAlternatingDirectionAudio = this.audio
+    const sequentialAlternatingDirectionAudio = this.randomProgressionInKey.chords
       .flatMap((n, i) => (i % 2 !== 0 ? n.slice(0).reverse() : n))
       .map((n): INotePlay => {
         return { noteNames: [n], duration: 1 };
