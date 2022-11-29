@@ -65,6 +65,7 @@ export type Progression = Readonly<
     isMajor: boolean
     description?: string;
     isDiatonic: boolean;
+    tags: string[];
   }
 >;
 

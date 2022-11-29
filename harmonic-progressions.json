@@ -23,7 +23,7 @@
       "description": "c1-3",
       "isMajor": false,
       "isDiatonic": true,
-      "tags": ["Inversion"]
+      "tags": ["Inversion", "Diminished"]
     },
     {
       "chords": ["I6", "ii", "V64", "I6"],
@@ -113,7 +113,7 @@
       "description": "c1-15",
       "isMajor": false,
       "isDiatonic": true,
-      "tags": ["Inversion"]
+      "tags": ["Inversion", "Diminished"]
     },
     {
       "chords": ["i-a", "iio64", "V7(mP5)", "i64"],
@@ -121,7 +121,7 @@
       "description": "c1-16",
       "isMajor": false,
       "isDiatonic": true,
-      "tags": ["Inversion", "DominantSeven"]
+      "tags": ["Inversion", "DominantSeven", "Diminished"]
     }
   ]
 }

@@ -15,6 +15,7 @@ import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
 import { SingingFunctionalDegrees } from "./quiz/singingFunctionDegrees";
 import { SingingHarmony } from "./quiz/SingingHarmony";
 
+process.stdin.setMaxListeners(20);
 Log.clear();
 
 Log.write("Found MIDI outputs:");
