@@ -1,7 +1,8 @@
-import { Note } from "@tonaljs/tonal"
+
 import { noteAllAccidentalOctave } from "./utils"
 import fs from 'fs';
 import { LogError } from "./dev-utils";
+import { Note } from "@tonaljs/tonal";
 
 export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove ) {
     if (romanNumeral.includes("-a")) {
@@ -12,7 +13,7 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
   }
   
   type dict = Record<string, noteAllAccidentalOctave[]>;
-  
+
   const romanNumeralsDict = {
     i: ["C4", "Eb4", "G4"],
     i6: ["Eb4", "G4", "C5"],
@@ -42,8 +43,7 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
     vi: ["A4", "C5", "E5"],
     vii: ["B4", "D5", "F5"],
     viio6: ["D5", "F5", "B5"]
-  } satisfies dict;
-
+  } satisfies dict; 
   
   export type RomanNumeralType = keyof typeof romanNumeralsDict;
   

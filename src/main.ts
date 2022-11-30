@@ -12,8 +12,8 @@ import { Log } from "./logger/logSync";
 import { HearScales } from "./quiz/hearScales";
 import { Hear12thTone } from "./quiz/hear12thTone";
 import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
-import { SingingFunctionalDegrees } from "./quiz/singingFunctionDegrees";
-import { SingingHarmony } from "./quiz/SingingHarmony";
+import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singingFunctionDegrees";
+import { SingHarmony } from "./quiz/SingingHarmony";
 
 process.stdin.setMaxListeners(20);
 Log.clear();
@@ -35,8 +35,8 @@ const quizzes: Quiz<any>[] = [
   HearScales,
   Hear12thTone,
   HearTrichordPitchPatterns,
-  SingingFunctionalDegrees,
-  SingingHarmony
+  SingFunctionalDegrees,
+  SingHarmony
 ];
 
 (async () => {
