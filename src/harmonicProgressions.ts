@@ -41,6 +41,10 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
     IV6: ["A4", "C5", "F5"],
     IV64: ["C4", "F4", "A4"],
     vi: ["A4", "C5", "E5"],
+    vi6: ["C4", "E4", "A4"],
+    vi64: ["E4", "A4", "C5"],
+    VI: ["Ab4", "C5", "Eb5"],
+    VI64: ["Eb4", "Ab4", "C5"],
     vii: ["B4", "D5", "F5"],
     viio6: ["D5", "F5", "B5"]
   } satisfies dict; 
@@ -75,7 +79,7 @@ type ProgressionsJSON = {
   progressions: Progression[]
 }
 
-const progressionsJson = (JSON.parse(fs.readFileSync('harmonic-progressions.json') as any) as ProgressionsJSON);
+const progressionsJson = (JSON.parse(fs.readFileSync('harmonic-progressions-level2.json') as any) as ProgressionsJSON);
 
 
 export const progressions = progressionsJson.progressions;

@@ -3,7 +3,8 @@
     "json.schemas": [
         {
           "fileMatch": [
-            "/harmonic-progressions.json"
+            "/harmonic-progressions.json",
+            "/harmonic-progressions-leve2.json"
           ],
           "url": "./harmonic-progressions-schema.json"
         }
