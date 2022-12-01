@@ -18,8 +18,8 @@ export function isInterrupt(err: unknown) {
 }
 
 export const allChordTypes = ChordType.all()
-  .map((c) => c.name)
-  .filter((name) => name !== "") // some of the chords don't have names ???
+  .map((c: any) => c.name)
+  .filter((name: any) => name !== "") // some of the chords don't have names ???
   .sort();
 
 export const allScaleTypes = ScaleType.all()

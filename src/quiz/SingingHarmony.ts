@@ -19,7 +19,7 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
   }
 
   key: noteSingleAccidental;
-  tempo = 500;
+  tempo = 1000;
   chords;
   randomProgressionInC;
   randomProgressionInKey;

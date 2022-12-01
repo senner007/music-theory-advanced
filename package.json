@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tonaljs/tonal": "^4.6.5",
+    "@tonaljs/tonal": "^4.8.0",
     "@types/readline-sync": "^1.4.4",
     "ascii-table": "^0.0.9",
     "ascii-table3": "^0.7.8",

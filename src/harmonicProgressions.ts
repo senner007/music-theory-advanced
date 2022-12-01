@@ -79,14 +79,17 @@ type ProgressionsJSON = {
   progressions: Progression[]
 }
 
-const progressionsJson = (JSON.parse(fs.readFileSync('harmonic-progressions-level2.json') as any) as ProgressionsJSON);
+const progressionsJsonLevel1 = (JSON.parse(fs.readFileSync('harmonic-progressions.json') as any) as ProgressionsJSON);
+const progressionsJsonLevel2 = (JSON.parse(fs.readFileSync('harmonic-progressions-level2.json') as any) as ProgressionsJSON);
 
-
-export const progressions = progressionsJson.progressions;
+export const progressions = [
+  ...progressionsJsonLevel1.progressions,
+  ...progressionsJsonLevel2.progressions
+];
 
 ;(function JSONContentVerify() {
     const progressionsTemp: string[] = [];
-    progressionsJson.progressions.forEach((key , keyIndex) => {
+    progressions.forEach((key , keyIndex) => {
 
         const chordsString = key.chords.join("") + key.bass.join("");
         if (progressionsTemp.includes(chordsString)) {
