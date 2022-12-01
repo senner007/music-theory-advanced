@@ -43,16 +43,19 @@ declare global {
 
   interface Array<T extends noteAllAccidentalOctave> {
     toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy(interval :string): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T extends noteAllAccidentalOctave> {
     toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy(interval :string): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T> {
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
     commaSequence(): string;
+   
   }
 }
 
@@ -71,6 +74,13 @@ export function isTooHight(n: noteAllAccidentalOctave) {
 export function toOctave<T extends Readonly<noteAllAccidental>>(n: T, octave: octave) {
   return (n + octave) as noteAllAccidentalOctave;
 }
+
+Array.prototype.transposeBy = function <T extends Readonly<noteAllAccidentalOctave>>(
+  this: T[],
+  interval: string
+): Readonly<noteAllAccidentalOctave[]> {
+  return this.map(note_transpose_by(interval));
+};
 
 Array.prototype.toOctave = function <T extends Readonly<noteAllAccidental>>(
   this: T[],
@@ -180,6 +190,11 @@ export function note_variants(
 export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note: T, interval: string): T {
   return Note.transpose(note, interval) as T;
 }
+
+export function note_transpose_by<T extends noteAllAccidental | noteAllAccidentalOctave>(interval: string): (note: Readonly<T>) => Readonly<T> {
+  return Note.transposeBy(interval) as unknown as (note: Readonly<T>) => Readonly<T>;
+}
+
 
 export function number_to_degree(n: number) {
   let degree = "";
