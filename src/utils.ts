@@ -6,6 +6,7 @@ import { Scale as ScaleClass } from "@tonaljs/tonal";
 import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
 import { LogError } from "./dev-utils";
+import { MathFloor } from "./random-funcs";
 
 export function customExit() {
   Log.clear();
@@ -92,10 +93,11 @@ Array.prototype.commaSequence = function (): string {
   return this.join(", ");
 };
 
+
 Array.prototype.shuffleArray = function () {
   const arrayClone = [...this];
   for (let i = arrayClone.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = MathFloor(Math.random() * (i + 1));
     const temp = arrayClone[i];
     arrayClone[i] = arrayClone[j];
     arrayClone[j] = temp;
@@ -132,12 +134,12 @@ export function random_note_single_accidental() {
   return notesSingleAccidental.randomItem() as Readonly<noteSingleAccidental>;
 }
 
-export function random_index<T>(arr: T[]) {
-  return Math.floor(Math.random() * arr.length);
-}
-
 export function base_notes() {
   return baseNotes.slice(0); // refactor with class an private basenotes
+}
+
+export function random_index<T>(arr: T[]) {
+  return MathFloor(Math.random() * arr.length);
 }
 
 export function chromatic_scale_notes(scale: Scale) {
@@ -160,7 +162,7 @@ export function scale_note_at_index(scale: Scale, index: number) {
 }
 
 export function event_by_probability(chance: number) {
-  return Math.random() * 100 < chance;
+  return MathFloor(Math.random() * 100) < chance;
 }
 
 export function transpose_to_ascending(
@@ -255,3 +257,5 @@ export type UniqueArray<T> = T extends readonly [infer X, ...infer Rest]
     T;
 
 ("*************************************************************");
+
+

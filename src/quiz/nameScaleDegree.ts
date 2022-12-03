@@ -3,12 +3,12 @@ import { IQuiz, Quiz } from "../quiz-types";
 import {
   allScaleTypes,
   random_note_single_accidental,
-  random_index,
   number_to_degree,
   note_variants,
   create_scale,
   variant_to_base,
-  scale_note_at_index
+  scale_note_at_index,
+  random_index
 } from "../utils";
 import { TextQuizBase } from "./quizBase/textBase";
 
