@@ -24,7 +24,7 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
   octaves: octave[] = ["3", "4", "5"];
   audio;
   stepnumber: number = 12;
-  tempo = 1000;
+  override tempo = 1000;
   constructor(syllables: Readonly<Syllable[]>) {
     super(syllables);
     this.key = random_note_single_accidental();

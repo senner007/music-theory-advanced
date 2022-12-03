@@ -43,19 +43,18 @@ declare global {
 
   interface Array<T extends noteAllAccidentalOctave> {
     toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy(interval :string): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy(interval: string): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T extends noteAllAccidentalOctave> {
     toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy(interval :string): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy(interval: string): Readonly<Array<noteAllAccidentalOctave>>;
   }
 
   interface ReadonlyArray<T> {
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
     commaSequence(): string;
-   
   }
 }
 
@@ -191,10 +190,11 @@ export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOc
   return Note.transpose(note, interval) as T;
 }
 
-export function note_transpose_by<T extends noteAllAccidental | noteAllAccidentalOctave>(interval: string): (note: Readonly<T>) => Readonly<T> {
+export function note_transpose_by<T extends noteAllAccidental | noteAllAccidentalOctave>(
+  interval: string
+): (note: Readonly<T>) => Readonly<T> {
   return Note.transposeBy(interval) as unknown as (note: Readonly<T>) => Readonly<T>;
 }
-
 
 export function number_to_degree(n: number) {
   let degree = "";
@@ -219,38 +219,39 @@ export function number_to_degree(n: number) {
       break;
     case 6:
       degree = "7th";
+      break;
+    default:
+      LogError("Incompatible scale degree. Scale degree not in 7-note diatonic scale");
   }
   return degree;
 }
 
-"*************************************************************"
-"* Test for uniqueness"
-"https://ja.nsommer.dk/articles/type-checked-unique-arrays.html"
+("*************************************************************");
+("* Test for uniqueness");
+("https://ja.nsommer.dk/articles/type-checked-unique-arrays.html");
 
 type InArray<T, X> =
   // See if X is the first element in array T
   T extends readonly [X, ...infer _Rest]
     ? true
-    // If not, is X the only element in T?
-    : T extends readonly [X]
-      ? true
-      // No match, check if there's any elements left in T and loop recursive
-      : T extends readonly [infer _, ...infer Rest]
-        ? InArray<Rest, X>
-        // There's nothing left in the array and we found no match
-        : false
-        
+    : // If not, is X the only element in T?
+    T extends readonly [X]
+    ? true
+    : // No match, check if there's any elements left in T and loop recursive
+    T extends readonly [infer _, ...infer Rest]
+    ? InArray<Rest, X>
+    : // There's nothing left in the array and we found no match
+      false;
 
-export type UniqueArray<T> =
-  T extends readonly [infer X, ...infer Rest]
-    // We've just extracted X from T, having Rest be the remaining values.
+export type UniqueArray<T> = T extends readonly [infer X, ...infer Rest]
+  ? // We've just extracted X from T, having Rest be the remaining values.
     // Let's see if X is in Rest, and if it is, we know we have a duplicate
-    ? InArray<Rest, X> extends true
-      ? ['Encountered value with duplicates:', X]
-      // X is not duplicated, move on to check the next value, and see
+    InArray<Rest, X> extends true
+    ? ["Encountered value with duplicates:", X]
+    : // X is not duplicated, move on to check the next value, and see
       // if that's also unique.
-      : readonly [X, ...UniqueArray<Rest>]
-    // T did not extend [X, ...Rest], so there's nothing to do - just return T
-    : T
+      readonly [X, ...UniqueArray<Rest>]
+  : // T did not extend [X, ...Rest], so there's nothing to do - just return T
+    T;
 
-"*************************************************************"
+("*************************************************************");

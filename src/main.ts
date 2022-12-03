@@ -36,13 +36,12 @@ const quizzes: Quiz<any>[] = [
   Hear12thTone,
   HearTrichordPitchPatterns,
   SingFunctionalDegrees,
-  SingHarmony
+  SingHarmony,
 ];
 
 (async () => {
   while (true) {
     try {
-      
       const choice = await LogAsync.questionInList(
         quizzes.map((quiz) => quiz.meta().name),
         "Choose a quiz",

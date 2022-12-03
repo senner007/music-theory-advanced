@@ -37,7 +37,7 @@ export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase<und
     return this.missingNote;
   }
 
-  feedbackWrong(): string {
+  override feedbackWrong(): string {
     const chromaticScaleShuffledInOctave = this.chromaticScaleShuffled
     .filter(note => note !== this.missingNote)
     .toOctave(this.octaveAudio);

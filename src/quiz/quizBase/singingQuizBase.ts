@@ -9,8 +9,6 @@ export abstract class SingingQuizBase<T> extends AudioQuizBase<T> {
     return ["Right", "Wrong"];
   }
 
-  abstract tempo: number;
-
   abstract key: noteSingleAccidental;
 
   feedback(choice: string) {
