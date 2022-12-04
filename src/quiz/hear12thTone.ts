@@ -31,7 +31,7 @@ export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase<und
     return this.chromaticScaleShuffled.slice(1, this.chromaticScaleShuffled.length);
   }
   get question() {
-    return "Which note is missing?";
+    return `What note is ${chalk.underline("not")} heard?`;
   }
   answer(): string {
     return this.missingNote;

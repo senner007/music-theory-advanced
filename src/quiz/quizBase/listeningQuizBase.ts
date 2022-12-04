@@ -18,7 +18,7 @@ export abstract class ListeningQuizBase<T> extends AudioQuizBase<T> {
     try {
       const choice = await LogAsync.questionInListIndexedGlobalKeyHook(
         this.questionOptions,
-        "Choose the correct answer",
+        this.question,
         "q",
         this.getAudio().map((la) => {
           return { value: la.message, key: la.keyboardKey };

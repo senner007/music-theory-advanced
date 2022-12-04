@@ -57,7 +57,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
     return pitchPatternNameArray.map(this.getPatternDescription);
   }
   get question() {
-    return "Which pitch pattern?";
+    return "Which pitch pattern do you hear?";
   }
   answer(): string {
     return this.getPatternDescription(this.randomPatternName)

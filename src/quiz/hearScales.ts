@@ -57,7 +57,7 @@ export const HearScales: Quiz<string> = class extends ListeningQuizBase<string> 
     );
   }
   get question() {
-    return "Which note is missing?";
+    return "Which scale do you hear?";
   }
   answer(): string {
     return this.scalePick.description;

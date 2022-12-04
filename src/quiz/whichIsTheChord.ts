@@ -30,7 +30,7 @@ export const WhichIsTheChord: Quiz<string> = class extends TextQuizBase<string> 
     return this.chordTypesAndNotes.map((chordTypesAndNotes) => chordTypesAndNotes.notes);
   }
   get question() {
-    return `Which is correct?`;
+    return `What notes spell the chord?`;
   }
   answer(): string {
     return this.randomChord.notes;

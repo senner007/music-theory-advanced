@@ -1,4 +1,4 @@
-import { Chord } from "@tonaljs/tonal";
+import { Chord, Key } from "@tonaljs/tonal";
 import { Chord as IChord } from "@tonaljs/chord";
 import { MajorKey, MinorKey } from "@tonaljs/key";
 
@@ -55,8 +55,8 @@ export function keyInfo(key: MajorKey | MinorKey) {
 
 
 export function getKeyChords(k : ReturnType<typeof keyInfo>) {
-  if ("natural" in k) {
-    return [...k.natural.allPrimaryChordNames(), ...k.harmonic.allPrimaryChordNames(),...k.melodic.allPrimaryChordNames()]
+  if (k.type === "major") {
+    return k.allPrimaryChordNames();
   }
-  return k.allPrimaryChordNames();
+  return [...k.natural.allPrimaryChordNames(), ...k.harmonic.allPrimaryChordNames(),...k.melodic.allPrimaryChordNames()]
 } 
