@@ -11,5 +11,6 @@ export interface Quiz<T> {
     getAllOptions: Readonly<T[]>;
     name: string;
     description: string;
+    instructions? : string[]
   };
 }

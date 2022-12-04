@@ -21,9 +21,9 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
   }
 
   key: noteSingleAccidental;
-  octaves: octave[] = ["3", "4", "5"];
+  octaves: octave[] = ["3", "4", "5"]; // in options
   audio;
-  stepnumber: number = 12;
+  stepnumber: number = 12; // in options
   override tempo = 1000;
   constructor(syllables: Readonly<Syllable[]>) {
     super(syllables);
@@ -89,10 +89,17 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
   static meta() {
     return {
       get getAllOptions(): Syllable[] {
-        return ["Do", "Re", "Mi", "Fa", "So", "La", "Ti"];
+        return ["Do", "Re", "Mi", "Fa", "Me", "So", "Ti"];
       },
-      name: "Sing functional degrees",
-      description: "Sing the solfege degrees outlined in the table below",
+      name: "Sing functional solfege degrees",
+      description: "Sing the solfege degrees shown in the table below",
+      instructions: [
+        "It is tempting to start out with a limited ambitus of a single octave.",
+        "This is not recommended. Instead one should begin with repeating scale degrees in multiple octaves.",
+        "For instance: 'Do', 'Re', 'Mi' in 3 octaves. Then gradually add more degrees",
+        "Begin by establishing the sound of the key. Then sing 'Do' in the different octaves.",
+        "At first it is helpful to insert 'Do's and sing each degree back to 'Do' to better hear relationships of the degrees"
+      ]
     };
   }
 };
