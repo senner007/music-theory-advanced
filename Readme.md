@@ -15,6 +15,9 @@
 ### Develop
 - npm run dev
 
+### Test
+- npm test
+
 ### Compile and run
 - npm run prod
 
