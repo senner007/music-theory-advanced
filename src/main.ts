@@ -1,5 +1,4 @@
-import { isDev, writeToFile } from "./dev-utils";
-import { allChordTypes, allScaleTypes, customExit, isInterrupt } from "./utils";
+import { customExit, isInterrupt } from "./utils";
 import { Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
 import { WhichIsTheChord } from "./quiz/whichIsTheChord";
@@ -12,8 +11,8 @@ import { Log } from "./logger/logSync";
 import { HearScales } from "./quiz/hearScales";
 import { Hear12thTone } from "./quiz/hear12thTone";
 import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
-import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singingFunctionDegrees";
-import { SingHarmony } from "./quiz/SingingHarmony";
+import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singFunctionDegrees";
+import { SingHarmony } from "./quiz/singHarmony";
 
 process.stdin.setMaxListeners(20);
 Log.clear();
