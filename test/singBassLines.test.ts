@@ -84,7 +84,7 @@ describe("Test SingBassLines quiz", () => { // put in mocks folder
     expect(quiz.quizHead).toEqual([quizHeadOutput[mathFloorReturnValue]]);
   });
 
-  test.each([0, 1, 2])("should generate solfege data to LogTable", async (mathFloorReturnValue: number) => {
+  test.each([0, 1, 2])("should generate solfege degrees to LogTable", async (mathFloorReturnValue: number) => {
     (<Mock>MathFloor).mockReturnValue(mathFloorReturnValue);
     (<Mock>LogTable.write).mockImplementation((solfege: typeof solfegeMelodies[number]) => {
       expect(solfege.sortedMelody).toEqual(solfegeMelodies[mathFloorReturnValue].sortedMelody);
