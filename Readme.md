@@ -17,6 +17,7 @@
 
 ### Test
 - npm test
+- debug in vscode
 
 ### Compile and run
 - npm run prod

@@ -39,14 +39,14 @@
       },
       {
         "chords": ["I6", "vi64", "ii6", "V64", "I6"],
-        "bass": ["C3", "A2", "D4", "G2", "C3"],
+        "bass": ["C3", "A2", "D3", "G2", "C3"],
         "description": "c2-6",
         "isMajor": true,
         "isDiatonic": true
       },
       {
         "chords": ["i6", "VI64", "iio", "V64", "i6"],
-        "bass": ["C3", "Ab2", "D4", "G2", "C3"],
+        "bass": ["C3", "Ab2", "D3", "G2", "C3"],
         "description": "c2-7",
         "isMajor": false,
         "isDiatonic": true
