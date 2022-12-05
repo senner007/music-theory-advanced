@@ -62,6 +62,7 @@ const romanNumeralsDict = {
   V6: ["B3", "D4", "G4"],
   V65: ["B4", "D5", "F5", "G5"],
   ii: ["D4", "F4", "A4"],
+  iio: ["D4", "F4", "Ab4"],
   iio6: ["F4", "Ab4", "D5"],
   iio64: ["Ab4", "D5", "F5"],
   ii6: ["F4", "A4", "D5"],
@@ -78,6 +79,7 @@ const romanNumeralsDict = {
   vi6: ["C4", "E4", "A4"],
   vi64: ["E4", "A4", "C5"],
   VI: ["Ab4", "C5", "Eb5"],
+  VI6: ["C5", "Eb5", "Ab5"],
   VI64: ["Eb4", "Ab4", "C5"],
   vii: ["B4", "D5", "F5"],
   viio6: ["D5", "F5", "B5"],
@@ -122,10 +124,11 @@ export const progressions = [...progressionsJsonLevel1.progressions, ...progress
   progressions.forEach((key, keyIndex) => {
     const chordsString = key.chords.join("") + key.bass.join("");
     if (progressionsTemp.includes(chordsString)) {
+      
       LogError(
         `Json content error at: 
-Index : ${keyIndex} progression : ${chordsString}
-Progression is not unique`
+Description : ${key.description} progression : ${chordsString}
+Progression is not unique. Similar to progression at index: ${progressionsTemp.indexOf(chordsString)}`
       );
     }
     progressionsTemp.push(chordsString);

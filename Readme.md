@@ -30,7 +30,6 @@
 - write roman numerals in table heading
 - add count in for singing
 - tempo param to each audio part
-- sing the bass patterns
 - hear progressions quiz
 - sing progression over bass line
 
