@@ -13,6 +13,7 @@ import { Hear12thTone } from "./quiz/hear12thTone";
 import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
 import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singFunctionDegrees";
 import { SingHarmony } from "./quiz/singHarmony";
+import { SingBassLines } from "./quiz/singBassLines";
 
 process.stdin.setMaxListeners(20);
 Log.clear();
@@ -21,10 +22,6 @@ Log.write("Found MIDI outputs:");
 for (const mididevice of easymidi.getOutputs()) {
   Log.success(mididevice);
 }
-// if (isDev()) {
-//   writeToFile("./txt/chordTypes.txt", allChordTypes.join("\n"));
-//   writeToFile("./txt/scaleTypes.txt", allScaleTypes.join("\n"));
-// }
 
 const quizzes: Quiz<any>[] = [
   MissingScaleNote,
@@ -36,6 +33,7 @@ const quizzes: Quiz<any>[] = [
   HearTrichordPitchPatterns,
   SingFunctionalDegrees,
   SingHarmony,
+  SingBassLines
 ];
 
 (async () => {
