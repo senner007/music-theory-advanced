@@ -1,7 +1,7 @@
 import { Interval } from "@tonaljs/tonal";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
-import { Syllable, syllables_in_key_of_c } from "../solfege";
+import { ITableHeader, Syllable, syllables_in_key_of_c } from "../solfege";
 import {
   isTooHight,
   isTooLow, 
@@ -84,6 +84,13 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
       { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play melody" },
       { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
+  }
+
+  get tableHeader() {
+    return this.audio.map((_, index): ITableHeader => {
+      index++;
+      return { name: index.toString().padStart(2, '0'), duration: 1 };
+    });
   }
 
   static meta() {

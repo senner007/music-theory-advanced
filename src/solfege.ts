@@ -109,3 +109,8 @@ function remove_octave<T extends `${noteAllAccidental}${octave}`>(note: T): Remo
   return note.replace(/[0-9]/g, "") as RemoveOctave<T>;
 }
 
+export interface ITableHeader {
+  name: Readonly<string>,
+  duration: INotePlay['duration']
+}
+

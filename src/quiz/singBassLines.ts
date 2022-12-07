@@ -4,6 +4,7 @@ import { romanNumeralChord, progressions, Progression, transposeProgression } fr
 import { getKeyChords, keyInfo } from "../keyInfo";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
+import { ITableHeader } from "../solfege";
 import {
   noteSingleAccidental,
   toOctave,
@@ -72,6 +73,13 @@ export const SingBassLines: Quiz<Progression> = class extends SingingQuizBase<Pr
       { audio: bassLine, keyboardKey: "space", onInit: false, channel: 1, message: "play bass line" },
       { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
+  }
+
+  get tableHeader() {
+    return this.randomBassLineInKey.map((_, index): ITableHeader => {
+      index++;
+      return { name: index.toString().padStart(2, '0'), duration: 1 };
+    });
   }
 
   static meta() {

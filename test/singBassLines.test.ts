@@ -4,6 +4,7 @@ import { MathFloor } from "../src/random-funcs";
 import { SingBassLines } from "../src/quiz/singBassLines";
 import { LogTable } from "../src/logger/logTable";
 import { LogAsync } from "../src/logger/logAsync";
+import { SolfegeMelody } from "../src/solfege";
 LogAsync;
 
 describe("Test SingBassLines quiz", () => { // put in mocks folder
@@ -46,34 +47,28 @@ describe("Test SingBassLines quiz", () => { // put in mocks folder
 
   const solfegeMelodies = [
     {
-      sortedMelody: [ 'Fb3', 'Gb3', 'Cb4', 'Cb4' ],
       melody: [
         { noteNames: ['Cb4'], duration: 1 },
         { noteNames: ['Fb3'], duration: 1 },
         { noteNames: ['Gb3'], duration: 1 },
         { noteNames: ['Cb4'], duration: 1 }
-      ],
-      key: "Cb"
+      ]
     },
     {
-      sortedMelody: [ 'D3', 'D3', 'G3', 'A3' ],
       melody: [
         { noteNames: ['D3'], duration: 1 },
         { noteNames: ['G3'], duration: 1 },
         { noteNames: ['A3'], duration: 1 },
         { noteNames: ['D3'], duration: 1 }
-      ],
-      key: "D"
+      ]
     },
     {
-      sortedMelody: [ 'E#3', 'E#3', 'A#3', 'B#3' ],
       melody: [
         { noteNames: ['E#3'], duration: 1 },
         { noteNames: ['A#3'], duration: 1 },
         { noteNames: ['B#3'], duration: 1 },
         { noteNames: ['E#3'], duration: 1 }
-      ],
-      key: "E#"
+      ]
     },
   ];
 
@@ -86,10 +81,8 @@ describe("Test SingBassLines quiz", () => { // put in mocks folder
 
   test.each([0, 1, 2])("should generate solfege degrees to LogTable", async (mathFloorReturnValue: number) => {
     (<Mock>MathFloor).mockReturnValue(mathFloorReturnValue);
-    (<Mock>LogTable.write).mockImplementation((solfege: typeof solfegeMelodies[number]) => {
-      expect(solfege.sortedMelody).toEqual(solfegeMelodies[mathFloorReturnValue].sortedMelody);
-      expect(solfege.melody).toEqual(solfegeMelodies[mathFloorReturnValue].melody);
-      expect(solfege.key).toEqual(solfegeMelodies[mathFloorReturnValue].key);
+    (<Mock>LogTable.write).mockImplementation((solfege: SolfegeMelody) => {
+      expect(solfege.getMelody).toEqual(solfegeMelodies[mathFloorReturnValue].melody);
     });
     const quiz = new SingBassLines(SingBassLines.meta().getAllOptions);
     await quiz.execute();

@@ -4,6 +4,7 @@ import { romanNumeralChord, progressions, Progression, transposeProgression } fr
 import { getKeyChords, keyInfo } from "../keyInfo";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
+import { ITableHeader } from "../solfege";
 import {
   noteSingleAccidental,
   toOctave,
@@ -47,7 +48,10 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
     this.randomProgressionInKey = transposeProgression(randomProgressionInC, this.key);
 
     this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
-      return Chord.detect([this.randomProgressionInKey.bass[index], ...n]);
+      const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n]);
+      const chordsInKey = chords.filter((chord) => getKeyChords(this.keyInfo).includes(chord));
+      return chordsInKey.length > 0 ? chordsInKey[0] : chords[0];
+
     });
   }
 
@@ -56,12 +60,7 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
       ? `Description: ${chalk.underline(this.progressionDescription)}`
       : "";
 
-    const chords = `${this.chords
-      .map((c) => {
-        const chordsInKey = c.filter((c) => getKeyChords(this.keyInfo).includes(c));
-        return chordsInKey.length > 0 ? chordsInKey[0] : c[0];
-      })
-      .join(", ")}`;
+    const chords = `${this.chords.join(", ")}`;
     const identifiers = this.progressionTags ? `Identifiers: ${chalk.underline(this.progressionTags.join(", "))}` : "";
     return [
       `${description} ${identifiers}`,
@@ -123,6 +122,12 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
       },
       { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
+  }
+
+  get tableHeader() {
+    return this.chords.map((c): ITableHeader => {
+      return { name: c, duration: 2 };
+    });
   }
 
   static meta() {

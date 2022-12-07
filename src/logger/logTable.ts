@@ -1,6 +1,6 @@
 // @ts-ignore
 import AsciiTable from "ascii-table";
-import { SolfegeMelody, Syllable } from "../solfege";
+import { ITableHeader, SolfegeMelody, Syllable } from "../solfege";
 
 interface ITableObject {
   [key: string]: Syllable[];
@@ -32,21 +32,32 @@ function fillRows(solfege: SolfegeMelody, tableObject: ITableObject) {
   return Object.values(tableObject).reverse();
 }
 
-function headingInMeasures(solfege: SolfegeMelody) {
-  return [...Array(solfege.duration).keys()]
-    .map((h) => (h % 4 === 0 ? "0" + (h / 4 + 1) : "  "))
-    .map((h, index) => (index === 0 ? "01" : h));
+function headingInMeasures(tableHeader: ITableHeader[]) {
+  const tempArr: string[] = []
+  tableHeader.forEach(h => {
+    tempArr.push(h.name);
+    for (let i = 0; i < h.duration - 1; i++ ) {
+      tempArr.push("")
+    }
+  });
+  return tempArr;
 }
 
 export class LogTable {
-  static write(solfege: SolfegeMelody) {
+  static write(solfege: SolfegeMelody, tableHeader: ITableHeader[]) {
     const tableObject = createTableObject(solfege);
     const rows = fillRows(solfege, tableObject);
 
     var table = AsciiTable.factory({
-      heading: headingInMeasures(solfege),
+      heading: headingInMeasures(tableHeader),
       rows: rows,
     });
+
+    for (let i = 0; i < solfege.duration; i++) {
+      table.setAlign(i, AsciiTable.CENTER)
+    }
+
+    table = table.setJustify()
 
     console.log(table.toString());
   }
