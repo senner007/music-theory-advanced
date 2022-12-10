@@ -27,14 +27,15 @@ export const allScaleTypes = ScaleType.all()
   .map((s) => s.name)
   .sort();
 
+const baseNotes = ["C", "D", "E", "F", "G", "A", "B"] as const;
+export type baseNote = typeof baseNotes[number];
 export type octave = "2" | "3" | "4" | "5";
-// export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
 export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseNote}#`>;
+export type noteSingleAccidentalOctave = Readonly<`${noteSingleAccidental}${octave}`>;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
-const baseNotes = ["C", "D", "E", "F", "G", "A", "B"] as const;
-export type baseNote = typeof baseNotes[number];
+
 
 declare global {
   interface Array<T> {
