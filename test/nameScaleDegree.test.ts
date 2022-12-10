@@ -4,12 +4,6 @@ import chalk from "chalk";
 import { MathFloor } from "../src/random-funcs";
 
 describe("Test NameScaleDegree quiz", () => {
-  // Mock the MathFloor method to remove randomness
-  vi.mock("../src/random-funcs", () => {
-    return {
-      MathFloor: vi.fn(),
-    };
-  });
 
   afterEach(() => {
     vi.restoreAllMocks();

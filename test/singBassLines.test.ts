@@ -3,17 +3,9 @@ import chalk from "chalk";
 import { MathFloor } from "../src/random-funcs";
 import { SingBassLines } from "../src/quiz/singBassLines";
 import { LogTable } from "../src/logger/logTable";
-import { LogAsync } from "../src/logger/logAsync";
 import { SolfegeMelody } from "../src/solfege";
-LogAsync;
 
 describe("Test SingBassLines quiz", () => { // put in mocks folder
-  // Mock the MathFloor method to remove randomness
-  vi.mock("../src/random-funcs", () => {
-    return {
-      MathFloor: vi.fn(),
-    };
-  });
 
   vi.mock("../src/logger/logTable", () => {
     const LogTableMock = vi.fn();

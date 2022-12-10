@@ -36,29 +36,7 @@ export type noteSingleAccidentalOctave = Readonly<`${noteSingleAccidental}${octa
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
-
-
-declare global {
-
-
-  interface Array<T> {
-    toOctave(this: noteAllAccidental[], octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy<U extends noteAllAccidental[] | noteAllAccidentalOctave[]>(this: U, interval: string): Readonly<U>;
-    commaSequence(): string;
-    shuffleArray(): Readonly<Array<T>>;
-    randomItem(): Readonly<T>;
-  }
-  interface ReadonlyArray<T> {
-    shuffleArray(): Readonly<Array<T>>;
-    randomItem(): Readonly<T>;
-    commaSequence(): string;
-    toOctave(this: Readonly<noteAllAccidental[]>, octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy<U extends Readonly<noteAllAccidental[]> | Readonly<noteAllAccidentalOctave[]>>(this: U, interval: string): Readonly<U>;
-  }
-}
-
-
-export function ObjectKeys<Obj extends {}>(obj: Obj): (keyof Obj)[] {
+export function ObjectKeys<Obj extends {}>(obj: Obj): Readonly<(keyof Obj)[]> {
   return Object.keys(obj) as (keyof Obj)[];
 }
 
@@ -74,40 +52,7 @@ export function toOctave<T extends Readonly<noteAllAccidental>>(n: T, octave: oc
   return (n + octave) as noteAllAccidentalOctave;
 }
 
-Array.prototype.transposeBy = function<U extends noteAllAccidental[] | noteAllAccidentalOctave[]> (
-  this: U,
-  interval: string
-) : Readonly<U> {
-  return this.map(n => note_transpose(n, interval)) as Readonly<U>;
-};
 
-
-Array.prototype.toOctave = function (
-  octave: octave
-): Readonly<noteAllAccidentalOctave[]> {
-  return this.map((n) => toOctave(n, octave));
-};
-
-Array.prototype.commaSequence = function (): string {
-  return this.join(", ");
-};
-
-
-Array.prototype.shuffleArray = function () {
-  const arrayClone = [...this];
-  for (let i = arrayClone.length - 1; i > 0; i--) {
-    const j = MathFloor(Math.random() * (i + 1));
-    const temp = arrayClone[i];
-    arrayClone[i] = arrayClone[j];
-    arrayClone[j] = temp;
-  }
-  return arrayClone;
-};
-
-Array.prototype.randomItem = function () {
-  const randomIndex = random_index(this);
-  return this[randomIndex];
-};
 
 export function add_octave_note(notes: readonly noteAllAccidentalOctave[]): readonly noteAllAccidentalOctave[] {
   return [...notes, Note.transpose(notes[0], IntervalDistance.OctaveUp) as noteAllAccidentalOctave];
@@ -164,16 +109,6 @@ export function event_by_probability(chance: number) {
   return MathFloor(Math.random() * 100) < chance;
 }
 
-export function transpose_to_ascending(
-  n: Readonly<noteAllAccidentalOctave>,
-  index: number,
-  arr: readonly noteAllAccidentalOctave[]
-) {
-  if (index === 0) return n;
-  const getInterval = Interval.distance(arr[0], n);
-  const intervalData = Interval.get(getInterval);
-  return (intervalData.dir! < 0 ? Note.transpose(n, IntervalDistance.OctaveUp) : n) as Readonly<noteAllAccidentalOctave>;
-}
 
 type NoteVariants = [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]
 

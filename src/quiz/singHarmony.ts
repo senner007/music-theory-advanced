@@ -1,10 +1,11 @@
 import { Chord, Interval, Key, Note } from "@tonaljs/tonal";
 import chalk from "chalk";
-import { romanNumeralChord, progressions, Progression, transposeProgression } from "../harmonicProgressions";
+import { romanNumeralChord, progressions, Progression } from "../harmonicProgressions";
 import { getKeyChords, keyInfo } from "../keyInfo";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ITableHeader } from "../solfege";
+import { transposeProgression } from "../transposition";
 import {
   noteSingleAccidental,
   toOctave,

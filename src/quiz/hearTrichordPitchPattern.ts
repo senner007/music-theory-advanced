@@ -1,4 +1,4 @@
-import { ObjectKeys, random_note_single_accidental, transpose_to_ascending } from "../utils";
+import { ObjectKeys, random_note_single_accidental } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import {
   getPattern,
@@ -9,12 +9,13 @@ import {
 } from "../pitchPatterns";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
+import { transpose_to_ascending } from "../transposition";
 
-const pitchPatternNameArray: pitchPatternName[] = ObjectKeys(pitchPatterns);
+const pitchPatternKeyNames = ObjectKeys(pitchPatterns);
 
 export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase<pitchPatternName> implements IQuiz {
-  verifyOptions(selectPitchPatterns: pitchPatternName[]): boolean {
-    return selectPitchPatterns.every((pattern) => pitchPatternNameArray.includes(pattern));
+  verifyOptions(optionsPitchPatterns: pitchPatternName[]): boolean {
+    return optionsPitchPatterns.every((pattern) => pitchPatternKeyNames.includes(pattern));
   }
 
   randomNote;
@@ -54,7 +55,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
     return [];
   }
   get questionOptions() {
-    return pitchPatternNameArray.map(this.getPatternDescription);
+    return pitchPatternKeyNames.map(this.getPatternDescription);
   }
   get question() {
     return "Which pitch pattern do you hear?";
@@ -73,7 +74,7 @@ export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends L
   static meta() {
     return {
       get getAllOptions() {
-        return pitchPatternNameArray;
+        return pitchPatternKeyNames;
       },
       name: "Hear trichord pitch patterns",
       description: "Identify the trichord pitch pattern that is being played",

@@ -1,3 +1,4 @@
+import "./arrayProto"
 import { customExit, isInterrupt } from "./utils";
 import { Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";

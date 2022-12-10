@@ -8,11 +8,6 @@ export enum IntervalDistance {
   OctaveDown = "-8P"
 }
 
-interface IProgression {
-  readonly chords: (readonly noteAllAccidentalOctave[])[];
-  readonly bass: readonly noteAllAccidentalOctave[];
-}
-
 export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove) {
   if (romanNumeral.includes("-a")) {
     const basicRomanNumeral: RomanNumeralType = to_roman_numeral(romanNumeral as RomanNumeralAbove);
@@ -21,38 +16,7 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
   return romanNumeralsDict[romanNumeral as RomanNumeralType];
 }
 
-export function transposeProgression( // Test me!
-  progression: IProgression,
-  key: noteSingleAccidental,
-) {
-  const distanceToKey = Interval.distance("C", key);
-  const transposed: IProgression = transposeProgressionByInterval(progression, distanceToKey);
-  return adjustTranspositionWithinBounds(transposed);
-}
 
-function adjustTranspositionWithinBounds( 
-  progression: IProgression, 
-  bounds: { high: noteAllAccidentalOctave; low: noteAllAccidentalOctave } = { high: "G5", low: "C4" })
-  {
-  const notesSorted = Note.sortedNames(progression.chords.flatMap((n) => n));
-  const lowestNote = notesSorted[0];
-  const highestNote = notesSorted[notesSorted.length - 1];
-
-  if (Note.sortedNames([bounds.low, lowestNote])[0] === lowestNote) {
-    return transposeProgressionByInterval(progression, IntervalDistance.OctaveUp);
-  }
-  if (Note.sortedNames([bounds.high, highestNote])[1] === highestNote) {
-    return transposeProgressionByInterval(progression, IntervalDistance.OctaveDown);
-  }
-  return progression;
-  }
-
-function transposeProgressionByInterval(progression : IProgression, interval: string) {
-  return {
-    chords: progression.chords.map((c) => c.transposeBy(interval)),
-    bass: progression.bass.transposeBy(interval),
-  }as const;
-}
 
 type dict = Record<string, noteAllAccidentalOctave[]>;
 

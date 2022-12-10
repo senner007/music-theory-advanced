@@ -1,9 +1,10 @@
 
 import { Scale } from "@tonaljs/scale";
-import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending, octave } from "../utils";
+import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, octave } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
+import { transpose_to_ascending } from "../transposition";
 
 export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase<string> implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {

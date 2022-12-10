@@ -1,7 +1,8 @@
-import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, transpose_to_ascending, event_by_probability, add_octave_note, octave } from "../utils";
+import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, event_by_probability, add_octave_note, octave } from "../utils";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
+import { transpose_to_ascending } from "../transposition";
 
 export const HearScales: Quiz<string> = class extends ListeningQuizBase<string> implements IQuiz {
   verifyOptions(scaleTypes: string[]): boolean {
