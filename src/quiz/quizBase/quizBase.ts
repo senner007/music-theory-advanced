@@ -10,7 +10,7 @@ export interface IListener {
 
 export abstract class QuizBase<T> {
   listenersArray: IListener[] = [];
-  constructor(options: Readonly<any[]>) {
+  constructor(options: Readonly<T[]>) {
     this.errorHandleOptions(options);
     const pageUpListener = this.addPageScollListener();
     this.listenersArray.push(pageUpListener);
