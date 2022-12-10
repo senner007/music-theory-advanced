@@ -82,6 +82,7 @@ export const syllables_in_key_of_c = {
   F: "Fa",
   "F#": "Fi",
   "F##": "Fai",
+  "F###": "---",
   "Gbb": "Saw",
   Gb: "Se",
   G: "So",

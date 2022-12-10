@@ -28,12 +28,13 @@ export const allScaleTypes = ScaleType.all()
   .sort();
 
 export type octave = "2" | "3" | "4" | "5";
-export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
+// export type baseNote = Readonly<"C" | "D" | "E" | "F" | "G" | "A" | "B">;
 export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseNote}#`>;
-export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | noteSingleAccidental>;
+export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
-const baseNotes: readonly baseNote[] = ["C", "D", "E", "F", "G", "A", "B"] as const;
+const baseNotes = ["C", "D", "E", "F", "G", "A", "B"] as const;
+export type baseNote = typeof baseNotes[number];
 
 declare global {
   interface Array<T> {
@@ -176,16 +177,22 @@ export function transpose_to_ascending(
   return (intervalData.dir! < 0 ? Note.transpose(n, "8P") : n) as Readonly<noteAllAccidentalOctave>;
 }
 
+type NoteVariants = [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]
+
 export function note_variants(
   baseNote: baseNote
-): Readonly<[`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]> {
-  return [
+): Readonly<NoteVariants> | Readonly<[...NoteVariants, `${baseNote}###`]> {
+  const returnArray: NoteVariants = [
     Note.transpose(baseNote, "1dd") as `${baseNote}bb`,
     Note.transpose(baseNote, "1d") as `${baseNote}b`,
     baseNote as baseNote,
     Note.transpose(baseNote, "1A") as `${baseNote}#`,
     Note.transpose(baseNote, "1AA") as `${baseNote}##`,
   ];
+  if (baseNote === "F") {
+    return [...returnArray, Note.transpose(baseNote, "1AAA") as `${baseNote}###`] as [...NoteVariants, `${baseNote}###`];
+  }
+  return returnArray
 }
 
 export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note: T, interval: string): T {
