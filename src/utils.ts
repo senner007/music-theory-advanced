@@ -7,6 +7,7 @@ import { Chord as ChordClass } from "@tonaljs/tonal";
 import { Log } from "./logger/logSync";
 import { LogError } from "./dev-utils";
 import { MathFloor } from "./random-funcs";
+import { IntervalDistance } from "./harmonicProgressions";
 
 export function customExit() {
   Log.clear();
@@ -38,28 +39,24 @@ export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
 
 
 declare global {
+
+
   interface Array<T> {
+    toOctave(this: noteAllAccidental[], octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy<U extends noteAllAccidental[] | noteAllAccidentalOctave[]>(this: U, interval: string): Readonly<U>;
     commaSequence(): string;
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
   }
-
-  interface Array<T extends noteAllAccidentalOctave> {
-    toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy(interval: string): Readonly<Array<noteAllAccidentalOctave>>;
-  }
-
-  interface ReadonlyArray<T extends noteAllAccidentalOctave> {
-    toOctave(octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
-    transposeBy(interval: string): Readonly<Array<noteAllAccidentalOctave>>;
-  }
-
   interface ReadonlyArray<T> {
     shuffleArray(): Readonly<Array<T>>;
     randomItem(): Readonly<T>;
     commaSequence(): string;
+    toOctave(this: Readonly<noteAllAccidental[]>, octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
+    transposeBy<U extends Readonly<noteAllAccidental[]> | Readonly<noteAllAccidentalOctave[]>>(this: U, interval: string): Readonly<U>;
   }
 }
+
 
 export function ObjectKeys<Obj extends {}>(obj: Obj): (keyof Obj)[] {
   return Object.keys(obj) as (keyof Obj)[];
@@ -69,7 +66,7 @@ export function isTooLow(n: noteAllAccidentalOctave) {
   return Note.sortedNames([n, "F3"])[0] === n;
 }
 
-export function isTooHight(n: noteAllAccidentalOctave) {
+export function isTooHigh(n: noteAllAccidentalOctave) {
   return Note.sortedNames([n, "G5"])[1] === n;
 }
 
@@ -77,15 +74,15 @@ export function toOctave<T extends Readonly<noteAllAccidental>>(n: T, octave: oc
   return (n + octave) as noteAllAccidentalOctave;
 }
 
-Array.prototype.transposeBy = function <T extends Readonly<noteAllAccidentalOctave>>(
-  this: T[],
+Array.prototype.transposeBy = function<U extends noteAllAccidental[] | noteAllAccidentalOctave[]> (
+  this: U,
   interval: string
-): Readonly<noteAllAccidentalOctave[]> {
-  return this.map(note_transpose_by(interval));
+) : Readonly<U> {
+  return this.map(n => note_transpose(n, interval)) as Readonly<U>;
 };
 
-Array.prototype.toOctave = function <T extends Readonly<noteAllAccidental>>(
-  this: T[],
+
+Array.prototype.toOctave = function (
   octave: octave
 ): Readonly<noteAllAccidentalOctave[]> {
   return this.map((n) => toOctave(n, octave));
@@ -113,7 +110,7 @@ Array.prototype.randomItem = function () {
 };
 
 export function add_octave_note(notes: readonly noteAllAccidentalOctave[]): readonly noteAllAccidentalOctave[] {
-  return [...notes, Note.transpose(notes[0], "8P") as noteAllAccidentalOctave];
+  return [...notes, Note.transpose(notes[0], IntervalDistance.OctaveUp) as noteAllAccidentalOctave];
 }
 
 export function create_scale(scaleTonic: noteSingleAccidental, scaleType: string): Scale {
@@ -175,7 +172,7 @@ export function transpose_to_ascending(
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
-  return (intervalData.dir! < 0 ? Note.transpose(n, "8P") : n) as Readonly<noteAllAccidentalOctave>;
+  return (intervalData.dir! < 0 ? Note.transpose(n, IntervalDistance.OctaveUp) : n) as Readonly<noteAllAccidentalOctave>;
 }
 
 type NoteVariants = [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]
@@ -202,8 +199,8 @@ export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOc
 
 export function note_transpose_by<T extends noteAllAccidental | noteAllAccidentalOctave>(
   interval: string
-): (note: Readonly<T>) => Readonly<T> {
-  return Note.transposeBy(interval) as unknown as (note: Readonly<T>) => Readonly<T>;
+): (note: T) => T {
+  return Note.transposeBy(interval) as unknown as (note: T) => T;
 }
 
 export function number_to_degree(n: number) {
@@ -243,26 +240,26 @@ export function number_to_degree(n: number) {
 type InArray<T, X> =
   // See if X is the first element in array T
   T extends readonly [X, ...infer _Rest]
-    ? true
-    : // If not, is X the only element in T?
-    T extends readonly [X]
-    ? true
-    : // No match, check if there's any elements left in T and loop recursive
-    T extends readonly [infer _, ...infer Rest]
-    ? InArray<Rest, X>
-    : // There's nothing left in the array and we found no match
-      false;
+  ? true
+  : // If not, is X the only element in T?
+  T extends readonly [X]
+  ? true
+  : // No match, check if there's any elements left in T and loop recursive
+  T extends readonly [infer _, ...infer Rest]
+  ? InArray<Rest, X>
+  : // There's nothing left in the array and we found no match
+  false;
 
 export type UniqueArray<T> = T extends readonly [infer X, ...infer Rest]
   ? // We've just extracted X from T, having Rest be the remaining values.
-    // Let's see if X is in Rest, and if it is, we know we have a duplicate
-    InArray<Rest, X> extends true
-    ? ["Encountered value with duplicates:", X]
-    : // X is not duplicated, move on to check the next value, and see
-      // if that's also unique.
-      readonly [X, ...UniqueArray<Rest>]
+  // Let's see if X is in Rest, and if it is, we know we have a duplicate
+  InArray<Rest, X> extends true
+  ? ["Encountered value with duplicates:", X]
+  : // X is not duplicated, move on to check the next value, and see
+  // if that's also unique.
+  readonly [X, ...UniqueArray<Rest>]
   : // T did not extend [X, ...Rest], so there's nothing to do - just return T
-    T;
+  T;
 
 ("*************************************************************");
 

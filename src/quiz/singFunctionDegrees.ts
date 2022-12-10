@@ -1,9 +1,10 @@
 import { Interval } from "@tonaljs/tonal";
+import { IntervalDistance } from "../harmonicProgressions";
 import { INotePlay } from "../midiplay";
 import { IQuiz, Quiz } from "../quiz-types";
 import { ITableHeader, Syllable, syllables_in_key_of_c } from "../solfege";
 import {
-  isTooHight,
+  isTooHigh,
   isTooLow, 
   noteAllAccidentalOctave,
   noteSingleAccidental,
@@ -11,7 +12,8 @@ import {
   random_note_single_accidental,
   toOctave,
   note_transpose,
-  ObjectKeys
+  ObjectKeys,
+  noteAllAccidental
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
@@ -35,19 +37,19 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
     });
 
     const distanceToKey = Interval.distance("C", this.key);
-    const syllableNotesTransposed = optionSyllableNotesInC.map((s) => note_transpose(s, distanceToKey));
+    const syllableNotesTransposed = optionSyllableNotesInC.transposeBy(distanceToKey);
 
     this.audio = [...Array(this.stepnumber).keys()].map((_) => {
       const note = syllableNotesTransposed.randomItem();
       const randomOctave = this.octaves.randomItem();
 
       const octaveNote = toOctave(note, randomOctave);
-      if (isTooHight(octaveNote)) {
-        return note_transpose(octaveNote, "-8P");
+      if (isTooHigh(octaveNote)) {
+        return note_transpose(octaveNote, IntervalDistance.OctaveDown);
       }
 
       if (isTooLow(octaveNote)) {
-        return note_transpose(octaveNote, "8P");
+        return note_transpose(octaveNote, IntervalDistance.OctaveUp);
       }
       return octaveNote as noteAllAccidentalOctave;
     });

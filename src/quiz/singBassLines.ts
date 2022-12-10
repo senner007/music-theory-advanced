@@ -10,8 +10,6 @@ import {
   toOctave,
   note_transpose,
   random_note_single_accidental,
-  noteAllAccidentalOctave,
-  note_transpose_by,
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
