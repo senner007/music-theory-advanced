@@ -6,11 +6,9 @@ import { LogAsync } from "../logger/logAsync";
 
 export async function loopQuiz(QuizClass: Quiz<any>) {
 
-  const options = QuizClass.meta().getAllOptions;
-
   while (true) {
 
-    const quiz = new QuizClass(options);
+    const quiz = new QuizClass(QuizClass.meta().getAllOptions);
 
     Log.clear();
     Log.write(QuizClass.meta().description);
@@ -19,18 +17,14 @@ export async function loopQuiz(QuizClass: Quiz<any>) {
       Log.write(head);
     }
 
-    let choice;
     try {
-      choice = await quiz.execute();
+      const choice = await quiz.execute();
+      Log.write(quiz.feedback(choice));
     } catch (err) {
       await quiz.cleanup();
       break;
-
     }
 
-    Log.write(quiz.feedback(choice));
-
- 
     try {
       await LogAsync.questionInList(
         ["Continue"],
