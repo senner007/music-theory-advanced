@@ -9,7 +9,7 @@ import {
 import { IQuiz, Quiz } from "../quiz-types";
 import { TextQuizBase } from "./quizBase/textBase";
 
-export const MissingScaleNote: Quiz<string> = class extends TextQuizBase<string> implements IQuiz {
+export const MissingScaleNote: Quiz<string> = class extends TextQuizBase<string> {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

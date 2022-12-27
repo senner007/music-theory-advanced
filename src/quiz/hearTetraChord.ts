@@ -6,7 +6,7 @@ import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
 import { transpose_to_ascending } from "../transposition";
 
-export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase<string> implements IQuiz {
+export const HearTetraChord: Quiz<string> = class extends ListeningQuizBase<string> {
   verifyOptions(scaleTypes: string[]): boolean {
     return scaleTypes.every((scaleType) => allScaleTypes.includes(scaleType));
   }

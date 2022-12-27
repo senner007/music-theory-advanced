@@ -17,7 +17,7 @@ import {
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQuizBase<Syllable> implements IQuiz {
+export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQuizBase<Syllable> {
   verifyOptions(syllables: Syllable[]): boolean {
     return syllables.every((syllable) => Object.values(syllables_in_key_of_c).includes(syllable));
   }

@@ -15,7 +15,7 @@ import {
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
 
-export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Progression> implements IQuiz {
+export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Progression> {
   verifyOptions(_: Progression[]): boolean {
     return true;
   }

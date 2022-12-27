@@ -3,7 +3,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import chalk from "chalk";
 import { TextQuizBase } from "./quizBase/textBase";
 
-export const WhichIsTheChord: Quiz<string> = class extends TextQuizBase<string> implements IQuiz {
+export const WhichIsTheChord: Quiz<string> = class extends TextQuizBase<string> {
   verifyOptions(chordTypes: string[]): boolean {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }

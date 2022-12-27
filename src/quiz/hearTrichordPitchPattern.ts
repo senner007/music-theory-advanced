@@ -13,7 +13,7 @@ import { transpose_to_ascending } from "../transposition";
 
 const pitchPatternKeyNames = ObjectKeys(pitchPatterns);
 
-export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase<pitchPatternName> implements IQuiz {
+export const HearTrichordPitchPatterns: Quiz<pitchPatternName> = class extends ListeningQuizBase<pitchPatternName> {
   verifyOptions(optionsPitchPatterns: pitchPatternName[]): boolean {
     return optionsPitchPatterns.every((pattern) => pitchPatternKeyNames.includes(pattern));
   }

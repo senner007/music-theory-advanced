@@ -5,7 +5,7 @@ import chalk from "chalk";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
 
-export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase<undefined> implements IQuiz {
+export const Hear12thTone: Quiz<undefined> = class extends ListeningQuizBase<undefined> {
   verifyOptions(): boolean {
     return true;
   }
