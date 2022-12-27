@@ -2,7 +2,6 @@ import { LogError } from "../../dev-utils";
 import { Quiz } from "../../quiz-types";
 
 export interface IListener {
-  keyName: string;
   listener: (_: any, key: any) => void;
   acObj?: { ac: AbortController };
   channel? : number;
@@ -11,12 +10,11 @@ export interface IListener {
 export abstract class QuizBase<T> {
   listenersArray: IListener[] = [];
   constructor(options: Readonly<T[]>) {
-    this.errorHandleOptions(options);
-    const pageUpListener = this.addPageScollListener();
-    this.listenersArray.push(pageUpListener);
+    this.errorCheckOptions(options);
+    this.listenersArray.push(this.scrollListener());
   }
 
-  private addPageScollListener(): IListener {
+  private scrollListener(): IListener {
     const twice = (func: Function) => {
       for (let i = 0; i < 2; i++) {
         func();
@@ -32,12 +30,11 @@ export abstract class QuizBase<T> {
       }
     };
     return {
-      keyName: "pageup",
-      listener: listener
+      listener
     };
   }
 
-  private errorHandleOptions(options: Readonly<T[]>): void | never {
+  private errorCheckOptions(options: Readonly<T[]>): void | never {
     const optionsAreValid = this.verifyOptions(options);
     const quizConstructor: Quiz<any> = this.constructor as Quiz<any>;
     if (!optionsAreValid) LogError("options invalid in class: " + "'" + quizConstructor.meta.name + "'");
@@ -47,13 +44,13 @@ export abstract class QuizBase<T> {
   abstract questionOptions: Readonly<string[]>;
   abstract question: string;
 
-  protected attachHandlers(listeners: IListener[]) {
+  protected attachListeners(listeners: IListener[]) {
     for (const listener of listeners) {
       process.stdin.on("keypress", listener.listener);
     }
   }
 
-  private detachHandlers(listeners: IListener[]) {
+  private detachListeners(listeners: IListener[]) {
     for (const listener of listeners) {
       listener.acObj?.ac.abort();
       process.stdin.off("keypress", listener.listener);
@@ -61,6 +58,6 @@ export abstract class QuizBase<T> {
   }
 
   cleanup = async (): Promise<void> => {
-    this.detachHandlers(this.listenersArray);
+    this.detachListeners(this.listenersArray);
   };
 }

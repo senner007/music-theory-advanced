@@ -31,7 +31,6 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
         }
       };
       return {
-        keyName: audioPart.keyboardKey,
         listener: listener,
         acObj: acObj,
         channel : audioPart.channel
@@ -43,7 +42,7 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
 
   private setAudioListeners() {
     this.listenersArray.push(...this.createListeners(this.getAudio()));
-    this.attachHandlers(this.listenersArray);
+    this.attachListeners(this.listenersArray);
     this.getAudio().forEach((audioPart) => {
       if (audioPart.onInit) {
         process.stdin.emit("keypress", null, { name: audioPart.keyboardKey });
