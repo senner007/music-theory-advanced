@@ -42,7 +42,6 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
 
   private setAudioListeners() {
     this.listenersArray.push(...this.createListeners(this.getAudio()));
-    this.attachListeners(this.listenersArray);
     this.getAudio().forEach((audioPart) => {
       if (audioPart.onInit) {
         process.stdin.emit("keypress", null, { name: audioPart.keyboardKey });
@@ -54,6 +53,7 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
 
   async execute(): Promise<string | never> {
     this.setAudioListeners();
+    this.attachListeners(this.listenersArray);
     return await this.callQuiz();
   }
 }

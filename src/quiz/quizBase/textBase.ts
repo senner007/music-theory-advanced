@@ -8,8 +8,8 @@ export abstract class TextQuizBase<T> extends QuizBase<T> {
   }
 
   async execute(): Promise<string | never> {
+    this.attachListeners(this.listenersArray);
     const choice = await LogAsync.questionInListIndexed(this.questionOptions, this.question, "q");
-
     return choice;
   }
 
