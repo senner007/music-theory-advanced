@@ -33,6 +33,7 @@
 - tempo param to each audio part
 - hear progressions quiz
 - sing progression over bass line
+- provide links to free theory resources
 
 #### Sing pitch patterns:
 - https://github.com/sorensen/ascii-table
