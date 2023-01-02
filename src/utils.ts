@@ -35,6 +35,7 @@ export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseN
 export type noteSingleAccidentalOctave = Readonly<`${noteSingleAccidental}${octave}`>;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
+export type intervalType = "2m" | "2M" | "3m" | "3M" | "4P" | "4A" | "5d" | "5P";
 
 export function ObjectKeys<Obj extends {}>(obj: Obj): Readonly<(keyof Obj)[]> {
   return Object.keys(obj) as (keyof Obj)[];
@@ -51,8 +52,6 @@ export function isTooHigh(n: noteAllAccidentalOctave) {
 export function toOctave<T extends Readonly<noteAllAccidental>>(n: T, octave: octave) {
   return (n + octave) as noteAllAccidentalOctave;
 }
-
-
 
 export function add_octave_note(notes: readonly noteAllAccidentalOctave[]): readonly noteAllAccidentalOctave[] {
   return [...notes, Note.transpose(notes[0], IntervalDistance.OctaveUp) as noteAllAccidentalOctave];
@@ -167,6 +166,15 @@ export function number_to_degree(n: number) {
   }
   return degree;
 }
+
+export function getIntervalDistance(first: string, second: string) {
+  return Interval.distance(first, second) as intervalType
+}
+
+export function intervalToAbsolute(interval: intervalType) {
+  return interval.replace(/[-]/g, "") as intervalType;
+}
+
 
 ("*************************************************************");
 ("* Test for uniqueness");

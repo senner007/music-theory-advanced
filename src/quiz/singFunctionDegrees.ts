@@ -17,26 +17,26 @@ import {
 } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
-export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQuizBase<Syllable> {
+export const SingingFunctionalDegrees: Quiz<Syllable[]> = class extends SingingQuizBase<Syllable[]> {
   verifyOptions(syllables: Syllable[]): boolean {
     return syllables.every((syllable) => Object.values(syllables_in_key_of_c).includes(syllable));
   }
 
-  key: noteSingleAccidental;
+  randomNote: noteSingleAccidental;
   octaves: octave[] = ["3", "4"]; // in options
   audio;
   stepnumber: number = 12; // in options
   override tempo = 1000;
   constructor(syllables: Readonly<Syllable[]>) {
     super(syllables);
-    this.key = random_note_single_accidental();
+    this.randomNote = random_note_single_accidental();
 
     const syllableKeysInC = ObjectKeys(syllables_in_key_of_c) 
     const optionSyllableNotesInC = syllableKeysInC.filter((key) => {
       return syllables.includes(syllables_in_key_of_c[key] as Syllable);
     });
 
-    const distanceToKey = Interval.distance("C", this.key);
+    const distanceToKey = Interval.distance("C", this.randomNote);
     const syllableNotesTransposed = optionSyllableNotesInC.transposeBy(distanceToKey);
 
     this.audio = [...Array(this.stepnumber).keys()].map((_) => {
@@ -73,17 +73,17 @@ export const SingingFunctionalDegrees: Quiz<Syllable> = class extends SingingQui
       {
         noteNames: [
           // abstract me out!
-          toOctave(this.key, "2"),
-          toOctave(this.key, "3"),
-          toOctave(note_transpose(this.key, "3M"), "3"),
-          toOctave(note_transpose(this.key, "P5"), "3"),
+          toOctave(this.randomNote, "2"),
+          toOctave(this.randomNote, "3"),
+          toOctave(note_transpose(this.randomNote, "3M"), "3"),
+          toOctave(note_transpose(this.randomNote, "P5"), "3"),
         ],
         duration: 2,
       } as INotePlay,
     ];
 
     return [
-      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play melody" },
+      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play melody", display: true },
       { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
   }

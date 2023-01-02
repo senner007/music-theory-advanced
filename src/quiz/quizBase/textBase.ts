@@ -3,9 +3,6 @@ import { LogAsync } from "../../logger/logAsync";
 import { QuizBase } from "./quizBase";
 
 export abstract class TextQuizBase<T> extends QuizBase<T> {
-  constructor(options: Readonly<any[]>) {
-    super(options);
-  }
 
   async execute(): Promise<string | never> {
     this.attachListeners(this.listenersArray);

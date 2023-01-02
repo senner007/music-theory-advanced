@@ -15,6 +15,7 @@ import { HearTrichordPitchPatterns } from "./quiz/hearTrichordPitchPattern";
 import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singFunctionDegrees";
 import { SingHarmony } from "./quiz/singHarmony";
 import { SingBassLines } from "./quiz/singBassLines";
+import { SingContextualIntervals } from "./quiz/singContextualIntervals";
 
 process.stdin.setMaxListeners(20);
 Log.clear();
@@ -34,7 +35,8 @@ const quizzes: Quiz<any>[] = [
   HearTrichordPitchPatterns,
   SingFunctionalDegrees,
   SingHarmony,
-  SingBassLines
+  SingBassLines,
+  SingContextualIntervals
 ];
 
 (async () => {

@@ -9,7 +9,7 @@ export abstract class SingingQuizBase<T> extends AudioQuizBase<T> {
     return ["Right", "Wrong"];
   }
 
-  abstract key: noteSingleAccidental;
+  abstract randomNote: noteSingleAccidental;
 
   abstract tableHeader: ITableHeader[]
 
@@ -18,7 +18,7 @@ export abstract class SingingQuizBase<T> extends AudioQuizBase<T> {
   }
 
   async callQuiz(): Promise<string | never> {
-    const solfege = new SolfegeMelody(this.getAudio()[0].audio, this.key);
+    const solfege = new SolfegeMelody(this.getAudio().filter(a => a.display)[0].audio, this.randomNote);
     LogTable.write(solfege, this.tableHeader);
 
     try {

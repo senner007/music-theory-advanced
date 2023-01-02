@@ -8,11 +8,11 @@ declare global {
       transposeBy<U extends noteAllAccidental[] | noteAllAccidentalOctave[]>(this: U, interval: string): Readonly<U>;
       commaSequence(): string;
       shuffleArray(): Readonly<Array<T>>;
-      randomItem(): Readonly<T>;
+      randomItem(): T;
     }
     interface ReadonlyArray<T> {
       shuffleArray(): Readonly<Array<T>>;
-      randomItem(): Readonly<T>;
+      randomItem(): T;
       commaSequence(): string;
       toOctave(this: Readonly<noteAllAccidental[]>, octave: octave): Readonly<Array<noteAllAccidentalOctave>>;
       transposeBy<U extends Readonly<noteAllAccidental[]> | Readonly<noteAllAccidentalOctave[]>>(this: U, interval: string): Readonly<U>;

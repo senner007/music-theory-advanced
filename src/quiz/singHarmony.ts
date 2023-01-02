@@ -15,12 +15,12 @@ import {
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
 
-export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Progression> {
+export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Progression[]> {
   verifyOptions(_: Progression[]): boolean {
     return true;
   }
 
-  key: noteSingleAccidental;
+  randomNote: noteSingleAccidental;
   override tempo = 1000;
   chords;
   randomProgressionInKey;
@@ -31,20 +31,20 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
   keyInfo;
   constructor(progressions: Readonly<Progression[]>) {
     super(progressions);
-    this.key = this.key = random_note_single_accidental();
+    this.randomNote = this.randomNote = random_note_single_accidental();
 
     const randomProgression = progressions.randomItem();
     this.progressionTags = randomProgression.tags;
     this.progressionDescription = randomProgression.description;
     this.progressionIsDiatonic = randomProgression.isDiatonic;
     this.progressionIsMajor = randomProgression.isMajor;
-    this.keyInfo = keyInfo(this.progressionIsMajor ? Key.majorKey(this.key) : Key.minorKey(this.key));
+    this.keyInfo = keyInfo(this.progressionIsMajor ? Key.majorKey(this.randomNote) : Key.minorKey(this.randomNote));
     const randomProgressionInC = {
       chords: randomProgression.chords.map((c) => romanNumeralChord(c)),
       bass: randomProgression.bass,
     };
 
-    this.randomProgressionInKey = transposeProgression(randomProgressionInC, this.key);
+    this.randomProgressionInKey = transposeProgression(randomProgressionInC, this.randomNote);
 
     this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
       const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n]);
@@ -65,7 +65,7 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
       `${description} ${identifiers}`,
       `${
         this.progressionIsDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")
-      } progression in key of ${chalk.underline(this.key + " " + (this.progressionIsMajor ? "Major" : "Minor"))}`,
+      } progression in key of ${chalk.underline(this.randomNote + " " + (this.progressionIsMajor ? "Major" : "Minor"))}`,
       chords,
     ];
   }
@@ -99,17 +99,17 @@ export const SingHarmony: Quiz<Progression> = class extends SingingQuizBase<Prog
       {
         noteNames: [
           // abstract me out! // major or minor version
-          toOctave(this.key, "2"),
-          toOctave(this.key, "3"),
-          toOctave(note_transpose(this.key, this.progressionIsMajor ? "3M" : "3m"), "3"),
-          toOctave(note_transpose(this.key, "P5"), "3"),
+          toOctave(this.randomNote, "2"),
+          toOctave(this.randomNote, "3"),
+          toOctave(note_transpose(this.randomNote, this.progressionIsMajor ? "3M" : "3m"), "3"),
+          toOctave(note_transpose(this.randomNote, "P5"), "3"),
         ],
         duration: 2,
       } as INotePlay,
     ];
 
     return [
-      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play progression" },
+      { audio: audio, keyboardKey: "space", onInit: false, channel: 1, message: "play progression", display: true },
       { audio: audioWithBass, keyboardKey: "b", onInit: false, channel: 1, message: "play progression with bass line" },
       { audio: sequentialAudio, keyboardKey: "a", onInit: false, channel: 1, message: "arpeggiate progression" },
       {

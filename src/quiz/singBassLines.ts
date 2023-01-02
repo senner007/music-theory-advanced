@@ -13,12 +13,12 @@ import {
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
 
 
-export const SingBassLines: Quiz<Progression> = class extends SingingQuizBase<Progression> {
+export const SingBassLines: Quiz<Progression[]> = class extends SingingQuizBase<Progression[]> {
   verifyOptions(_: Progression[]): boolean {
     return true;
   }
 
-  key: noteSingleAccidental;
+  randomNote: noteSingleAccidental;
   override tempo = 1000;
 
   randomBassLineInKey;
@@ -27,12 +27,12 @@ export const SingBassLines: Quiz<Progression> = class extends SingingQuizBase<Pr
   progressionIsMajor;
   constructor(progressions: Readonly<Progression[]>) {
     super(progressions);
-    this.key = this.key = random_note_single_accidental();
+    this.randomNote = random_note_single_accidental();
     const randomProgression = progressions.randomItem();
     this.progressionIsDiatonic = randomProgression.isDiatonic;
     this.progressionIsMajor = randomProgression.isMajor;
 
-    const keyDistance = Interval.distance("C", this.key)
+    const keyDistance = Interval.distance("C", this.randomNote)
     this.randomBassLineInKey = randomProgression.bass.transposeBy(keyDistance);
   }
 
@@ -40,7 +40,7 @@ export const SingBassLines: Quiz<Progression> = class extends SingingQuizBase<Pr
     return [
       `${
         this.progressionIsDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")
-      } progression bass line in key of ${chalk.underline(this.key + " " + (this.progressionIsMajor ? "Major" : "Minor"))}`,
+      } progression bass line in key of ${chalk.underline(this.randomNote + " " + (this.progressionIsMajor ? "Major" : "Minor"))}`,
     ];
   }
 
@@ -57,17 +57,17 @@ export const SingBassLines: Quiz<Progression> = class extends SingingQuizBase<Pr
       {
         noteNames: [
           // abstract me out! // major or minor version
-          toOctave(this.key, "2"),
-          toOctave(this.key, "3"),
-          toOctave(note_transpose(this.key, this.progressionIsMajor ? "3M" : "3m"), "3"),
-          toOctave(note_transpose(this.key, "P5"), "3"),
+          toOctave(this.randomNote, "2"),
+          toOctave(this.randomNote, "3"),
+          toOctave(note_transpose(this.randomNote, this.progressionIsMajor ? "3M" : "3m"), "3"),
+          toOctave(note_transpose(this.randomNote, "P5"), "3"),
         ],
         duration: 2,
       } as INotePlay,
     ];
 
     return [
-      { audio: bassLine, keyboardKey: "space", onInit: false, channel: 1, message: "play bass line" },
+      { audio: bassLine, keyboardKey: "space", onInit: false, channel: 1, message: "play bass line", display: true },
       { audio: keyAudio, keyboardKey: "l", onInit: true, channel: 2, message: "establish key" },
     ];
   }

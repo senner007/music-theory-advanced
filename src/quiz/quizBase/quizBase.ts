@@ -9,7 +9,8 @@ export interface IListener {
 
 export abstract class QuizBase<T> {
   listenersArray: IListener[] = [];
-  constructor(options: Readonly<T[]>) {
+
+  constructor(options: Readonly<T>) {
     this.errorCheckOptions(options);
     this.listenersArray.push(this.scrollListener());
   }
@@ -34,13 +35,13 @@ export abstract class QuizBase<T> {
     };
   }
 
-  private errorCheckOptions(options: Readonly<T[]>): void | never {
+  private errorCheckOptions(options: Readonly<T>): void | never {
     const optionsAreValid = this.verifyOptions(options);
     const quizConstructor: Quiz<any> = this.constructor as Quiz<any>;
     if (!optionsAreValid) LogError("options invalid in class: " + "'" + quizConstructor.meta.name + "'");
   }
 
-  protected abstract verifyOptions(options: Readonly<T[]>): boolean;
+  protected abstract verifyOptions(options: Readonly<T>): boolean;
   abstract questionOptions: Readonly<string[]>;
   abstract question: string;
 

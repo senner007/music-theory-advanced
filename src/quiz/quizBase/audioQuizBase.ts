@@ -7,14 +7,11 @@ interface IAudioPlay {
   onInit: boolean;
   channel: number;
   message: string;
+  display?: boolean;
 }
 
 export abstract class AudioQuizBase<T> extends QuizBase<T> {
   protected tempo: number = 500;
-
-  constructor(options: Readonly<any[]>) {
-    super(options);
-  }
 
   private createListeners(audioParts: IAudioPlay[]): IListener[] {
     return audioParts.map((audioPart) => {
@@ -43,13 +40,13 @@ export abstract class AudioQuizBase<T> extends QuizBase<T> {
   abstract callQuiz(): Promise<string | never>;
 
   async execute(): Promise<string | never> {
+    this.listenersArray.push(...this.createListeners(this.getAudio()));
+    this.attachListeners(this.listenersArray);
     this.getAudio().forEach((audioPart) => {
       if (audioPart.onInit) {
         process.stdin.emit("keypress", null, { name: audioPart.keyboardKey });
       }
     });
-    this.listenersArray.push(...this.createListeners(this.getAudio()));
-    this.attachListeners(this.listenersArray);
     return await this.callQuiz();
   }
 }
