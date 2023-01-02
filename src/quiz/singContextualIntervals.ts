@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { INotePlay } from "../midiplay";
 import { Quiz } from "../quiz-types";
 import { ITableHeader } from "../solfege";
@@ -23,6 +24,7 @@ optionsType
   }
 
   randomNote: noteSingleAccidental;
+  randomScaleType;
   interval;
   scaleThirdOctave;
   override tempo = 500;
@@ -31,8 +33,8 @@ optionsType
     super(options);
     const [scaletypes, intervals] = options;
     this.randomNote = random_note_single_accidental();
-    const randomScaleType = scaletypes.randomItem();
-    const randomScale = create_scale(this.randomNote, randomScaleType);
+    this.randomScaleType = scaletypes.randomItem();
+    const randomScale = create_scale(this.randomNote, this.randomScaleType);
 
     this.scaleThirdOctave = scale_notes(randomScale).toOctave("3").map(transpose_to_ascending)
     const randomScaleNotes = [
@@ -54,7 +56,7 @@ optionsType
   }
 
   get quizHead() {
-    return [``];
+    return [`Identify and sing the interval from the ${this.randomScaleType} scale`];
   }
 
   get question() {
@@ -67,15 +69,15 @@ optionsType
     });
 
     const firstNote = [interval[0]];
+    const secondNote = [interval[1]];
 
-    const scale = this.scaleThirdOctave.map((n): INotePlay => {
-        return { noteNames: [n], duration: 1 };
-      });
+    const root : INotePlay[] = [{ noteNames: [this.scaleThirdOctave[0]], duration: 1 }];
 
     return [
       { audio: interval, keyboardKey: "space", onInit: false, channel: 1, message: "play interval", display: true },
-      { audio: firstNote, keyboardKey: "f", onInit: true, channel: 1, message: "play fist note" },
-      { audio: scale, keyboardKey: "s", onInit: false, channel: 1, message: "play scale" },
+      { audio: firstNote, keyboardKey: "f", onInit: true, channel: 1, message: "play the fist note" },
+      { audio: secondNote, keyboardKey: "s", onInit: false, channel: 1, message: "play the second note" },
+      { audio: root, keyboardKey: "r", onInit: false, channel: 1, message: "play the root of scale" },
     ];
   }
 
@@ -101,7 +103,7 @@ optionsType
           "harmonic minor",
           "melodic minor",
         ];
-        const intervals: intervalType[] = ["2m", "2M", "3m", "3M", "4P", "4A", "5d", "5P"];
+        const intervals: intervalType[] = ["2m", "2M", "3m", "3M", "4P", "4A", "5d", "5P", "6m", "6M"];
         return [scales, intervals];
       },
       name: "Sing contextual intervals",

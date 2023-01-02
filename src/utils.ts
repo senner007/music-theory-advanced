@@ -35,7 +35,7 @@ export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseN
 export type noteSingleAccidentalOctave = Readonly<`${noteSingleAccidental}${octave}`>;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
 export type noteAllAccidentalOctave = Readonly<`${noteAllAccidental}${octave}`>;
-export type intervalType = "2m" | "2M" | "3m" | "3M" | "4P" | "4A" | "5d" | "5P";
+export type intervalType = "2m" | "2M" | "3m" | "3M" | "4P" | "4A" | "5d" | "5P" | "6m" | "6M";
 
 export function ObjectKeys<Obj extends {}>(obj: Obj): Readonly<(keyof Obj)[]> {
   return Object.keys(obj) as (keyof Obj)[];
