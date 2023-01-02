@@ -56,7 +56,7 @@ optionsType
   }
 
   get quizHead() {
-    return [`Identify and sing the interval from the ${this.randomScaleType} scale`];
+    return [`Identify and sing the interval from the ${chalk.underline(this.randomScaleType)} scale`];
   }
 
   get question() {
