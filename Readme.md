@@ -1,3 +1,19 @@
+## Advanced music theory and ear training
+- This is currently under development. Stay tuned :)
+
+### Contents so far:
+- Hear the missing 12th tone
+- Hear scales
+- Hear tetrachord
+- Hear trichord pitch patterns
+- Name the missing scale note
+- Name the scale degree note
+- Sing bass lines
+- Sing contextual intervals
+- Sing functional solfege degrees
+- Sing harmonic progressions
+- Which is the chord
+
 ### Supported platforms:
 - Windows
 
