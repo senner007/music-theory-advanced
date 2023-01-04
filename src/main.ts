@@ -2,7 +2,7 @@ import "./arrayProto"
 import { customExit, isInterrupt } from "./utils";
 import { Quiz } from "./quiz-types";
 import { MissingScaleNote } from "./quiz/missingScaleNote";
-import { WhichIsTheChord } from "./quiz/whichIsTheChord";
+import { WhichTriad } from "./quiz/whichTriad";
 import { NameScaleDegree } from "./quiz/nameScaleDegree";
 import { loopQuiz } from "./quizEngine/loopQuiz";
 import { HearTetraChord } from "./quiz/hearTetraChord";
@@ -28,7 +28,7 @@ for (const mididevice of easymidi.getOutputs()) {
 const quizzes: Quiz<any>[] = [
   MissingScaleNote,
   NameScaleDegree,
-  WhichIsTheChord,
+  WhichTriad,
   HearTetraChord,
   HearScales,
   Hear12thTone,

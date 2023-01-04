@@ -3,7 +3,7 @@ import { IQuiz, Quiz } from "../quiz-types";
 import chalk from "chalk";
 import { TextQuizBase } from "./quizBase/textBase";
 
-export const WhichIsTheChord: Quiz<string[]> = class extends TextQuizBase<string[]> {
+export const WhichTriad: Quiz<string[]> = class extends TextQuizBase<string[]> {
   verifyOptions(chordTypes: string[]): boolean {
     return chordTypes.every((chordType) => allChordTypes.includes(chordType));
   }
@@ -30,7 +30,7 @@ export const WhichIsTheChord: Quiz<string[]> = class extends TextQuizBase<string
     return this.chordTypesAndNotes.map((chordTypesAndNotes) => chordTypesAndNotes.notes);
   }
   get question() {
-    return `What notes spell the chord?`;
+    return `What notes spell the triad?`;
   }
   answer(): string {
     return this.randomChord.notes;
@@ -41,8 +41,8 @@ export const WhichIsTheChord: Quiz<string[]> = class extends TextQuizBase<string
       get getAllOptions() {
         return ["major", "minor", "augmented", "diminished"];
       },
-      name: "Which is the chord",
-      description: "Choose the chord tones that make up the chord type",
+      name: "Which triad",
+      description: "Choose the notes that make up the triad",
     };
   }
 };

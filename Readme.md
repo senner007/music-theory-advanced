@@ -12,7 +12,7 @@
 - Sing contextual intervals
 - Sing functional solfege degrees
 - Sing harmonic progressions
-- Which is the chord
+- Which triad
 
 ### Supported platforms:
 - Windows
