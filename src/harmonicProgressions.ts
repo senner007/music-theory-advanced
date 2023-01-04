@@ -30,7 +30,7 @@ const romanNumeralsDict = {
   V: ["G4", "B4", "D5"],
   V64: ["D4", "G4", "B4"],
   V7: ["G4", "B4", "D5", "F5"],
-  "V7(mP5)": ["G4", "B4", "F5"],
+  V7no5: ["G4", "B4", "F5"],
   V6: ["B3", "D4", "G4"],
   V65: ["B4", "D5", "F5", "G5"],
   ii: ["D4", "F4", "A4"],
@@ -84,12 +84,15 @@ type ProgressionsJSON = {
   progressions: Progression[];
 };
 
-const progressionsJsonLevel1 = JSON.parse(fs.readFileSync("harmonic-progressions.json") as any) as ProgressionsJSON;
-const progressionsJsonLevel2 = JSON.parse(
+const level_1 = JSON.parse(fs.readFileSync("harmonic-progressions.json") as any) as ProgressionsJSON;
+const level_2 = JSON.parse(
   fs.readFileSync("harmonic-progressions-level2.json") as any
 ) as ProgressionsJSON;
+const level_3 = JSON.parse(
+  fs.readFileSync("harmonic-progressions-level3.json") as any
+) as ProgressionsJSON;
 
-export const progressions = [...progressionsJsonLevel1.progressions, ...progressionsJsonLevel2.progressions];
+export const progressions = [...level_1.progressions, ...level_2.progressions, ...level_3.progressions];
 
 (function JSONContentVerify() {
   const progressionsTemp: string[] = [];

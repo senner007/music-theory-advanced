@@ -4,7 +4,8 @@
         {
           "fileMatch": [
             "/harmonic-progressions.json",
-            "/harmonic-progressions-leve2.json"
+            "/harmonic-progressions-level2.json",
+            "/harmonic-progressions-level3.json"
           ],
           "url": "./harmonic-progressions-schema.json"
         }
