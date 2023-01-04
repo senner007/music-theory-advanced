@@ -48,12 +48,6 @@
 - sing progression over bass line
 - provide links to free theory resources
 
-#### Sing pitch patterns:
-- https://github.com/sorensen/ascii-table
-- tone.js
-- from scales
-- options: rhythm sequence, random order, max interval
-
 #### Discern/sing notes played together
 - sing note in range C4 - C5
 - sing bottom, top, middle of two notes, three notes

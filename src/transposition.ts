@@ -51,5 +51,5 @@ export function transpose_to_ascending(
   if (index === 0) return n;
   const getInterval = Interval.distance(arr[0], n);
   const intervalData = Interval.get(getInterval);
-  return (intervalData.dir! < 0 ? Note.transpose(n, IntervalDistance.OctaveUp) : n) as Readonly<noteAllAccidentalOctave>;
+  return (intervalData.semitones! <= 0 ? Note.transpose(n, IntervalDistance.OctaveUp) : n) as Readonly<noteAllAccidentalOctave>;
 }

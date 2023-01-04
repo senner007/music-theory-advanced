@@ -27,7 +27,7 @@ optionsType
   randomScaleType;
   interval;
   scaleThirdOctave;
-  override tempo = 500;
+  override tempo = 400;
 
   constructor(options: Readonly<optionsType>) {
     super(options);
@@ -73,11 +73,19 @@ optionsType
 
     const root : INotePlay[] = [{ noteNames: [this.scaleThirdOctave[0]], duration: 1 }];
 
+    const scale = [...this.scaleThirdOctave, this.scaleThirdOctave[0]]
+    .map(transpose_to_ascending)
+    .map((n): INotePlay => {
+      return { noteNames: [n], duration: 1 };
+    });
+
     return [
       { audio: interval, keyboardKey: "space", onInit: false, channel: 1, message: "play interval", display: true },
-      { audio: firstNote, keyboardKey: "f", onInit: true, channel: 1, message: "play the fist note" },
+      { audio: firstNote, keyboardKey: "a", onInit: true, channel: 1, message: "play the fist note" },
       { audio: secondNote, keyboardKey: "s", onInit: false, channel: 1, message: "play the second note" },
-      { audio: root, keyboardKey: "r", onInit: false, channel: 1, message: "play the root of scale" },
+      { audio: root, keyboardKey: "d", onInit: false, channel: 1, message: "play the root of the scale" },
+      { audio: scale, keyboardKey: "f", onInit: false, channel: 1, message: "play the scale" },
+
     ];
   }
 
@@ -96,10 +104,10 @@ optionsType
           "aeolian",
           "major pentatonic",
           "dorian",
-          "phrygian",
+          // "phrygian",
           "lydian",
           "mixolydian",
-          "locrian",
+          // "locrian",
           "harmonic minor",
           "melodic minor",
         ];
