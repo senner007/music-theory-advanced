@@ -77,7 +77,7 @@
       "isDiatonic": true
     },
     {
-      "chords": ["I64", "ii64", "V7(mP5)", "I64"],
+      "chords": ["I64", "ii64", "V7no5", "I64"],
       "bass": ["C4", "F3", "G3", "C3"],
       "description": "c1-11",
       "isMajor": true,
@@ -93,7 +93,7 @@
       "tags": ["Inversion", "DominantSeven"]
     },
     {
-      "chords": ["i64", "iv6", "V7(mP5)", "i64"],
+      "chords": ["i64", "iv6", "V7no5", "i64"],
       "bass": ["C4", "F3", "G3", "C3"],
       "description": "c1-13",
       "isMajor": false,
@@ -116,7 +116,7 @@
       "tags": ["Inversion", "Diminished"]
     },
     {
-      "chords": ["i-a", "iio64", "V7(mP5)", "i64"],
+      "chords": ["i-a", "iio64", "V7no5", "i64"],
       "bass": ["C4", "D4", "G3", "C4"],
       "description": "c1-16",
       "isMajor": false,

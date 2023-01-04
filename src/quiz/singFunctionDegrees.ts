@@ -98,7 +98,7 @@ export const SingingFunctionalDegrees: Quiz<Syllable[]> = class extends SingingQ
   static meta() {
     return {
       get getAllOptions(): Syllable[] {
-        return ["Do", "Re", "Mi", "Fa", "Me", "So", "Ti"];
+        return ["Do", "Re", "Me", "Mi", "Fa", "Fi", "So", "La", "Ti"];
       },
       name: "Sing functional solfege degrees",
       description: "Sing the solfege degrees shown in the table below",
