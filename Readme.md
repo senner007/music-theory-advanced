@@ -41,7 +41,6 @@
 - add purpose and philosophy
 - release .exe files
 - improve similarity of scale selection in "Hear Scales" quiz
-- write roman numerals in table heading
 - add count in for singing
 - tempo param to each audio part
 - hear progressions quiz

@@ -18,7 +18,7 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
 
 type dict = Record<string, noteAllAccidentalOctave[]>;
 
-// TODO : derive all names from common roman numerals types
+// TODO : split into base and sevenths types
 const romanNumeralsDict = {
   i: ["C4", "Eb4", "G4"],
   i6: ["Eb4", "G4", "C5"],
