@@ -64,6 +64,7 @@ export function keyInfo(key: MajorKey | MinorKey) {
     const harmonicNumerals = ["i", "iio", "III+", "iv", "V", "bVI", "viio"];
     const melodicNumerals = ["i", "ii", "III+", "IV", "V", "vio", "viio"];
 
+    // this chord is overriden since the library has this set to m6 chord and not mMaj7
     const melodicChords = [...key.melodic.chords] as string[];
     melodicChords[0] = key.melodic.tonic + "mMaj7";
     const obj = {
@@ -82,7 +83,7 @@ export function keyInfo(key: MajorKey | MinorKey) {
         ...key.melodic,
         chords :  melodicChords,
         ...getPrimaryChords(["m", "m", "aug", "M", "M", "dim", "dim"], melodicNumerals, key.melodic.scale),
-        ...getSeventhChords(melodicChords, ["iM", "ii", "III+M", "iv", "V", "VI", "viio"]),
+        ...getSeventhChords(melodicChords, ["iM", "ii", "III+M", "IV", "V", "vio", "viio"]),
       },
     } as const;
     return obj;
@@ -100,7 +101,7 @@ export function keyInfo(key: MajorKey | MinorKey) {
 
 type KeyInfo = ReturnType<typeof keyInfo>;
 
-export function getKeyChords(keyInfo: KeyInfo) {
+function getKeyChords(keyInfo: KeyInfo) {
   if (keyInfo.type === "major") {
     return [...keyInfo.allPrimaryChords(), ...keyInfo.allSeventhChords()];
   }

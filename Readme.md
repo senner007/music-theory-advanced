@@ -30,7 +30,7 @@
 
 ### Test
 - npm test
-- debug in vscode
+- debug in vscode, select "Debug Current Test File" launch mode under debug
 
 ### Compile and run
 - npm run prod

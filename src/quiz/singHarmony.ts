@@ -41,7 +41,7 @@ export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Pr
 
     this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
       const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n], { assumePerfectFifth: true });
-      return getNumeralBySymbol(this.keyInfo,chords)
+      return getNumeralBySymbol(this.keyInfo, chords)
     });
   }
 
