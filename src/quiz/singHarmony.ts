@@ -1,19 +1,13 @@
-import { Chord, Interval, Key, Note } from "@tonaljs/tonal";
+import { Chord, Key } from "@tonaljs/tonal";
 import chalk from "chalk";
 import { romanNumeralChord, progressions, Progression } from "../harmonicProgressions";
 import { getKeyChords, keyInfo } from "../keyInfo";
 import { INotePlay } from "../midiplay";
-import { IQuiz, Quiz } from "../quiz-types";
+import { Quiz } from "../quiz-types";
 import { ITableHeader } from "../solfege";
 import { transposeProgression } from "../transposition";
-import {
-  noteSingleAccidental,
-  toOctave,
-  note_transpose,
-  random_note_single_accidental,
-} from "../utils";
+import { noteSingleAccidental, toOctave, note_transpose, random_note_single_accidental } from "../utils";
 import { SingingQuizBase } from "./quizBase/SingingQuizBase";
-
 
 export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Progression[]> {
   verifyOptions(_: Progression[]): boolean {
@@ -31,8 +25,7 @@ export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Pr
   keyInfo;
   constructor(progressions: Readonly<Progression[]>) {
     super(progressions);
-    this.randomNote = this.randomNote = random_note_single_accidental();
-
+    this.randomNote = random_note_single_accidental();
     const randomProgression = progressions.randomItem();
     this.progressionTags = randomProgression.tags;
     this.progressionDescription = randomProgression.description;
@@ -47,10 +40,9 @@ export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Pr
     this.randomProgressionInKey = transposeProgression(randomProgressionInC, this.randomNote);
 
     this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
-      const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n]);
+      const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n], { assumePerfectFifth: true });
       const chordsInKey = chords.filter((chord) => getKeyChords(this.keyInfo).includes(chord));
       return chordsInKey.length > 0 ? chordsInKey[0] : chords[0];
-
     });
   }
 
@@ -65,7 +57,9 @@ export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Pr
       `${description} ${identifiers}`,
       `${
         this.progressionIsDiatonic ? chalk.underline("Diatonic") : chalk.underline("Non-diationic")
-      } progression in key of ${chalk.underline(this.randomNote + " " + (this.progressionIsMajor ? "Major" : "Minor"))}`,
+      } progression in key of ${chalk.underline(
+        this.randomNote + " " + (this.progressionIsMajor ? "Major" : "Minor")
+      )}`,
       chords,
     ];
   }

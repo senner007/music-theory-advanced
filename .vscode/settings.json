@@ -5,7 +5,8 @@
           "fileMatch": [
             "/harmonic-progressions.json",
             "/harmonic-progressions-level2.json",
-            "/harmonic-progressions-level3.json"
+            "/harmonic-progressions-level3.json",
+            "/harmonic-progressions-circle-of-fifths.json"
           ],
           "url": "./harmonic-progressions-schema.json"
         }

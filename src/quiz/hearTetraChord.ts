@@ -1,7 +1,7 @@
 
 import { Scale } from "@tonaljs/scale";
 import { random_note_single_accidental, allScaleTypes, create_scale, scale_notes, octave } from "../utils";
-import { IQuiz, Quiz } from "../quiz-types";
+import { Quiz } from "../quiz-types";
 import { ListeningQuizBase } from "./quizBase/listeningQuizBase";
 import { INotePlay } from "../midiplay";
 import { transpose_to_ascending } from "../transposition";

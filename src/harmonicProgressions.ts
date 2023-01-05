@@ -1,11 +1,11 @@
-import { noteAllAccidentalOctave, noteSingleAccidental } from "./utils";
+import { noteAllAccidentalOctave } from "./utils";
 import fs from "fs";
 import { LogError } from "./dev-utils";
-import { Interval, Note } from "@tonaljs/tonal";
+import { Note } from "@tonaljs/tonal";
 
 export enum IntervalDistance {
   OctaveUp = "8P",
-  OctaveDown = "-8P"
+  OctaveDown = "-8P",
 }
 
 export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralAbove) {
@@ -15,8 +15,6 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
   }
   return romanNumeralsDict[romanNumeral as RomanNumeralType];
 }
-
-
 
 type dict = Record<string, noteAllAccidentalOctave[]>;
 
@@ -31,6 +29,7 @@ const romanNumeralsDict = {
   V64: ["D4", "G4", "B4"],
   V7: ["G4", "B4", "D5", "F5"],
   V7no5: ["G4", "B4", "F5"],
+  V742no5: ["F4", "G4", "B4"],
   V6: ["B3", "D4", "G4"],
   V65: ["B4", "D5", "F5", "G5"],
   ii: ["D4", "F4", "A4"],
@@ -39,6 +38,7 @@ const romanNumeralsDict = {
   iio64: ["Ab4", "D5", "F5"],
   ii6: ["F4", "A4", "D5"],
   ii64: ["A4", "D5", "F5"],
+  iii: ["E4", "G4", "B4"],
   iii6: ["G4", "B4", "E5"],
   iii64: ["B4", "E5", "G5"],
   iv: ["F4", "Ab4", "C5"],
@@ -50,11 +50,14 @@ const romanNumeralsDict = {
   vi: ["A4", "C5", "E5"],
   vi6: ["C4", "E4", "A4"],
   vi64: ["E4", "A4", "C5"],
+  vi42no5: ["G4", "A4", "C5"],
   VI: ["Ab4", "C5", "Eb5"],
   VI6: ["C5", "Eb5", "Ab5"],
   VI64: ["Eb4", "Ab4", "C5"],
   vii: ["B4", "D5", "F5"],
+  vii64: ["F4", "B4", "D5"],
   viio6: ["D5", "F5", "B5"],
+  vii42no5: ["A4", "B4", "D5"],
 } satisfies dict;
 
 export type RomanNumeralType = keyof typeof romanNumeralsDict;
@@ -85,21 +88,23 @@ type ProgressionsJSON = {
 };
 
 const level_1 = JSON.parse(fs.readFileSync("harmonic-progressions.json") as any) as ProgressionsJSON;
-const level_2 = JSON.parse(
-  fs.readFileSync("harmonic-progressions-level2.json") as any
-) as ProgressionsJSON;
-const level_3 = JSON.parse(
-  fs.readFileSync("harmonic-progressions-level3.json") as any
-) as ProgressionsJSON;
+const level_2 = JSON.parse(fs.readFileSync("harmonic-progressions-level2.json") as any) as ProgressionsJSON;
+const level_3 = JSON.parse(fs.readFileSync("harmonic-progressions-level3.json") as any) as ProgressionsJSON;
 
-export const progressions = [...level_1.progressions, ...level_2.progressions, ...level_3.progressions];
+const level_20 = JSON.parse(fs.readFileSync("harmonic-progressions-circle-of-fifths.json") as any) as ProgressionsJSON;
+
+export const progressions = [
+  ...level_1.progressions,
+  ...level_2.progressions,
+  ...level_3.progressions,
+  ...level_20.progressions,
+];
 
 (function JSONContentVerify() {
   const progressionsTemp: string[] = [];
   progressions.forEach((key, keyIndex) => {
     const chordsString = key.chords.join("") + key.bass.join("");
     if (progressionsTemp.includes(chordsString)) {
-      
       LogError(
         `Json content error at: 
 Description : ${key.description} progression : ${chordsString}

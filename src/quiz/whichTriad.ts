@@ -1,5 +1,5 @@
 import { random_note_single_accidental, allChordTypes, create_chord } from "../utils";
-import { IQuiz, Quiz } from "../quiz-types";
+import { Quiz } from "../quiz-types";
 import chalk from "chalk";
 import { TextQuizBase } from "./quizBase/textBase";
 
