@@ -130,7 +130,8 @@ function getKeyChords(keyInfo: KeyInfo) {
   ];
 }
 
-export function getNumeralBySymbol(keyInfo: KeyInfo, chordSymbols: string[]) {
+export function getNumeralBySymbol(keyInfo: KeyInfo, chordNotes: string[]) {
+  const chordSymbols: string [] = Chord.detect(chordNotes, { assumePerfectFifth: true });
   const keyChords = getKeyChords(keyInfo);
   
   const chordsInKey = chordSymbols.filter((chord) => keyChords.map((c) => c.symbol).includes(chord));
