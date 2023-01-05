@@ -1,7 +1,6 @@
 import { it, expect, describe } from "vitest";
 import { Key } from "@tonaljs/tonal";
 import { keyInfo, getNumeralBySymbol } from "../../src/keyInfo";
-import { chordDetect } from "../test-utils";
 
 describe("Test Roman numerals for given chords in - Minor harmonic - key", () => {
   const key = keyInfo(Key.minorKey("C"));
