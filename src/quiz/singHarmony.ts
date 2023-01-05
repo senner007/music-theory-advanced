@@ -1,7 +1,7 @@
 import { Chord, Key } from "@tonaljs/tonal";
 import chalk from "chalk";
 import { romanNumeralChord, progressions, Progression } from "../harmonicProgressions";
-import { getKeyChords, keyInfo } from "../keyInfo";
+import { keyInfo, getNumeralBySymbol } from "../keyInfo";
 import { INotePlay } from "../midiplay";
 import { Quiz } from "../quiz-types";
 import { ITableHeader } from "../solfege";
@@ -41,8 +41,7 @@ export const SingHarmony: Quiz<Progression[]> = class extends SingingQuizBase<Pr
 
     this.chords = this.randomProgressionInKey.chords.map((n, index: number) => {
       const chords = Chord.detect([this.randomProgressionInKey.bass[index], ...n], { assumePerfectFifth: true });
-      const chordsInKey = chords.filter((chord) => getKeyChords(this.keyInfo).includes(chord));
-      return chordsInKey.length > 0 ? chordsInKey[0] : chords[0];
+      return getNumeralBySymbol(this.keyInfo,chords)
     });
   }
 

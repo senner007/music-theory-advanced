@@ -86,7 +86,7 @@
       },
       {
         "chords": ["i-a", "iv6", "i64", "V7no5", "i64"],
-        "bass": ["C2", "F3", "C2", "G3", "C2"],
+        "bass": ["C3", "F4", "C3", "G4", "C3"],
         "description": "c3-12",
         "isMajor": false,
         "isDiatonic": true,

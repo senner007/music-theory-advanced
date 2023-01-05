@@ -18,6 +18,7 @@ export function romanNumeralChord(romanNumeral: RomanNumeralType | RomanNumeralA
 
 type dict = Record<string, noteAllAccidentalOctave[]>;
 
+// TODO : derive all names from common roman numerals types
 const romanNumeralsDict = {
   i: ["C4", "Eb4", "G4"],
   i6: ["Eb4", "G4", "C5"],
@@ -51,11 +52,11 @@ const romanNumeralsDict = {
   vi6: ["C4", "E4", "A4"],
   vi64: ["E4", "A4", "C5"],
   vi42no5: ["G4", "A4", "C5"],
-  VI: ["Ab4", "C5", "Eb5"],
-  VI6: ["C5", "Eb5", "Ab5"],
-  VI64: ["Eb4", "Ab4", "C5"],
-  vii: ["B4", "D5", "F5"],
-  vii64: ["F4", "B4", "D5"],
+  bVI: ["Ab4", "C5", "Eb5"],
+  bVI6: ["C5", "Eb5", "Ab5"],
+  bVI64: ["Eb4", "Ab4", "C5"],
+  viio: ["B4", "D5", "F5"],
+  viio64: ["F4", "B4", "D5"],
   viio6: ["D5", "F5", "B5"],
   vii42no5: ["A4", "B4", "D5"],
 } satisfies dict;
