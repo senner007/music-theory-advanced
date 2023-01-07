@@ -29,8 +29,9 @@ export const allScaleTypes = ScaleType.all()
   .sort();
 
 const baseNotes = ["C", "D", "E", "F", "G", "A", "B"] as const;
+const octaves = ["2", "3", "4", "5"] as const;
 export type baseNote = typeof baseNotes[number];
-export type octave = "2" | "3" | "4" | "5";
+export type octave = typeof octaves[number];
 export type noteSingleAccidental = Readonly<`${baseNote}b` | baseNote | `${baseNote}#`>;
 export type noteSingleAccidentalOctave = Readonly<`${noteSingleAccidental}${octave}`>;
 export type noteAllAccidental = Readonly<`${baseNote}bb` | `${baseNote}##` | "F###" | noteSingleAccidental>;
@@ -65,15 +66,15 @@ export function create_chord(chordTonic: noteSingleAccidental, chordType: string
   return ChordClass.get(chordTonic + " " + chordType);
 }
 
-export function random_note_single_accidental() {
-  function note_single_accidentals(note: baseNote) {
-    const noteVariants = note_variants(note);
-    const [_, second, third, fourth] = noteVariants;
-    return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
-  }
+export function all_notes_single_accidentals(note: baseNote) {
+  const noteVariants = note_variants(note);
+  const [_, second, third, fourth] = noteVariants;
+  return [second, third, fourth] as Readonly<[`${baseNote}b`, baseNote, `${baseNote}#`]>;
+}
 
+export function random_note_single_accidental() {
   const baseNote = baseNotes.randomItem();
-  const notesSingleAccidental = note_single_accidentals(baseNote);
+  const notesSingleAccidental = all_notes_single_accidentals(baseNote);
   return notesSingleAccidental.randomItem() as Readonly<noteSingleAccidental>;
 }
 
@@ -108,8 +109,7 @@ export function event_by_probability(chance: number) {
   return MathFloor(Math.random() * 100) < chance;
 }
 
-
-type NoteVariants = [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`]
+type NoteVariants = [`${baseNote}bb`, `${baseNote}b`, baseNote, `${baseNote}#`, `${baseNote}##`];
 
 export function note_variants(
   baseNote: baseNote
@@ -122,9 +122,12 @@ export function note_variants(
     Note.transpose(baseNote, "1AA") as `${baseNote}##`,
   ];
   if (baseNote === "F") {
-    return [...returnArray, Note.transpose(baseNote, "1AAA") as `${baseNote}###`] as [...NoteVariants, `${baseNote}###`];
+    return [...returnArray, Note.transpose(baseNote, "1AAA") as `${baseNote}###`] as [
+      ...NoteVariants,
+      `${baseNote}###`
+    ];
   }
-  return returnArray
+  return returnArray;
 }
 
 export function note_transpose<T extends noteAllAccidental | noteAllAccidentalOctave>(note: T, interval: string): T {
@@ -168,13 +171,24 @@ export function number_to_degree(n: number) {
 }
 
 export function getIntervalDistance(first: string, second: string) {
-  return Interval.distance(first, second) as intervalType
+  return Interval.distance(first, second) as intervalType;
 }
 
 export function intervalToAbsolute(interval: intervalType) {
   return interval.replace(/[-]/g, "") as intervalType;
 }
 
+export function AccidentalsAllOctaves() {
+  const notes = baseNotes.flatMap(n => all_notes_single_accidentals(n));
+  return notes.flatMap(n => octaves.map(o => n + o)) as noteSingleAccidentalOctave[];
+}
+
+export function verifyNote(
+  notesSingleAccidentalAllOctaves: noteSingleAccidentalOctave[],
+  note: noteSingleAccidentalOctave
+) {
+  return notesSingleAccidentalAllOctaves.includes(note);
+}
 
 ("*************************************************************");
 ("* Test for uniqueness");
@@ -183,27 +197,25 @@ export function intervalToAbsolute(interval: intervalType) {
 type InArray<T, X> =
   // See if X is the first element in array T
   T extends readonly [X, ...infer _Rest]
-  ? true
-  : // If not, is X the only element in T?
-  T extends readonly [X]
-  ? true
-  : // No match, check if there's any elements left in T and loop recursive
-  T extends readonly [infer _, ...infer Rest]
-  ? InArray<Rest, X>
-  : // There's nothing left in the array and we found no match
-  false;
+    ? true
+    : // If not, is X the only element in T?
+    T extends readonly [X]
+    ? true
+    : // No match, check if there's any elements left in T and loop recursive
+    T extends readonly [infer _, ...infer Rest]
+    ? InArray<Rest, X>
+    : // There's nothing left in the array and we found no match
+      false;
 
 export type UniqueArray<T> = T extends readonly [infer X, ...infer Rest]
   ? // We've just extracted X from T, having Rest be the remaining values.
-  // Let's see if X is in Rest, and if it is, we know we have a duplicate
-  InArray<Rest, X> extends true
-  ? ["Encountered value with duplicates:", X]
-  : // X is not duplicated, move on to check the next value, and see
-  // if that's also unique.
-  readonly [X, ...UniqueArray<Rest>]
+    // Let's see if X is in Rest, and if it is, we know we have a duplicate
+    InArray<Rest, X> extends true
+    ? ["Encountered value with duplicates:", X]
+    : // X is not duplicated, move on to check the next value, and see
+      // if that's also unique.
+      readonly [X, ...UniqueArray<Rest>]
   : // T did not extend [X, ...Rest], so there's nothing to do - just return T
-  T;
+    T;
 
 ("*************************************************************");
-
-

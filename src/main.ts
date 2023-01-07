@@ -16,9 +16,14 @@ import { SingingFunctionalDegrees as SingFunctionalDegrees } from "./quiz/singFu
 import { SingHarmony } from "./quiz/singHarmony";
 import { SingBassLines } from "./quiz/singBassLines";
 import { SingContextualIntervals } from "./quiz/singContextualIntervals";
+import { progressions } from "./harmonicProgressions";
+import { JSONContentVerify } from "./progressions/harmonic-progressions-verify"
 
 process.stdin.setMaxListeners(20);
 Log.clear();
+
+
+JSONContentVerify(progressions);
 
 Log.write("Found MIDI outputs:");
 for (const mididevice of easymidi.getOutputs()) {
