@@ -46,7 +46,7 @@
 - hear progressions quiz
 - sing progression over bass line
 - provide links to free theory resources
-- move json progressions to ts, add length and uniqueness types
+- move json progressions to ts, add length and uniqueness types, define set of unique chords(roman numerals) for each progression level
 - array prototype for first and last elements 
 
 #### Discern/sing notes played together
