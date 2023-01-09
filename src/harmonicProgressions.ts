@@ -104,7 +104,7 @@ export type Progression = Readonly<{
   tags: string[];
 }>;
 
-type ProgressionsJSON = {
+export type ProgressionsJSON = {
   level: number;
   description: string;
   progressions: Progression[];
